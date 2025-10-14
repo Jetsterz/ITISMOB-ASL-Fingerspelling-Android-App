@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Regular -->
+    <font android:fontStyle="normal" android:fontWeight="400" android:font="@font/inter_24pt_regular" />
+    <font android:fontStyle="italic" android:fontWeight="400" android:font="@font/inter_24pt_italic" />
+
+    <!-- Medium (used a lot by M3) -->
+    <font android:fontStyle="normal" android:fontWeight="500" android:font="@font/inter_24pt_medium" />
+    <!-- Optional: Medium Italic if you have it -->
+    <!-- <font android:fontStyle="italic" android:fontWeight="500" android:font="@font/inter_24pt_medium_italic" /> -->
+
+    <!-- SemiBold (nice to have) -->
+    <font android:fontStyle="normal" android:fontWeight="600" android:font="@font/inter_24pt_semibold" />
+
+    <!-- Bold -->
+    <font android:fontStyle="normal" android:fontWeight="700" android:font="@font/inter_24pt_bold" />
+</font-family>
