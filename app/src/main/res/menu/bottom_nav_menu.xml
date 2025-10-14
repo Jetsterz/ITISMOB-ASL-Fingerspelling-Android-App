@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="Translate"
+        android:id="@+id/translate"
+        android:icon="@drawable/icon_translatepractice"
+        />
+    <item
+        android:id="@+id/play"
+        android:title="Play"
+        android:icon="@drawable/icon_console"
+        />
+    <item
+        android:id="@+id/viewSavedVideos"
+        android:title="Saved Videos"
+        android:icon="@drawable/icon_video"
+        />
+    <item
+        android:id="@+id/dictionary"
+        android:title="My Dictionary"
+        android:icon="@drawable/icon_dictionary"/>
+</menu>
