@@ -5,6 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.camera.view.PreviewView
+        android:id="@+id/pvCameraPreviewTranslate"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <LinearLayout
         android:id="@+id/vLytTextBackgroundTranslate"
         android:layout_width="0dp"
@@ -85,14 +90,4 @@
         app:srcCompat="@drawable/backspace"
         app:tint="#4C4DDC" />
 
-    <ImageView
-        android:id="@+id/camera_placeholder2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:tint="#B9B7B7"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/camera_placeholder" />
 </androidx.constraintlayout.widget.ConstraintLayout>
