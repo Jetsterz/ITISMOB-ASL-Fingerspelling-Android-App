@@ -1,15 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ViewVideosFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <!-- RecyclerView for video cards -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewVideos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="View Videos" />
+        android:padding="16dp"
+        android:clipToPadding="false"
+        tools:listitem="@layout/item_video_card" />
+
+    <!-- Floating Action Button with built-in delete icon -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/buttonDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="24dp"
+        android:contentDescription="Delete Selected"
+        app:srcCompat="@android:drawable/ic_menu_delete"
+        app:tint="@android:color/white"
+        app:backgroundTint="@android:color/black" />
 
 </FrameLayout>
