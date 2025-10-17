@@ -7,12 +7,6 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <androidx.media3.ui.PlayerView
-        android:id="@+id/dWordVideo"
-        android:layout_width="180dp"
-        android:layout_height="251dp"
-        app:srcCompat="@drawable/unloaded" />
-
     <LinearLayout
         android:id="@+id/dWordInfoLayout"
         android:layout_width="wrap_content"
@@ -24,10 +18,11 @@
             android:id="@+id/wordName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="#CECEF8"
             android:fontFamily="@font/inter_24pt_semibold"
             android:gravity="center"
             android:text="Dictionary Word"
-            android:textSize="16sp" />
+            android:textSize="24sp" />
 
         <LinearLayout
             android:id="@+id/buttonLayout"

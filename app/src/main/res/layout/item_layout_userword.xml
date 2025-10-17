@@ -7,12 +7,6 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <androidx.media3.ui.PlayerView
-        android:id="@+id/uWordVideo"
-        android:layout_width="180dp"
-        android:layout_height="251dp"
-        app:srcCompat="@drawable/unloaded" />
-
     <LinearLayout
         android:id="@+id/uWordInfoLayout"
         android:layout_width="180dp"
@@ -22,12 +16,13 @@
 
         <TextView
             android:id="@+id/wordName"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_family"
+            android:background="#C8C8F4"
+            android:fontFamily="@font/inter_24pt_semibold"
             android:gravity="center"
             android:text="User Word"
-            android:textSize="16sp" />
+            android:textSize="24sp" />
 
         <LinearLayout
             android:id="@+id/buttonLayout"
