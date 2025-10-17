@@ -10,17 +10,21 @@
     <androidx.camera.view.PreviewView
         android:id="@+id/pvCameraPreviewPractice"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
+    </androidx.camera.view.PreviewView>
 
     <LinearLayout
-        android:id="@+id/hLytTextBackgroundPractice"
+        android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/camera_text_background"
-        android:gravity="center|center_horizontal"
+        android:gravity="center"
         android:orientation="vertical"
         android:padding="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,14 +32,14 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/tvCategory"
-            android:layout_width="match_parent"
+            android:id="@+id/prompt"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="6dp"
             android:layout_weight="1"
-            android:text="category"
+            android:text="Spell the word in ASL:"
             android:textAlignment="center"
-            android:textColor="#E2E2E2"
+            android:textColor="#E6E6E6"
             android:textSize="16sp" />
 
         <TextView
@@ -49,20 +53,34 @@
             android:textColor="#E6E6E6"
             android:textSize="24sp"
             android:textStyle="bold" />
+
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabSwitchCamPractice"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/hLytTextBackgroundPractice"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:backgroundTint="#C8C8F4"
-        android:clickable="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/switch_camera"
-        app:tint="#4C4DDC" />
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/camera_text_background"
+        android:gravity="center|center_horizontal"
+        android:orientation="horizontal"
+        android:padding="24dp"
+        app:layout_constraintEnd_toStartOf="@+id/fabSwitchCamPractice"
+        app:layout_constraintStart_toEndOf="@+id/fabHomePractice"
+        app:layout_constraintTop_toTopOf="@+id/pvCameraPreviewPractice">
+
+        <TextView
+            android:id="@+id/tvCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="category"
+            android:textAlignment="center"
+            android:textColor="#E2E2E2"
+            android:textSize="16sp" />
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabRecordPractice"
@@ -71,9 +89,10 @@
         android:layout_marginBottom="16dp"
         android:backgroundTint="#C8C8F4"
         android:clickable="true"
-        app:layout_constraintBottom_toTopOf="@+id/hLytTextBackgroundPractice"
-        app:layout_constraintEnd_toEndOf="@+id/hLytTextBackgroundPractice"
-        app:layout_constraintStart_toStartOf="@+id/hLytTextBackgroundPractice"
+        app:fabCustomSize="69dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout"
         app:srcCompat="@drawable/record_button"
         app:tint="#4C4DDC" />
 
@@ -85,9 +104,26 @@
         android:layout_marginTop="32dp"
         android:backgroundTint="#C8C8F4"
         android:clickable="true"
+        app:fabCustomSize="69dp"
+        app:layout_constraintBottom_toBottomOf="@+id/hLytTextBackgroundPractice"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/home"
+        app:tint="#4C4DDC" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabSwitchCamPractice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:clickable="true"
+        app:backgroundTint="#C8C8F4"
+        app:fabCustomSize="69dp"
+        app:layout_constraintBottom_toBottomOf="@+id/hLytTextBackgroundPractice"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/switch_camera"
         app:tint="#4C4DDC" />
 
 
