@@ -10,14 +10,16 @@ import com.itismob.group8.aslfingerspellingapp.databinding.ItemLayoutCategoryBin
 class PracticeCategoryAdapter(private val practiceCameraActivityLauncher:
                               ActivityResultLauncher<Intent>,
     private val categoryActivity: PracticeCategoryActivity): RecyclerView.Adapter<PracticeCategoryViewHolder>() {
-    private val categoryList: ArrayList<String> = arrayListOf(
-        "Animals",
-        "Food",
-        "Objects",
-        "Brands",
-        "Names",
-        "Long Words",
-        "Short Words"
+    private var categoryList: ArrayList<Category> = arrayListOf(
+
+        Category("Animals", R.drawable.ctgry_animals),
+        Category("Food", R.drawable.ctgry_food),
+        Category("Objects", R.drawable.ctgry_objects),
+        Category("Brands", R.drawable.ctgry_brands),
+        Category("Names", R.drawable.ctgry_names),
+        Category("Short Words", R.drawable.ctgry_short_words),
+        Category("Long Words", R.drawable.ctgry_long_words),
+
     )
 
     override fun onCreateViewHolder(
@@ -43,7 +45,7 @@ class PracticeCategoryAdapter(private val practiceCameraActivityLauncher:
                 PracticeCameraActivity::class.java)
 
             categoryIntent.putExtra(PracticeCameraActivity.CATEGORY_KEY,
-                categoryList[position])
+                categoryList[position].name)
 
             this.practiceCameraActivityLauncher.launch(categoryIntent)
         }
