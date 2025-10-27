@@ -20,6 +20,8 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.core.Preview
 import androidx.camera.core.CameraSelector
 import android.util.Log
+import androidx.annotation.OptIn
+import androidx.camera.core.AspectRatio
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.ImageProxy
@@ -29,25 +31,30 @@ import androidx.camera.video.Quality
 import androidx.camera.video.QualitySelector
 import androidx.camera.video.VideoRecordEvent
 import androidx.camera.view.PreviewView
+import androidx.camera.view.TransformExperimental
+import androidx.camera.view.transform.OutputTransform
 import androidx.core.content.PermissionChecker
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 /* Code based from https://developer.android.com/codelabs/camerax-getting-started#0
-* and https://ngengesenior.medium.com/seamlessly-switching-camera-lenses-during-video-recording-with-camerax-on-android-fcb597ed8236
+* https://ngengesenior.medium.com/seamlessly-switching-camera-lenses-during-video-recording-with-camerax-on-android-fcb597ed8236
+* https://github.com/google-ai-edge/mediapipe-samples/tree/main/examples/gesture_recognizer/android
 * */
 class Camera(private val activity: AppCompatActivity, private val cameraPreview: PreviewView) {
     private var videoCapture: VideoCapture<Recorder>? = null
     private val cameraExecutor: ExecutorService = Executors.newSingleThreadExecutor()
     private var recording: Recording? = null
-    private var cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+    private var cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
     private lateinit var cameraProvider: ProcessCameraProvider
+    private lateinit var imageAnalyzer: ImageAnalysis
     private lateinit var preview: Preview
     private lateinit var recorder: Recorder
-
     private lateinit var captureVideoButton: FloatingActionButton
+    private lateinit var gestureRecognizerHelper: GestureRecognizerHelper
 
     companion object {
         const val TAG = "Sign-ify"
@@ -63,6 +70,12 @@ class Camera(private val activity: AppCompatActivity, private val cameraPreview:
             }.toTypedArray()
     }
 
+    fun setGestureRecognizer(helper: GestureRecognizerHelper) {
+        this.gestureRecognizerHelper = helper
+    }
+    fun configureRotation() {
+        imageAnalyzer.targetRotation = cameraPreview.display.rotation
+    }
     fun requestPermissions() {
         activityResultLauncher.launch(REQUIRED_PERMISSIONS)
     }
@@ -79,7 +92,8 @@ class Camera(private val activity: AppCompatActivity, private val cameraPreview:
             cameraProvider = cameraProviderFuture.get()
 
             // Preview
-            preview = Preview.Builder()
+            preview = Preview.Builder().setTargetAspectRatio(AspectRatio.RATIO_4_3)
+                .setTargetRotation(cameraPreview.display.rotation)
                 .build()
                 .also {
                     it.surfaceProvider = cameraPreview.surfaceProvider
@@ -91,20 +105,57 @@ class Camera(private val activity: AppCompatActivity, private val cameraPreview:
             videoCapture = VideoCapture.withOutput(recorder)
 
             // Select back camera as a default
-            cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+            cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
 
             try {
                 // Unbind use cases before rebinding
+
                 cameraProvider.unbindAll()
+
+                //imageAnalyzer to be bound to camera for recognizing gestures
+                imageAnalyzer =
+                    ImageAnalysis.Builder().setTargetAspectRatio(AspectRatio.RATIO_4_3) //AspectRatio.RATIO_4_3
+                        .setTargetRotation(cameraPreview.display.rotation)
+                        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                        .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
+                        .build()
+                        // The analyzer can then be assigned to the instance
+                        .also {
+                            it.setAnalyzer(cameraExecutor) { image ->
+                                recognizeHand(image)
+                            }
+                        }
 
                 // Bind use cases to camera
                 cameraProvider
-                    .bindToLifecycle(activity, cameraSelector, preview, videoCapture)
+                    .bindToLifecycle(activity, cameraSelector, preview, videoCapture, imageAnalyzer)
             } catch(exc: Exception) {
                 Log.e(TAG, "Use case binding failed", exc)
             }
 
         }, ContextCompat.getMainExecutor(activity))
+    }
+
+    private fun recognizeHand(imageProxy: ImageProxy) {
+        gestureRecognizerHelper?.recognizeLiveStream(
+            imageProxy,
+            cameraSelector) ?: imageProxy.close()
+    }
+
+    //to be called when flipping cameras
+    private fun resetImageAnalyzer() {
+        imageAnalyzer =
+            ImageAnalysis.Builder().setTargetAspectRatio(AspectRatio.RATIO_4_3)
+                .setTargetRotation(cameraPreview.display.rotation)
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
+                .build()
+                // The analyzer can then be assigned to the instance
+                .also {
+                    it.setAnalyzer(cameraExecutor) { image ->
+                        recognizeHand(image)
+                    }
+                }
     }
 
     private val activityResultLauncher =
@@ -207,21 +258,40 @@ class Camera(private val activity: AppCompatActivity, private val cameraPreview:
         } else {
             CameraSelector.DEFAULT_BACK_CAMERA
         }
-        // verify if there is a current recording
-        if (recording != null) {
-            recording?.pause()
-            cameraProvider.unbindAll()
 
-            cameraProvider.bindToLifecycle(activity, cameraSelector, preview, videoCapture)
-            recording?.resume()
+        val hasRecording = recording != null
 
-        } else {
+        if (hasRecording) recording?.pause()
+
+        //rebind all use cases
+        if (::cameraProvider.isInitialized) {
             cameraProvider.unbindAll()
-            cameraProvider.bindToLifecycle(activity, cameraSelector, preview, videoCapture)
+            resetImageAnalyzer() //reset based on the new selected camera
+            cameraProvider.bindToLifecycle(activity, cameraSelector, preview, videoCapture,imageAnalyzer)
+        }
+
+        if (hasRecording) recording?.resume()
+    }
+
+    fun stopCamera() {
+
+        if(::gestureRecognizerHelper.isInitialized) {
+            cameraExecutor.execute {
+                gestureRecognizerHelper.clearGestureRecognizer()
+            }
+        }
+
+        try {
+            if (::cameraProvider.isInitialized) {
+                cameraProvider.unbindAll()
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "stopCamera: unbindAll failed: ${e.message}")
         }
     }
 
     fun closeCamera() {
+        stopCamera()
         this.cameraExecutor.shutdown()
     }
 }

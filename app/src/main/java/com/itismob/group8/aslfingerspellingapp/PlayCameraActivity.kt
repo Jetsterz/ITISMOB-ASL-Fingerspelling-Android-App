@@ -14,8 +14,9 @@ class PlayCameraActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
+        super.onCreate(savedInstanceState)
+        /*
         viewBinding = ActivityPlayCameraBinding.inflate(layoutInflater)
         viewBinding.fabHomePlay.setOnClickListener {
             finish()
@@ -40,7 +41,7 @@ class PlayCameraActivity : AppCompatActivity() {
         }
 
         viewBinding.tvCategoryPlay.text = this.intent.getStringExtra(CATEGORY_KEY)
-        setContentView(viewBinding.root)
+        setContentView(viewBinding.root) */
     }
 
 
