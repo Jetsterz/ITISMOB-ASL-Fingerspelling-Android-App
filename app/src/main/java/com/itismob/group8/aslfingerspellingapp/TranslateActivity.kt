@@ -71,7 +71,6 @@ class TranslateActivity : AppCompatActivity(), GestureRecognizerHelper.GestureRe
 
         viewBinding.fabHomeTranslate.setOnClickListener {
             finish()
-            camera.closeCamera()
         }
 
         viewBinding.fabRecordTranslate.setOnClickListener {
