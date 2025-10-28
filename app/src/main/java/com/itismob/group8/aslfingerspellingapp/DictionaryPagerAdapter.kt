@@ -9,8 +9,8 @@ class DictionaryPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment
 
     override fun createFragment(pos: Int): Fragment {
         return when (pos) {
-            0 -> ViewuserwordsFragment()
-            1 -> ViewdictionarywordsFragment()
+            0 -> ViewdictionarywordsFragment()
+            1 -> ViewuserwordsFragment()
             else -> throw IllegalStateException("Position $pos Out of Bounds")
         }
     }
