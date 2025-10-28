@@ -19,6 +19,7 @@
             android:textColor="#4C4DDC"
             android:textSize="28sp"
             android:textStyle="bold"
+            android:fontFamily="@font/inter_family"
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -55,6 +56,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="#101010"
                     android:textStyle="bold"
+                    android:fontFamily="@font/inter_family"
                     android:textSize="18sp"/>
 
                 <TextView
@@ -62,6 +64,7 @@
                     android:text="Category: Random"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_family"
                     android:textColor="#101010" />
 
                 <TextView
@@ -69,6 +72,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Rounds: 9"
+                    android:fontFamily="@font/inter_family"
                     android:textColor="#101010" />
             </LinearLayout>
 
@@ -76,6 +80,7 @@
                 android:id="@+id/btnPlayMain"
                 android:text="PLAY"
                 android:textStyle="bold"
+                android:fontFamily="@font/inter_family"
                 android:textColor="#EDEDFC"
                 android:backgroundTint="#4C4DDC"
                 android:layout_gravity="center_vertical"
@@ -88,6 +93,7 @@
             android:id="@+id/txtPrevHeader"
             android:text="\nPrevious Games:"
             android:textStyle="italic"
+            android:fontFamily="@font/inter_family"
             android:textSize="16sp"
             android:textColor="#101010"
             android:layout_width="match_parent"
@@ -112,6 +118,7 @@
                     android:text="Category: Animals"
                     android:textColor="#101010"
                     android:textStyle="bold"
+                    android:fontFamily="@font/inter_family"
                     android:textSize="16sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -119,12 +126,14 @@
                 <TextView
                     android:text="Rounds: 5"
                     android:textColor="#101010"
+                    android:fontFamily="@font/inter_family"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
                 <TextView
                     android:text="Date: Oct 20, 2025"
                     android:textColor="#808080"
+                    android:fontFamily="@font/inter_family"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
@@ -141,6 +150,7 @@
                     android:text="Category: Fruits"
                     android:textColor="#101010"
                     android:textStyle="bold"
+                    android:fontFamily="@font/inter_family"
                     android:textSize="16sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -148,12 +158,14 @@
                 <TextView
                     android:text="Rounds: 7"
                     android:textColor="#101010"
+                    android:fontFamily="@font/inter_family"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
                 <TextView
                     android:text="Date: Oct 21, 2025"
                     android:textColor="#808080"
+                    android:fontFamily="@font/inter_family"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
@@ -170,6 +182,7 @@
                     android:text="Category: Colors"
                     android:textColor="#101010"
                     android:textStyle="bold"
+                    android:fontFamily="@font/inter_family"
                     android:textSize="16sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -177,12 +190,14 @@
                 <TextView
                     android:text="Rounds: 4"
                     android:textColor="#101010"
+                    android:fontFamily="@font/inter_family"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
                 <TextView
                     android:text="Date: Oct 22, 2025"
                     android:textColor="#808080"
+                    android:fontFamily="@font/inter_family"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
