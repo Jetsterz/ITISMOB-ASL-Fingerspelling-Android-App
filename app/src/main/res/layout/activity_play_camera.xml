@@ -13,6 +13,41 @@
         android:layout_height="match_parent" />
 
     <LinearLayout
+        android:id="@+id/lytRoundScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/rounded_card"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fabHomePlay">
+
+        <TextView
+            android:id="@+id/tvRound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Round: 1/10"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <Space
+            android:layout_width="16dp"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/tvScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Score: 0"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/hLytTextBackgroundPlay"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -64,18 +99,6 @@
         app:srcCompat="@drawable/switch_camera"
         app:tint="#4C4DDC" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabRecordPlay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="#C8C8F4"
-        android:clickable="true"
-        app:layout_constraintBottom_toTopOf="@+id/hLytTextBackgroundPlay"
-        app:layout_constraintEnd_toEndOf="@+id/hLytTextBackgroundPlay"
-        app:layout_constraintStart_toStartOf="@+id/hLytTextBackgroundPlay"
-        app:srcCompat="@drawable/record_button"
-        app:tint="#4C4DDC" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabHomePlay"
@@ -89,6 +112,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/home"
         app:tint="#4C4DDC" />
+
+    <Button
+        android:id="@+id/btnSkipPlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/rounded_card"
+        android:backgroundTintMode="add"
+        android:text="SKIP"
+        android:textStyle="bold"
+        android:tint="#C8C8F4"
+        app:layout_constraintBottom_toBottomOf="@+id/hLytTextBackgroundPlay"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
