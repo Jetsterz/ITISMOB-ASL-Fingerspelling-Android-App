@@ -12,10 +12,16 @@ class DictionaryWordViewHolder (private val viewBinding: ItemLayoutDictionarywor
     fun bind(w: Word) {
         viewBinding.wordName.text = w.wordName
         viewBinding.dWordDef.text = w.wordDef
-        viewBinding.btnShowhide.tag = "showing"
+        viewBinding.btnShowhide.tag = w.showInPlay
+        if (viewBinding.btnShowhide.tag == "showing"){
+            viewBinding.btnShowhide.setImageResource(R.drawable.hide)
+        } else if (viewBinding.btnShowhide.tag == "hiding"){
+            viewBinding.btnShowhide.setImageResource(R.drawable.show)
+        }
 
         viewBinding.btnPractice.setOnClickListener {
             val vLink = w.videoLink
+            TODO("No existing Practice Word Activity yet.")
         }
         viewBinding.btnShowhide.setOnClickListener {
             if (viewBinding.btnShowhide.tag == "showing"){
