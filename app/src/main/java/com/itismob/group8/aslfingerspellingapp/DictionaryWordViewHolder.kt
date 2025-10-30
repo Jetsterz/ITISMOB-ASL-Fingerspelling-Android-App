@@ -18,10 +18,24 @@ class DictionaryWordViewHolder (private val viewBinding: ItemLayoutDictionarywor
         } else if (viewBinding.btnShowhide.tag == "hiding"){
             viewBinding.btnShowhide.setImageResource(R.drawable.show)
         }
+        if (w.videoLink != null) {
+            viewBinding.btnView.setImageResource(R.drawable.watchoreditvid)
+        } else {
+            viewBinding.btnView.setImageResource(R.drawable.createvid)
+        }
+
+        viewBinding.btnView.setOnClickListener {
+            if (w.videoLink != null) {
+                val vLink = w.videoLink
+                // TODO("No existing View Video Activity yet for existing videos")
+            } else {
+                // TODO("No existing View Video Activity yet for nonexistent videos.")
+            }
+        }
 
         viewBinding.btnPractice.setOnClickListener {
             val vLink = w.videoLink
-            TODO("No existing Practice Word Activity yet.")
+            // TODO("No existing Practice Word Activity yet.")
         }
         viewBinding.btnShowhide.setOnClickListener {
             if (viewBinding.btnShowhide.tag == "showing"){
