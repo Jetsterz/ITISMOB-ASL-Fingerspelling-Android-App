@@ -15,24 +15,27 @@
         <!-- Header -->
         <TextView
             android:id="@+id/tvHeader"
-            android:text="🎮 Game Saves"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_family"
+            android:gravity="center"
+            android:text="Game 🎮 Saves"
             android:textColor="#4C4DDC"
             android:textSize="28sp"
             android:textStyle="bold"
-            android:fontFamily="@font/inter_family"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:background="@drawable/black_outline"
+            android:elevation="3dp"/>
 
         <!-- Main Game Card -->
         <LinearLayout
             android:id="@+id/mainGameCard"
             android:orientation="horizontal"
-            android:background="@drawable/rounded_card"
             android:padding="16dp"
             android:layout_marginTop="16dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@drawable/black_outline"
+            android:elevation="3dp">
 
             <ImageView
                 android:id="@+id/imgMainGame"
@@ -57,7 +60,7 @@
                     android:textColor="#101010"
                     android:textStyle="bold"
                     android:fontFamily="@font/inter_family"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/txtMainCategory"
@@ -78,14 +81,14 @@
 
             <Button
                 android:id="@+id/btnPlayMain"
-                android:text="PLAY"
-                android:textStyle="bold"
-                android:fontFamily="@font/inter_family"
-                android:textColor="#EDEDFC"
-                android:backgroundTint="#4C4DDC"
-                android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:backgroundTint="#6565BD"
+                android:fontFamily="@font/inter_family"
+                android:text="PLAY"
+                android:textColor="#EDEDFC"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <!-- Previous Games Header -->
@@ -98,109 +101,14 @@
             android:textColor="#101010"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp" />
 
-        <!-- Hardcoded Saved Games -->
-        <LinearLayout
-            android:orientation="vertical"
+        <!-- RecyclerView for Saved Games -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerPreviousGames"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:background="@drawable/rounded_card"
-                android:padding="12dp"
-                android:layout_marginTop="8dp"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:text="Category: Animals"
-                    android:textColor="#101010"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/inter_family"
-                    android:textSize="16sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:text="Rounds: 5"
-                    android:textColor="#101010"
-                    android:fontFamily="@font/inter_family"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:text="Date: Oct 20, 2025"
-                    android:textColor="#808080"
-                    android:fontFamily="@font/inter_family"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:background="@drawable/rounded_card"
-                android:padding="12dp"
-                android:layout_marginTop="8dp"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:text="Category: Fruits"
-                    android:textColor="#101010"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/inter_family"
-                    android:textSize="16sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:text="Rounds: 7"
-                    android:textColor="#101010"
-                    android:fontFamily="@font/inter_family"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:text="Date: Oct 21, 2025"
-                    android:textColor="#808080"
-                    android:fontFamily="@font/inter_family"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:background="@drawable/rounded_card"
-                android:padding="12dp"
-                android:layout_marginTop="8dp"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:text="Category: Colors"
-                    android:textColor="#101010"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/inter_family"
-                    android:textSize="16sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:text="Rounds: 4"
-                    android:textColor="#101010"
-                    android:fontFamily="@font/inter_family"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:text="Date: Oct 22, 2025"
-                    android:textColor="#808080"
-                    android:fontFamily="@font/inter_family"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:nestedScrollingEnabled="false" />
     </LinearLayout>
 </ScrollView>

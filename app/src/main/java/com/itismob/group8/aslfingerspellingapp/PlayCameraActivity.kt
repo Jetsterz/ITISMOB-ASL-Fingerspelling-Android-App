@@ -21,8 +21,8 @@ class PlayCameraActivity : AppCompatActivity() {
             // TODO: Implement skip logic (e.g., move to next word or round)
         }
 
-        viewBinding.tvRound.text = "Round: 1/9"
-        viewBinding.tvScore.text = "Score: 0"
+        viewBinding.tvRound.text = "1/9"
+        viewBinding.tvScore.text = "0"
         viewBinding.tvPlayWord.text = "No Thanks"
         viewBinding.fabHomePlay.setOnClickListener {
             finish()
