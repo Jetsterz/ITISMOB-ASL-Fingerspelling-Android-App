@@ -3,6 +3,7 @@ package com.itismob.group8.aslfingerspellingapp
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,13 +27,15 @@ class TranslateActivity : AppCompatActivity(), GestureRecognizerHelper.GestureRe
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         viewBinding = ActivityTranslateBinding.inflate(layoutInflater)
-
         //recycler view for displaying gesture recognizer results
         this.recyclerView = viewBinding.rvTranslateResult
         this.recyclerView.adapter = gestureRecognizerResultAdapter
         this.recyclerView.layoutManager = LinearLayoutManager(this)
+
+        Common.hideSystemBars(window)
 
         backgroundExecutor = Executors.newSingleThreadExecutor()
 
@@ -45,11 +48,6 @@ class TranslateActivity : AppCompatActivity(), GestureRecognizerHelper.GestureRe
         //initialize gesture recognizer
         backgroundExecutor.execute {
             gestureRecognizerHelper = GestureRecognizerHelper(
-                minHandDetectionConfidence = GestureRecognizerHelper.DEFAULT_HAND_DETECTION_CONFIDENCE,
-                minHandTrackingConfidence = GestureRecognizerHelper.DEFAULT_HAND_TRACKING_CONFIDENCE,
-                minHandPresenceConfidence = GestureRecognizerHelper.DEFAULT_HAND_PRESENCE_CONFIDENCE,
-                currentDelegate = GestureRecognizerHelper.DELEGATE_CPU,
-                runningMode = RunningMode.LIVE_STREAM,
                 context = this,
                 gestureRecognizerListener = this
             )

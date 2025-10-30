@@ -3,8 +3,13 @@ package com.itismob.group8.aslfingerspellingapp
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import androidx.activity.enableEdgeToEdge
 
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.mediapipe.tasks.vision.core.RunningMode
@@ -21,7 +26,6 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
 
     //for displaying gesture recognizer results
     private lateinit var recyclerView: RecyclerView
-
     private val defaultNumResults = 1
 
     //for displaying gesture recognizer results
@@ -37,6 +41,7 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         viewBinding = ActivityPracticeCameraBinding.inflate(layoutInflater)
 
@@ -44,6 +49,8 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
         this.recyclerView = viewBinding.rvPracticeResults
         this.recyclerView.adapter = gestureRecognizerResultAdapter
         this.recyclerView.layoutManager = LinearLayoutManager(this)
+
+        Common.hideSystemBars(window)
 
         backgroundExecutor = Executors.newSingleThreadExecutor()
 
@@ -56,11 +63,6 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
         //initialize the gesture recognizer
         backgroundExecutor.execute {
             gestureRecognizerHelper = GestureRecognizerHelper(
-                minHandDetectionConfidence = GestureRecognizerHelper.DEFAULT_HAND_DETECTION_CONFIDENCE,
-                minHandTrackingConfidence = GestureRecognizerHelper.DEFAULT_HAND_TRACKING_CONFIDENCE,
-                minHandPresenceConfidence = GestureRecognizerHelper.DEFAULT_HAND_PRESENCE_CONFIDENCE,
-                currentDelegate = GestureRecognizerHelper.DELEGATE_CPU,
-                runningMode = RunningMode.LIVE_STREAM,
                 context = this,
                 gestureRecognizerListener = this
             )
