@@ -30,6 +30,9 @@
             android:name=".DisplayWordActivity"
             android:exported="false" />
         <activity
+            android:name=".CreateWordActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
