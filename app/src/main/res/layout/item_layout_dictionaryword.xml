@@ -54,7 +54,7 @@
                 android:layout_weight="1"
                 android:background="#00FFFFFF"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/createvid" />
+                app:srcCompat="@drawable/watchoreditvid" />
 
             <ImageButton
                 android:id="@+id/btn_practice"

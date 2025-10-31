@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.itismob.group8.aslfingerspellingapp.databinding.FragmentViewdictionarywordsBinding
 
@@ -32,8 +31,17 @@ class ViewdictionarywordsFragment : Fragment(R.layout.fragment_viewdictionarywor
         )
         /* END OF PLACEHOLDER */
         val dat : ArrayList<Word> = placeDat //<- calls the placeholder
-        val a : DictionaryWordsAdapter = DictionaryWordsAdapter(dat)
+        lateinit var a : DictionaryWordsAdapter
+        val showHideOnClickHandler = { pos: Int ->
+            if (pos >= 0 && pos < dat.size) {
+                val thisWord = dat[pos]
+                val stateChange = if (thisWord.showInPlay == "showing") "hiding" else "showing"
+                thisWord.showInPlay = stateChange
+                a.notifyItemChanged(pos)
 
+            }
+        }
+        a = DictionaryWordsAdapter(dat, showHideOnClickHandler)
         binding.dWordList.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = a

@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.itismob.group8.aslfingerspellingapp.databinding.ItemLayoutDictionarywordBinding
 
-class DictionaryWordsAdapter(d: ArrayList<Word>) : RecyclerView.Adapter<DictionaryWordViewHolder>() {
+class DictionaryWordsAdapter(d: ArrayList<Word>, private val onShowHideClick: (position: Int) -> Unit) : RecyclerView.Adapter<DictionaryWordViewHolder>() {
     private val dat: ArrayList<Word> = d
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DictionaryWordViewHolder {
@@ -18,7 +18,10 @@ class DictionaryWordsAdapter(d: ArrayList<Word>) : RecyclerView.Adapter<Dictiona
 
     override fun onBindViewHolder(holder: DictionaryWordViewHolder, position: Int) {
         val w = dat[position]
-        holder.bind(w)
+        val viewholdcb = {
+            onShowHideClick(position)
+        }
+        holder.bind(w, viewholdcb)
     }
 
     override fun getItemCount(): Int {

@@ -1,7 +1,9 @@
 package com.itismob.group8.aslfingerspellingapp
 
+import android.content.res.ColorStateList
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.media3.common.Player
 import androidx.recyclerview.widget.RecyclerView
 import com.itismob.group8.aslfingerspellingapp.databinding.ItemLayoutDictionarywordBinding
@@ -9,7 +11,7 @@ import com.itismob.group8.aslfingerspellingapp.databinding.ItemLayoutDictionaryw
 //This and DictionaryWord holders are similar, but only one of them has the extra Edit and Delete buttons.
 class DictionaryWordViewHolder (private val viewBinding: ItemLayoutDictionarywordBinding): RecyclerView.ViewHolder(viewBinding.root) {
 
-    fun bind(w: Word) {
+    fun bind(w: Word, onShowHideClick: () -> Unit) {
         viewBinding.wordName.text = w.wordName
         viewBinding.dWordDef.text = w.wordDef
         viewBinding.btnShowhide.tag = w.showInPlay
@@ -18,22 +20,21 @@ class DictionaryWordViewHolder (private val viewBinding: ItemLayoutDictionarywor
         } else if (viewBinding.btnShowhide.tag == "hiding"){
             viewBinding.btnShowhide.setImageResource(R.drawable.show)
         }
-        if (w.videoLink != null) {
-            viewBinding.btnView.setImageResource(R.drawable.watchoreditvid)
+        if (w.videoLink == null) {
+            viewBinding.btnView.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(itemView.context, R.color.UnavailableGrey)))
+            viewBinding.btnView.isEnabled = false
         } else {
-            viewBinding.btnView.setImageResource(R.drawable.createvid)
+            viewBinding.btnView.isEnabled = true
         }
 
         viewBinding.btnView.setOnClickListener {
-            if (w.videoLink != null) {
-                val vLink = w.videoLink
-                // TODO("No existing View Video Activity yet for existing videos")
-            } else {
-                // TODO("No existing View Video Activity yet for nonexistent videos.")
-            }
+            val c = viewBinding.root.context
+            val vLink = w.videoLink
+            // TODO("No existing View Video Activity yet for existing videos")
         }
 
         viewBinding.btnPractice.setOnClickListener {
+            val c = viewBinding.root.context
             val vLink = w.videoLink
             // TODO("No existing Practice Word Activity yet.")
         }
@@ -45,6 +46,7 @@ class DictionaryWordViewHolder (private val viewBinding: ItemLayoutDictionarywor
                 viewBinding.btnShowhide.setImageResource(R.drawable.hide)
                 viewBinding.btnShowhide.tag = "showing"
             }
+            onShowHideClick()
         }
     }
 }
