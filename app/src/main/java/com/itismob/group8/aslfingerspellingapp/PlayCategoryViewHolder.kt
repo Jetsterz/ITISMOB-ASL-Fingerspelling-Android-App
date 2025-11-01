@@ -6,8 +6,8 @@ import com.itismob.group8.aslfingerspellingapp.databinding.ItemLayoutCategoryBin
 
 class PlayCategoryViewHolder (private val viewBinding: ItemLayoutCategoryBinding): RecyclerView.ViewHolder(viewBinding.root) {
 
-    public var btnCategoryPlay: Button = viewBinding.btnCategoryName
+    public var btnCategoryPlay = viewBinding.llBtnCategory
     fun bindData(category: String) {
-        viewBinding.btnCategoryName.text = category
+        viewBinding.tvCategoryName.text = category
     }
 }

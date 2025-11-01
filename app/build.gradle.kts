@@ -62,4 +62,5 @@ dependencies {
     implementation("androidx.media3:media3-exoplayer:$mediaVersion")
     implementation("androidx.media3:media3-ui:$mediaVersion")
     implementation("androidx.media3:media3-session:$mediaVersion")
+    implementation("com.google.mediapipe:tasks-vision:0.10.26")
 }

@@ -14,6 +14,7 @@ class PlayCameraActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
 
         viewBinding = ActivityPlayCameraBinding.inflate(layoutInflater)

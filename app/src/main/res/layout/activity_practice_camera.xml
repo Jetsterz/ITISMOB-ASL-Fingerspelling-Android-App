@@ -42,17 +42,11 @@
             android:textColor="#E6E6E6"
             android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/tvPracticeWord"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:letterSpacing="0.075"
-            android:text="Hello World"
-            android:textAlignment="center"
-            android:textColor="#E6E6E6"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPracticeResults"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
     </LinearLayout>
 
