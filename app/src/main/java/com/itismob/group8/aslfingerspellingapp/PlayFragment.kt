@@ -21,13 +21,13 @@ class PlayFragment : Fragment() {
         _viewBinding = FragmentPlayBinding.inflate(inflater, container, false)
 
         viewBinding.btnCreateGame.setOnClickListener {
-            val practiceIntent = Intent(requireActivity(), PracticeCategoryActivity::class.java)
-            startActivity(practiceIntent)
+            val gameIntent = Intent(requireActivity(), PlayCategoryActivity::class.java)
+            startActivity(gameIntent)
         }
 
         viewBinding.btnViewGames.setOnClickListener {
-            val translateIntent = Intent(requireActivity(), TranslateActivity::class.java)
-            startActivity(translateIntent)
+            val saveIntent = Intent(requireActivity(), SaveActivity::class.java)
+            startActivity(saveIntent)
         }
 
         val view = viewBinding.root
