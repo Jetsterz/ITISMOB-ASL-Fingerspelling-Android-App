@@ -1,7 +1,11 @@
 package com.itismob.group8.aslfingerspellingapp
 
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -27,6 +31,7 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
     //for displaying gesture recognizer results
     private lateinit var recyclerView: RecyclerView
     private val defaultNumResults = 1
+    private var practiceWord = "Hello World" //
 
     //for displaying gesture recognizer results
     private val gestureRecognizerResultAdapter: PracticeGestureRecognizerResultsAdapter by lazy {
@@ -97,6 +102,15 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
         }
 
         viewBinding.tvCategory.text = this.intent.getStringExtra(CATEGORY_KEY)
+
+        //span text for colored letters
+        val spanString = SpannableString(practiceWord)
+
+        val greenText = ForegroundColorSpan(Color.GREEN)
+
+        spanString.setSpan(greenText, 0, 4, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        viewBinding.tvPracticeWord.text = spanString
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

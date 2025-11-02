@@ -63,4 +63,8 @@ class TranslateGestureRecognizerResultsAdapter: RecyclerView.Adapter<TranslateGe
             }
         }
     }
+
+    fun getTopCategoryName(): String? {
+        return adapterCategories.firstOrNull()?.categoryName()
+    }
 }
