@@ -44,6 +44,7 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
         enableEdgeToEdge()
 
         viewBinding = ActivityPracticeCameraBinding.inflate(layoutInflater)
+        setContentView(viewBinding.root)
 
         //recycler view for displaying gesture recognizer results
         this.recyclerView = viewBinding.rvPracticeResults
@@ -70,17 +71,17 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
             //set the recognizer to the camera
             runOnUiThread {
                 camera.setGestureRecognizer(gestureRecognizerHelper)
+
+                // check/grant permissions for the camera
+                if (camera.allPermissionsGranted()) {
+                    camera.startCamera()
+                } else {
+                    camera.requestPermissions()
+                }
+
+                this.camera.setCaptureVideoButton(viewBinding.fabRecordPractice)
             }
         }
-
-        // check/grant permissions for the camera
-        if (camera.allPermissionsGranted()) {
-            camera.startCamera()
-        } else {
-            camera.requestPermissions()
-        }
-
-        this.camera.setCaptureVideoButton(viewBinding.fabRecordPractice)
 
         //set listeners for buttons
         viewBinding.fabHomePractice.setOnClickListener {
@@ -96,7 +97,6 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
         }
 
         viewBinding.tvCategory.text = this.intent.getStringExtra(CATEGORY_KEY)
-        setContentView(viewBinding.root)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

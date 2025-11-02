@@ -4,10 +4,8 @@ import android.Manifest
 import android.content.ContentValues
 import android.content.pm.PackageManager
 import android.os.Build
-import android.os.Bundle
 import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.ImageCapture
 import androidx.camera.video.Recorder
 import androidx.camera.video.Recording
 import androidx.camera.video.VideoCapture
@@ -20,6 +18,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.core.Preview
 import androidx.camera.core.CameraSelector
 import android.util.Log
+import android.view.Surface
 import androidx.annotation.OptIn
 import androidx.camera.core.AspectRatio
 import androidx.camera.core.ImageAnalysis
@@ -54,7 +53,7 @@ class Camera(private val activity: AppCompatActivity, private val cameraPreview:
     private lateinit var preview: Preview
     private lateinit var recorder: Recorder
     private lateinit var captureVideoButton: FloatingActionButton
-    private lateinit var gestureRecognizerHelper: GestureRecognizerHelper
+    private var gestureRecognizerHelper: GestureRecognizerHelper ? = null
 
     companion object {
         const val TAG = "Sign-ify"
@@ -91,9 +90,11 @@ class Camera(private val activity: AppCompatActivity, private val cameraPreview:
             // Used to bind the lifecycle of cameras to the lifecycle owner
             cameraProvider = cameraProviderFuture.get()
 
+            val rotation = cameraPreview.display?.rotation ?: Surface.ROTATION_0
+
             // Preview
             preview = Preview.Builder().setTargetAspectRatio(AspectRatio.RATIO_4_3)
-                .setTargetRotation(cameraPreview.display.rotation)
+                .setTargetRotation(rotation)
                 .build()
                 .also {
                     it.surfaceProvider = cameraPreview.surfaceProvider
@@ -115,7 +116,7 @@ class Camera(private val activity: AppCompatActivity, private val cameraPreview:
                 //imageAnalyzer to be bound to camera for recognizing gestures
                 imageAnalyzer =
                     ImageAnalysis.Builder().setTargetAspectRatio(AspectRatio.RATIO_4_3) //AspectRatio.RATIO_4_3
-                        .setTargetRotation(cameraPreview.display.rotation)
+                        .setTargetRotation(rotation)
                         .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                         .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
                         .build()
@@ -137,9 +138,14 @@ class Camera(private val activity: AppCompatActivity, private val cameraPreview:
     }
 
     private fun recognizeHand(imageProxy: ImageProxy) {
-        gestureRecognizerHelper?.recognizeLiveStream(
-            imageProxy,
-            cameraSelector) ?: imageProxy.close()
+        val helper = gestureRecognizerHelper
+        if (helper != null) {
+            gestureRecognizerHelper?.recognizeLiveStream(
+                imageProxy,
+                cameraSelector)
+        } else {
+            imageProxy.close()
+        }
     }
 
     //to be called when flipping cameras
@@ -275,9 +281,9 @@ class Camera(private val activity: AppCompatActivity, private val cameraPreview:
 
     fun stopCamera() {
 
-        if(::gestureRecognizerHelper.isInitialized) {
+        this.gestureRecognizerHelper?.let { helper ->
             cameraExecutor.execute {
-                gestureRecognizerHelper.clearGestureRecognizer()
+                helper.clearGestureRecognizer()
             }
         }
 
@@ -291,7 +297,6 @@ class Camera(private val activity: AppCompatActivity, private val cameraPreview:
     }
 
     fun closeCamera() {
-        stopCamera()
         this.cameraExecutor.shutdown()
     }
 }
