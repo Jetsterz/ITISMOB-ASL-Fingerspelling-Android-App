@@ -3,6 +3,7 @@ package com.itismob.group8.aslfingerspellingapp
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +20,7 @@ class TranslateActivity : AppCompatActivity(), GestureRecognizerHelper.GestureRe
     private lateinit var gestureRecognizerHelper: GestureRecognizerHelper
     private lateinit var recyclerView: RecyclerView
     private val defaultNumResults = 1
+    private var currentWord = ""
     private val gestureRecognizerResultAdapter: TranslateGestureRecognizerResultsAdapter by lazy {
         TranslateGestureRecognizerResultsAdapter().apply {
             updateAdapterSize(defaultNumResults)
@@ -30,6 +32,10 @@ class TranslateActivity : AppCompatActivity(), GestureRecognizerHelper.GestureRe
         enableEdgeToEdge()
 
         viewBinding = ActivityTranslateBinding.inflate(layoutInflater)
+        setContentView(viewBinding.root)
+
+        viewBinding.tvTranslationOutput.text = currentWord
+
         //recycler view for displaying gesture recognizer results
         this.recyclerView = viewBinding.rvTranslateResult
         this.recyclerView.adapter = gestureRecognizerResultAdapter
@@ -79,7 +85,21 @@ class TranslateActivity : AppCompatActivity(), GestureRecognizerHelper.GestureRe
             camera.flipCamera()
         }
 
-        setContentView(viewBinding.root)
+        viewBinding.fabBackspaceTranslate.setOnClickListener {
+            if (currentWord.isNotEmpty()) {
+                currentWord = currentWord.dropLast(1)
+                viewBinding.tvTranslationOutput.text = currentWord
+            }
+        }
+
+        viewBinding.fabAddLetter.setOnClickListener {
+            //get the current letter
+            val letter = gestureRecognizerResultAdapter.getTopCategoryName()
+            if (!letter.isNullOrBlank()) {
+                currentWord += letter
+                viewBinding.tvTranslationOutput.text = currentWord
+            }
+        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -124,15 +144,6 @@ class TranslateActivity : AppCompatActivity(), GestureRecognizerHelper.GestureRe
                 } else {
                     gestureRecognizerResultAdapter.updateResults(emptyList())
                 }
-
-                //displays the mapping of the hand; TODO:remove before submission
-                viewBinding.translateOverlay.setResults(
-                    resultBundle.results.first(),
-                    resultBundle.inputImageHeight,
-                    resultBundle.inputImageWidth,
-                    RunningMode.LIVE_STREAM
-                )
-                viewBinding.translateOverlay.invalidate()
             }
         }
     }

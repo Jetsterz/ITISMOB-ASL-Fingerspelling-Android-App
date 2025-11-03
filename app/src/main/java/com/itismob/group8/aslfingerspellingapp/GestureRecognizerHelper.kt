@@ -16,7 +16,7 @@ import com.google.mediapipe.tasks.vision.core.RunningMode
 import com.google.mediapipe.tasks.vision.gesturerecognizer.GestureRecognizer
 import com.google.mediapipe.tasks.vision.gesturerecognizer.GestureRecognizerResult
 
-// code heavily based on
+// code based on
 // https://github.com/google-ai-edge/mediapipe-samples/tree/main/examples/gesture_recognizer/android
 class GestureRecognizerHelper (
     var minHandDetectionConfidence: Float = DEFAULT_HAND_DETECTION_CONFIDENCE,

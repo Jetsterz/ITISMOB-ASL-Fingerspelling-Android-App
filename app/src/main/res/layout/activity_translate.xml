@@ -13,15 +13,6 @@
 
     </androidx.camera.view.PreviewView>
 
-    <com.itismob.group8.aslfingerspellingapp.OverlayView
-        android:id="@+id/translateOverlay"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <LinearLayout
         android:id="@+id/vllResultsWrapper"
         android:layout_width="wrap_content"
@@ -74,9 +65,8 @@
             android:layout_height="wrap_content"
             android:hint="Translation"
             android:letterSpacing="0.075"
-            android:text="Output"
             android:textColor="#E6E6E6"
-            android:textColorHint="#E6E6E6"
+            android:textColorHint="#C0C0C0"
             android:textSize="20sp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -138,5 +128,20 @@
         app:layout_constraintTop_toTopOf="@+id/vLytTextBackgroundTranslate"
         app:srcCompat="@drawable/backspace"
         app:tint="#4C4DDC" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddLetter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        app:fabCustomSize="69dp"
+        app:layout_constraintBottom_toTopOf="@+id/vLytTextBackgroundTranslate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/add_text"
+        app:tint="#4C4DDC"
+        android:backgroundTint="#C8C8F4"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
