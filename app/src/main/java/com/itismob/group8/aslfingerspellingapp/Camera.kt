@@ -280,13 +280,6 @@ class Camera(private val activity: AppCompatActivity, private val cameraPreview:
     }
 
     fun stopCamera() {
-
-        this.gestureRecognizerHelper?.let { helper ->
-            cameraExecutor.execute {
-                helper.clearGestureRecognizer()
-            }
-        }
-
         try {
             if (::cameraProvider.isInitialized) {
                 cameraProvider.unbindAll()
@@ -297,6 +290,11 @@ class Camera(private val activity: AppCompatActivity, private val cameraPreview:
     }
 
     fun closeCamera() {
+        this.gestureRecognizerHelper?.let { helper ->
+            cameraExecutor.execute {
+                helper.clearGestureRecognizer()
+            }
+        }
         this.cameraExecutor.shutdown()
     }
 }
