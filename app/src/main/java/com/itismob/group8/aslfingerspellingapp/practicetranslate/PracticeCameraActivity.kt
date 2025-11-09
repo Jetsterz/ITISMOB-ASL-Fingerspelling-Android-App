@@ -1,4 +1,4 @@
-package com.itismob.group8.aslfingerspellingapp
+package com.itismob.group8.aslfingerspellingapp.practicetranslate
 
 import android.content.res.Configuration
 import android.graphics.Color
@@ -15,23 +15,41 @@ import com.itismob.group8.aslfingerspellingapp.databinding.ActivityPracticeCamer
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import com.google.mediapipe.tasks.components.containers.Category
+import com.itismob.group8.aslfingerspellingapp.libraries.Camera
+import com.itismob.group8.aslfingerspellingapp.common.Common
+import com.itismob.group8.aslfingerspellingapp.libraries.GestureRecognizerHelper
+import com.itismob.group8.aslfingerspellingapp.dataclasses.NamesData
+import com.itismob.group8.aslfingerspellingapp.dataclasses.WordsData
+import com.itismob.group8.aslfingerspellingapp.retrofit.DatamuseRetrofitHelper
+import com.itismob.group8.aslfingerspellingapp.retrofit.NameRetrofitHelper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.min
 import kotlin.time.Duration.Companion.seconds
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import kotlin.random.Random
 
 class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureRecognizerListener {
     private lateinit var viewBinding: ActivityPracticeCameraBinding
     private lateinit var camera: Camera
     private lateinit var backgroundExecutor: ExecutorService
     private lateinit var gestureRecognizerHelper: GestureRecognizerHelper
-    private var practiceWord = "Hello World"
+    private var practiceWord = "Fetching words..."
     private var currLetter = 0
-    private lateinit var checkWord: String
+    private var checkWord = "JJ"
     private var nameCategories: MutableList<Category?> = mutableListOf()
+    private var wordsList: List<WordsData> = emptyList()
+    private lateinit var endpoint: String
+    private var api: Int = 0
 
     companion object {
         const val CATEGORY_KEY = "CATEGORY_KEY"
+        const val CATEGORY_ENDPOINT = "CATEGORY_ENDPOINT"
+        const val CATEGORY_API = "CATEGORY_API" //specify what api to use
+        const val DATAMUSE_API = 1
+        const val LIST_OF_NAMES_API = 2
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,9 +59,11 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
         viewBinding = ActivityPracticeCameraBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
-        //recycler view for displaying gesture recognizer results
+        endpoint = this.intent.getStringExtra(CATEGORY_ENDPOINT)!!
+        api = this.intent.getIntExtra(CATEGORY_API,
+            DATAMUSE_API)
 
-        Common.hideSystemBars(window)
+        Common.Companion.hideSystemBars(window)
 
         backgroundExecutor = Executors.newSingleThreadExecutor()
 
@@ -75,6 +95,23 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
             }
         }
 
+        //setting the first practice word
+        when (api) {
+            //fetch the list of words
+            DATAMUSE_API -> {
+                getDatamuseWords()
+            }
+
+            LIST_OF_NAMES_API -> {
+                //do {
+                    generateName()
+               // } while (this.checkWord.contains('J') ||
+                  //  this.checkWord.contains('Z'))
+            }
+        }
+
+        viewBinding.prompt.text = "Spell the word below in sign language!"
+
         //set listeners for buttons
         viewBinding.fabHomePractice.setOnClickListener {
             finish()
@@ -92,14 +129,27 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
             viewBinding.prompt.isVisible = false
             viewBinding.tvPracticeWord.text = "Fetching a new word..."
             lifecycleScope.launch {
-                delay(2.seconds)
+                setRandomPracticeWord()
                 viewBinding.prompt.isVisible = true
-                changePracticeWord("New Word")
             }
         }
 
         viewBinding.tvCategory.text = this.intent.getStringExtra(CATEGORY_KEY)
-        updateCheckWord()
+    }
+
+    private fun setRandomPracticeWord() {
+        when (api) {
+            DATAMUSE_API -> {
+                getRandomWordListIndex()
+            }
+            LIST_OF_NAMES_API -> {
+                //do {
+                generateName()
+               // } while (this.checkWord.contains('J') ||
+                  //  this.checkWord.contains('Z'))
+            }
+            else -> changePracticeWord("Hello")
+        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -162,7 +212,7 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
                                     lifecycleScope.launch {
                                         delay(2.seconds)
                                         viewBinding.prompt.isVisible = true
-                                        changePracticeWord("No Thanks")
+                                        setRandomPracticeWord()
                                     }
                                 }
                             }
@@ -204,4 +254,54 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
             nameCategories.sortedBy { it?.index() }
         }
     }
+
+    private fun getRandomWordListIndex() {
+        var index = 0
+        do {
+            index = Random.nextInt(0, wordsList.size)
+        } while (wordsList[index].word.uppercase().contains('J') ||
+            wordsList[index].word.uppercase().contains('Z'))
+        changePracticeWord(wordsList[index].word)
+    }
+    private fun getDatamuseWords() {
+        DatamuseRetrofitHelper.datamuseInterface.getWords(endpoint).enqueue(object : Callback<List<WordsData>> {
+            override fun onResponse(
+                call: Call<List<WordsData>?>,
+                response: Response<List<WordsData>?>
+            ) {
+                val responseData = response.body()
+                if (!responseData.isNullOrEmpty()) {
+                    wordsList = responseData
+                    changePracticeWord(wordsList[0].word)
+                }
+            }
+
+            override fun onFailure(
+                call: Call<List<WordsData>?>,
+                t: Throwable
+            ) {
+
+            }
+        })
+    }
+    private fun generateName() {
+        NameRetrofitHelper.nameInterface.getName().enqueue(object : Callback<NamesData> {
+            override fun onResponse(
+                call: Call<NamesData?>,
+                response: Response<NamesData?>
+            ) {
+                val responseData = response.body()
+                if (responseData != null) {
+                    changePracticeWord(responseData.name)
+                }
+            }
+
+            override fun onFailure(
+                call: Call<NamesData?>,
+                t: Throwable
+            ) {
+            }
+        })
+    }
+
 }

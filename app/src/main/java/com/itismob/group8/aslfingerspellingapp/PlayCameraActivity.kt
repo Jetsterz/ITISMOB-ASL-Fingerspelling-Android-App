@@ -4,6 +4,7 @@ import android.os.Bundle
 
 import androidx.appcompat.app.AppCompatActivity
 import com.itismob.group8.aslfingerspellingapp.databinding.ActivityPlayCameraBinding
+import com.itismob.group8.aslfingerspellingapp.libraries.Camera
 
 class PlayCameraActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityPlayCameraBinding

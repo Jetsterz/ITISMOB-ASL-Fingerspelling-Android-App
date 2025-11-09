@@ -63,4 +63,7 @@ dependencies {
     implementation("androidx.media3:media3-ui:$mediaVersion")
     implementation("androidx.media3:media3-session:$mediaVersion")
     implementation("com.google.mediapipe:tasks-vision:0.10.26")
+    implementation ("com.google.code.gson:gson:2.9.1")
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 }

@@ -1,14 +1,15 @@
-package com.itismob.group8.aslfingerspellingapp
+package com.itismob.group8.aslfingerspellingapp.practicetranslate
 
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.mediapipe.tasks.vision.core.RunningMode
+import com.itismob.group8.aslfingerspellingapp.libraries.Camera
+import com.itismob.group8.aslfingerspellingapp.common.Common
+import com.itismob.group8.aslfingerspellingapp.libraries.GestureRecognizerHelper
 import com.itismob.group8.aslfingerspellingapp.databinding.ActivityTranslateBinding
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -41,7 +42,7 @@ class TranslateActivity : AppCompatActivity(), GestureRecognizerHelper.GestureRe
         this.recyclerView.adapter = gestureRecognizerResultAdapter
         this.recyclerView.layoutManager = LinearLayoutManager(this)
 
-        Common.hideSystemBars(window)
+        Common.Companion.hideSystemBars(window)
 
         backgroundExecutor = Executors.newSingleThreadExecutor()
 
