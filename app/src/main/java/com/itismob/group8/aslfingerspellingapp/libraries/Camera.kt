@@ -1,4 +1,4 @@
-package com.itismob.group8.aslfingerspellingapp
+package com.itismob.group8.aslfingerspellingapp.libraries
 
 import android.Manifest
 import android.content.ContentValues
@@ -19,25 +19,19 @@ import androidx.camera.core.Preview
 import androidx.camera.core.CameraSelector
 import android.util.Log
 import android.view.Surface
-import androidx.annotation.OptIn
 import androidx.camera.core.AspectRatio
 import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.ImageProxy
-import androidx.camera.video.FallbackStrategy
 import androidx.camera.video.MediaStoreOutputOptions
 import androidx.camera.video.Quality
 import androidx.camera.video.QualitySelector
 import androidx.camera.video.VideoRecordEvent
 import androidx.camera.view.PreviewView
-import androidx.camera.view.TransformExperimental
-import androidx.camera.view.transform.OutputTransform
 import androidx.core.content.PermissionChecker
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.nio.ByteBuffer
+import com.itismob.group8.aslfingerspellingapp.R
 import java.text.SimpleDateFormat
 import java.util.Locale
-import java.util.concurrent.TimeUnit
 
 /* Code based from https://developer.android.com/codelabs/camerax-getting-started#0
 * https://ngengesenior.medium.com/seamlessly-switching-camera-lenses-during-video-recording-with-camerax-on-android-fcb597ed8236

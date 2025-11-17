@@ -1,4 +1,4 @@
-package com.itismob.group8.aslfingerspellingapp
+package com.itismob.group8.aslfingerspellingapp.common
 
 import android.view.Window
 import androidx.core.view.WindowCompat

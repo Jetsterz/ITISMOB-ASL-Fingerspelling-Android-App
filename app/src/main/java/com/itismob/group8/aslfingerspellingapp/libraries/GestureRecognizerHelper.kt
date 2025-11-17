@@ -1,4 +1,4 @@
-package com.itismob.group8.aslfingerspellingapp
+package com.itismob.group8.aslfingerspellingapp.libraries
 
 import android.content.Context
 import android.graphics.Bitmap

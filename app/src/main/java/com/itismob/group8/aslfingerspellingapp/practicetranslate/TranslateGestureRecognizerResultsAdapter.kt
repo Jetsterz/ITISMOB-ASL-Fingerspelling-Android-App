@@ -1,4 +1,4 @@
-package com.itismob.group8.aslfingerspellingapp
+package com.itismob.group8.aslfingerspellingapp.practicetranslate
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
