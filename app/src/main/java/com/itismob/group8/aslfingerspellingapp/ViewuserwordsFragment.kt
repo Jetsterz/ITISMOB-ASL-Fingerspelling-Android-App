@@ -28,8 +28,8 @@ class ViewuserwordsFragment : Fragment(R.layout.fragment_viewuserwords) {
 
         /* The following is a PLACEHOLDER, and is meant to be deleted upon completion. */
         val placeDat : ArrayList<Word> = arrayListOf(
-            Word("UserPlace", "A placeholder for the User Word list.", null, "showing"),
-            Word("UserPlace2", "Another placeholder for the User Word List.", "SampleLink", "hiding")
+            Word("UserPlace", "A placeholder for the User Word list.", null, true),
+            Word("UserPlace2", "Another placeholder for the User Word List.", "SampleLink", false)
         )
         /* END OF PLACEHOLDER */
         val dat : ArrayList<Word> = placeDat //<- calls the placeholder
@@ -43,7 +43,7 @@ class ViewuserwordsFragment : Fragment(R.layout.fragment_viewuserwords) {
         val showHideOnClickHandler = { pos: Int ->
             if (pos >= 0 && pos < dat.size) {
                 val thisWord = dat[pos]
-                val stateChange = if (thisWord.showInPlay == "showing") "hiding" else "showing"
+                val stateChange = !thisWord.showInPlay
                 thisWord.showInPlay = stateChange
                 a.notifyItemChanged(pos)
 
@@ -56,10 +56,10 @@ class ViewuserwordsFragment : Fragment(R.layout.fragment_viewuserwords) {
                     .setTitle("Confirm Deletion")
                     .setMessage("Are you sure you want to delete '${dat[pos].wordName}'?")
 
-                    .setNegativeButton("Cancel") { dialog, which ->
+                    .setNegativeButton("Cancel") { dialog, _ ->
                         dialog.dismiss()
                     }
-                    .setPositiveButton("Delete") { dialog, which ->
+                    .setPositiveButton("Delete") { dialog, _ ->
                         dat.removeAt(pos)
                         a.notifyItemRemoved(pos)
                         Toast.makeText(requireContext(), "'${thisWordName}' was deleted.", Toast.LENGTH_SHORT).show()

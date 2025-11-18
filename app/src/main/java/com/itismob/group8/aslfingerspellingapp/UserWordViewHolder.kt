@@ -1,5 +1,6 @@
 package com.itismob.group8.aslfingerspellingapp
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageButton
@@ -13,13 +14,14 @@ import com.itismob.group8.aslfingerspellingapp.databinding.ItemLayoutUserwordBin
 //This and DictionaryWord holders are similar, but only one of them has the extra Edit and Delete buttons.
 class UserWordViewHolder (private val viewBinding: ItemLayoutUserwordBinding): RecyclerView.ViewHolder(viewBinding.root) {
     fun bind(w: Word, onShowHideClick: () -> Unit, onDeleteClick: () -> Unit) {
+        val c = viewBinding.root.context
         viewBinding.wordName.text = w.wordName
         viewBinding.uWordDef.text = w.wordDef
         viewBinding.btnShowhide.tag = w.showInPlay
 
-        if (viewBinding.btnShowhide.tag == "showing"){
+        if (viewBinding.btnShowhide.tag == true){
             viewBinding.btnShowhide.setImageResource(R.drawable.hide)
-        } else if (viewBinding.btnShowhide.tag == "hiding"){
+        } else {
             viewBinding.btnShowhide.setImageResource(R.drawable.show)
         }
         if (w.videoLink != null) {
@@ -29,28 +31,31 @@ class UserWordViewHolder (private val viewBinding: ItemLayoutUserwordBinding): R
         }
 
         viewBinding.btnViewedit.setOnClickListener {
-            val c = viewBinding.root.context
+            val i = Intent(c, DisplayWordActivity::class.java)
+            i.putExtra("wordName", w.wordName)
+            i.putExtra("wordDef", w.wordDef)
+            i.putExtra("videoLink", w.videoLink)
             if (w.videoLink != null) {
-                val vLink = w.videoLink
-                // TODO("No existing View Video Activity yet for existing videos")
+                i.putExtra("video?", true)
+                c.startActivity(i)
             } else {
-                // TODO("No existing View Video Activity yet for nonexistent videos.")
+                i.putExtra("video?", false)
+                c.startActivity(i)
             }
         }
 
         viewBinding.btnPractice.setOnClickListener {
-            val c = viewBinding.root.context
             val vLink = w.videoLink
             // TODO("No existing Practice Word Activity yet.")
         }
 
         viewBinding.btnShowhide.setOnClickListener {
-            if (viewBinding.btnShowhide.tag == "showing"){
+            if (viewBinding.btnShowhide.tag == true){
                 viewBinding.btnShowhide.setImageResource(R.drawable.show)
-                viewBinding.btnShowhide.tag = "hiding"
-            } else if (viewBinding.btnShowhide.tag == "hiding"){
+                viewBinding.btnShowhide.tag = false
+            } else {
                 viewBinding.btnShowhide.setImageResource(R.drawable.hide)
-                viewBinding.btnShowhide.tag = "showing"
+                viewBinding.btnShowhide.tag = true
             }
             onShowHideClick()
         }

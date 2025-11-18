@@ -26,8 +26,8 @@ class ViewdictionarywordsFragment : Fragment(R.layout.fragment_viewdictionarywor
 
         /* The following is a PLACEHOLDER, and is meant to be deleted upon completion. */
         val placeDat : ArrayList<Word> = arrayListOf(
-            Word("DictioPlace", "A placeholder for the Dictionary Word list.", null, "showing"),
-            Word("DictioPlace2", "Another placeholder for the Dictionary Word List.", "SampleLink", "hiding")
+            Word("DictioPlace", "A placeholder for the Dictionary Word list.", null, true),
+            Word("DictioPlace2", "Another placeholder for the Dictionary Word List.", "SampleLink", false)
         )
         /* END OF PLACEHOLDER */
         val dat : ArrayList<Word> = placeDat //<- calls the placeholder
@@ -35,7 +35,7 @@ class ViewdictionarywordsFragment : Fragment(R.layout.fragment_viewdictionarywor
         val showHideOnClickHandler = { pos: Int ->
             if (pos >= 0 && pos < dat.size) {
                 val thisWord = dat[pos]
-                val stateChange = if (thisWord.showInPlay == "showing") "hiding" else "showing"
+                val stateChange = !thisWord.showInPlay
                 thisWord.showInPlay = stateChange
                 a.notifyItemChanged(pos)
 
