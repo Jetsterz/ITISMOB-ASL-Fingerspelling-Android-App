@@ -23,18 +23,13 @@ class ViewdictionarywordsFragment : Fragment(R.layout.fragment_viewdictionarywor
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        /* The following is a PLACEHOLDER, and is meant to be deleted upon completion. */
-        val placeDat : ArrayList<Word> = arrayListOf(
-            Word("DictioPlace", "A placeholder for the Dictionary Word list.", null, true),
-            Word("DictioPlace2", "Another placeholder for the Dictionary Word List.", "SampleLink", false)
-        )
-        /* END OF PLACEHOLDER */
-        val dat : ArrayList<Word> = placeDat //<- calls the placeholder
+        val db = DictioWordDatabase(requireContext())
+        val dat : ArrayList<Word> = db.getAllWords()
         lateinit var a : DictionaryWordsAdapter
         val showHideOnClickHandler = { pos: Int ->
             if (pos >= 0 && pos < dat.size) {
                 val thisWord = dat[pos]
+                db.flipShowHide(thisWord)
                 val stateChange = !thisWord.showInPlay
                 thisWord.showInPlay = stateChange
                 a.notifyItemChanged(pos)

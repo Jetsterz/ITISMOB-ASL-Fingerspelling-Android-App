@@ -1,6 +1,8 @@
 plugins {
-    alias(libs.plugins.android.application)
+    //alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("com.android.application")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -63,4 +65,6 @@ dependencies {
     implementation("androidx.media3:media3-ui:$mediaVersion")
     implementation("androidx.media3:media3-session:$mediaVersion")
     implementation("com.google.mediapipe:tasks-vision:0.10.26")
+    implementation(platform("com.google.firebase:firebase-bom:34.6.0"))
+    implementation("com.google.firebase:firebase-analytics")
 }

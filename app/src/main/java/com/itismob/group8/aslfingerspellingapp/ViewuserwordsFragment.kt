@@ -25,14 +25,8 @@ class ViewuserwordsFragment : Fragment(R.layout.fragment_viewuserwords) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        /* The following is a PLACEHOLDER, and is meant to be deleted upon completion. */
-        val placeDat : ArrayList<Word> = arrayListOf(
-            Word("UserPlace", "A placeholder for the User Word list.", null, true),
-            Word("UserPlace2", "Another placeholder for the User Word List.", "SampleLink", false)
-        )
-        /* END OF PLACEHOLDER */
-        val dat : ArrayList<Word> = placeDat //<- calls the placeholder
+        val db = UserWordDatabase(requireContext())
+        val dat : ArrayList<Word> = db.getAllWords()
         lateinit var a : UserWordsAdapter
 
         binding.addButton.setOnClickListener {
@@ -43,6 +37,7 @@ class ViewuserwordsFragment : Fragment(R.layout.fragment_viewuserwords) {
         val showHideOnClickHandler = { pos: Int ->
             if (pos >= 0 && pos < dat.size) {
                 val thisWord = dat[pos]
+                db.flipShowHide(thisWord)
                 val stateChange = !thisWord.showInPlay
                 thisWord.showInPlay = stateChange
                 a.notifyItemChanged(pos)
@@ -60,6 +55,7 @@ class ViewuserwordsFragment : Fragment(R.layout.fragment_viewuserwords) {
                         dialog.dismiss()
                     }
                     .setPositiveButton("Delete") { dialog, _ ->
+                        db.deleteWord(dat[pos])
                         dat.removeAt(pos)
                         a.notifyItemRemoved(pos)
                         Toast.makeText(requireContext(), "'${thisWordName}' was deleted.", Toast.LENGTH_SHORT).show()
