@@ -50,6 +50,8 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
     private var isContinuingGame = false
     private var loadedGame: PreviousGame? = null
 
+    private var gameStartTime: String = ""
+
     companion object {
         const val CATEGORY_KEY = "CATEGORY_KEY"
         const val CATEGORY_ENDPOINT = "CATEGORY_ENDPOINT"
@@ -112,6 +114,7 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
         currentRound = 1
         score = 0
         totalRounds = 9
+        gameStartTime = PreviousGame.getCurrentDateTime()
 
         // Load words for the game
         getDatamuseWords()
@@ -128,21 +131,16 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
             isContinuingGame = true
 
             if (loadedGame!!.isCompleted) {
-                // Restart completed game
-                currentRound = 1
-                score = 0
-                totalRounds = loadedGame!!.totalRounds
-                endpoint = loadedGame!!.endpoint
-                viewBinding.tvCategoryPlay.text = loadedGame!!.category
-
-                // Load new words for restarted game
-                getDatamuseWords()
+                // Should not happen since completed games shouldn't be playable
+                finish()
+                return
             } else {
-                // Continue unfinished game
+                // Continue unfinished game from saved state
                 currentRound = loadedGame!!.currentRound
                 score = loadedGame!!.score
                 totalRounds = loadedGame!!.totalRounds
                 endpoint = loadedGame!!.endpoint
+                gameStartTime = loadedGame!!.date // Use the original start time
                 viewBinding.tvCategoryPlay.text = loadedGame!!.category
 
                 // Load words and continue from where we left off
@@ -207,8 +205,8 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
     }
 
     private fun endGame() {
-        val categoryName = viewBinding.tvCategoryPlay.text.toString()
-        saveGameProgress(true)
+        // Mark game as completed with completion time
+        GameSaveManager.markGameAsCompleted(this, gameId, score, gameStartTime)
 
         // Show completion message
         lifecycleScope.launch {
@@ -217,6 +215,7 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
             finish()
         }
     }
+
 
     // Gesture Recognition Logic
     override fun onResults(resultBundle: GestureRecognizerHelper.ResultBundle) {
@@ -337,7 +336,9 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
             category = categoryName,
             currentRound = currentRound,
             totalRounds = totalRounds,
-            date = Date().toString(),
+            date = if (isContinuingGame && loadedGame != null) loadedGame!!.date else gameStartTime,
+            completionDate = if (isCompleted) PreviousGame.getCurrentDateTime() else null,
+            completionTime = null, // Only set when marking as completed
             score = score,
             isCompleted = isCompleted,
             gameId = gameId,

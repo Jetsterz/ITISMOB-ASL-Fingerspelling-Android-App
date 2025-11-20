@@ -48,7 +48,7 @@
                 android:id="@+id/txtDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Date: Oct 20, 2025"
+                android:text="Started: Oct 20, 2025 14:30"
                 android:textColor="#000000"
                 android:textSize="14sp" />
 
@@ -61,6 +61,15 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/txtCompletionInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="In Progress"
+                android:textColor="#666666"
+                android:textSize="12sp"
+                android:textStyle="italic" />
+
         </LinearLayout>
 
         <Button
@@ -69,7 +78,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="Continue"
-            android:backgroundTint="#4C4DDC"
             android:textColor="#FFFFFF"
             android:paddingStart="16dp"
             android:paddingEnd="16dp" />

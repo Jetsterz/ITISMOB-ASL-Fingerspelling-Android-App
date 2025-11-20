@@ -4,7 +4,6 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.*
-import java.util.*
 
 object GameSaveManager {
     private const val FILENAME = "saved_games.json"
@@ -21,6 +20,25 @@ object GameSaveManager {
 
         // Save to file
         saveGamesToFile(context, games)
+    }
+
+    fun markGameAsCompleted(context: Context, gameId: String, finalScore: Int, startTime: String) {
+        val games = loadAllGames(context).toMutableList()
+        val gameIndex = games.indexOfFirst { it.gameId == gameId }
+
+        if (gameIndex != -1) {
+            val game = games[gameIndex]
+            val completionTime = PreviousGame.calculateCompletionTime(startTime, PreviousGame.getCurrentDateTime())
+            val completedGame = game.copy(
+                isCompleted = true,
+                completionDate = PreviousGame.getCurrentDateTime(),
+                completionTime = completionTime,
+                score = finalScore,
+                currentRound = game.totalRounds // Set to final round
+            )
+            games[gameIndex] = completedGame
+            saveGamesToFile(context, games)
+        }
     }
 
     fun loadAllGames(context: Context): List<PreviousGame> {

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
 class PreviousGameAdapter(
@@ -21,6 +22,7 @@ class PreviousGameAdapter(
         val txtRounds: TextView = view.findViewById(R.id.txtRounds)
         val txtDate: TextView = view.findViewById(R.id.txtDate)
         val txtScore: TextView = view.findViewById(R.id.txtScore)
+        val txtCompletionInfo: TextView = view.findViewById(R.id.txtCompletionInfo)
         val btnPlay: Button = view.findViewById(R.id.btnPlay)
     }
 
@@ -34,27 +36,40 @@ class PreviousGameAdapter(
         val game = gameList[position]
         holder.imgGame.setImageResource(game.imageResId)
         holder.txtCategory.text = "Category: ${game.category}"
-        holder.txtRounds.text = "Round: ${game.currentRound}/${game.totalRounds}"
-        holder.txtDate.text = "Date: ${game.date}"
+
+        // Show rounds based on completion status
+        if (game.isCompleted) {
+            holder.txtRounds.text = "Completed: ${game.currentRound}/${game.totalRounds} rounds"
+        } else {
+            holder.txtRounds.text = "Round: ${game.currentRound}/${game.totalRounds}"
+        }
+
+        // Show completion date or start date
+        holder.txtDate.text = game.getFormattedDate()
         holder.txtScore.text = "Score: ${game.score}"
+        holder.txtCompletionInfo.text = game.getCompletionInfo()
 
-        // Set button text based on game state
-        holder.btnPlay.text = if (game.isCompleted) "Play Again" else "Continue"
+        if (game.isCompleted) {
+            // Completed game - show disabled "Complete" button in light green
+            holder.btnPlay.text = "Complete"
+            holder.btnPlay.isEnabled = false
+            holder.btnPlay.isClickable = false
+            holder.btnPlay.backgroundTintList = ContextCompat.getColorStateList(context, R.color.light_green)
+            holder.btnPlay.setTextColor(ContextCompat.getColor(context, R.color.dark_green))
+        } else {
+            // Incomplete game - show active "Continue" button
+            holder.btnPlay.text = "Continue"
+            holder.btnPlay.isEnabled = true
+            holder.btnPlay.isClickable = true
+            holder.btnPlay.backgroundTintList = ContextCompat.getColorStateList(context, R.color.dark_green)
+            holder.btnPlay.setTextColor(ContextCompat.getColor(context, android.R.color.white))
 
-        holder.btnPlay.setOnClickListener {
-            val intent = Intent(context, PlayCameraActivity::class.java)
-
-            if (game.isCompleted) {
-                // Restart completed game - pass category info for fresh start
-                intent.putExtra(PlayCameraActivity.CATEGORY_KEY, game.category)
-                intent.putExtra(PlayCameraActivity.CATEGORY_ENDPOINT, game.endpoint)
-                // Don't pass game ID, so it creates a new game
-            } else {
+            holder.btnPlay.setOnClickListener {
+                val intent = Intent(context, PlayCameraActivity::class.java)
                 // Continue unfinished game - pass game ID to load existing state
                 intent.putExtra(PlayCameraActivity.GAME_ID, game.gameId)
+                context.startActivity(intent)
             }
-
-            context.startActivity(intent)
         }
     }
 
