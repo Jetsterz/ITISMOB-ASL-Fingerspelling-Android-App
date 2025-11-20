@@ -4,6 +4,7 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.*
+import java.util.*
 
 object GameSaveManager {
     private const val FILENAME = "saved_games.json"
@@ -19,10 +20,7 @@ object GameSaveManager {
         games.add(game)
 
         // Save to file
-        val jsonString = gson.toJson(games)
-        context.openFileOutput(FILENAME, Context.MODE_PRIVATE).use { output ->
-            output.write(jsonString.toByteArray())
-        }
+        saveGamesToFile(context, games)
     }
 
     fun loadAllGames(context: Context): List<PreviousGame> {
@@ -38,10 +36,17 @@ object GameSaveManager {
         }
     }
 
+    fun getGameById(context: Context, gameId: String): PreviousGame? {
+        return loadAllGames(context).find { it.gameId == gameId }
+    }
+
     fun deleteGame(context: Context, gameId: String) {
         val games = loadAllGames(context).toMutableList()
         games.removeAll { it.gameId == gameId }
+        saveGamesToFile(context, games)
+    }
 
+    private fun saveGamesToFile(context: Context, games: List<PreviousGame>) {
         val jsonString = gson.toJson(games)
         context.openFileOutput(FILENAME, Context.MODE_PRIVATE).use { output ->
             output.write(jsonString.toByteArray())

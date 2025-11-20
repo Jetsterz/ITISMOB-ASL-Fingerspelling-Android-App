@@ -1,5 +1,6 @@
 package com.itismob.group8.aslfingerspellingapp
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
@@ -46,10 +47,13 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
     private var totalRounds = 9
     private var score = 0
     private var gameId: String = ""
+    private var isContinuingGame = false
+    private var loadedGame: PreviousGame? = null
 
     companion object {
         const val CATEGORY_KEY = "CATEGORY_KEY"
         const val CATEGORY_ENDPOINT = "CATEGORY_ENDPOINT"
+        const val GAME_ID = "GAME_ID" // For continuing games
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,15 +62,15 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
         viewBinding = ActivityPlayCameraBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
-        // Get category data from intent
-        val categoryName = this.intent.getStringExtra(CATEGORY_KEY) ?: "General"
-        endpoint = this.intent.getStringExtra(CATEGORY_ENDPOINT) ?: "words?sp=?????"
-
-        // Generate unique game ID
-        gameId = "${categoryName}_${System.currentTimeMillis()}"
-
-        // Initialize game state
-        updateGameDisplay()
+        // Check if we're continuing a game or starting new
+        val continueGameId = intent.getStringExtra(GAME_ID)
+        if (continueGameId != null) {
+            // Load existing game
+            loadExistingGame(continueGameId)
+        } else {
+            // Start new game
+            startNewGame()
+        }
 
         backgroundExecutor = Executors.newSingleThreadExecutor()
 
@@ -91,28 +95,80 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
             }
         }
 
+        // Set up UI listeners
+        setupClickListeners()
+    }
+
+    private fun startNewGame() {
+        // Get category data from intent
+        val categoryName = this.intent.getStringExtra(CATEGORY_KEY) ?: "General"
+        endpoint = this.intent.getStringExtra(CATEGORY_ENDPOINT) ?: "words?sp=?????"
+
+        // Generate unique game ID
+        gameId = "${categoryName}_${System.currentTimeMillis()}"
+        isContinuingGame = false
+
+        // Initialize fresh game state
+        currentRound = 1
+        score = 0
+        totalRounds = 9
+
         // Load words for the game
         getDatamuseWords()
 
-        // Set up UI listeners
-        setupClickListeners(categoryName)
+        viewBinding.tvCategoryPlay.text = categoryName
+        updateGameDisplay()
     }
 
-    private fun setupClickListeners(categoryName: String) {
+    private fun loadExistingGame(gameId: String) {
+        this.gameId = gameId
+        loadedGame = GameSaveManager.getGameById(this, gameId)
+
+        if (loadedGame != null) {
+            isContinuingGame = true
+
+            if (loadedGame!!.isCompleted) {
+                // Restart completed game
+                currentRound = 1
+                score = 0
+                totalRounds = loadedGame!!.totalRounds
+                endpoint = loadedGame!!.endpoint
+                viewBinding.tvCategoryPlay.text = loadedGame!!.category
+
+                // Load new words for restarted game
+                getDatamuseWords()
+            } else {
+                // Continue unfinished game
+                currentRound = loadedGame!!.currentRound
+                score = loadedGame!!.score
+                totalRounds = loadedGame!!.totalRounds
+                endpoint = loadedGame!!.endpoint
+                viewBinding.tvCategoryPlay.text = loadedGame!!.category
+
+                // Load words and continue from where we left off
+                getDatamuseWordsForContinue()
+            }
+        } else {
+            // Fallback to new game if saved game not found
+            startNewGame()
+        }
+
+        updateGameDisplay()
+    }
+
+    private fun setupClickListeners() {
         viewBinding.btnSkipPlay.setOnClickListener {
             skipWord()
         }
 
         viewBinding.fabHomePlay.setOnClickListener {
-            saveGameProgress(categoryName)
+            saveGameProgress()
             finish()
         }
 
         viewBinding.fabSwitchCamPlay.setOnClickListener {
             camera.flipCamera()
         }
-
-        viewBinding.tvCategoryPlay.text = categoryName
     }
 
     private fun updateGameDisplay() {
@@ -123,7 +179,7 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
     }
 
     private fun skipWord() {
-        // Penalty for skipping? Maybe reduce score?
+        // No penalty for skipping
         if (currentRound < totalRounds) {
             currentRound++
             loadNewWord()
@@ -136,6 +192,7 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
         if (wordsList.isNotEmpty()) {
             getRandomWordListIndex()
             updateGameDisplay()
+            saveGameProgress() // Auto-save after loading new word
         }
     }
 
@@ -151,7 +208,7 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
 
     private fun endGame() {
         val categoryName = viewBinding.tvCategoryPlay.text.toString()
-        saveGameProgress(categoryName, true)
+        saveGameProgress(true)
 
         // Show completion message
         lifecycleScope.launch {
@@ -161,7 +218,7 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
         }
     }
 
-    // Gesture Recognition Logic (from PracticeCameraActivity)
+    // Gesture Recognition Logic
     override fun onResults(resultBundle: GestureRecognizerHelper.ResultBundle) {
         runOnUiThread {
             if (viewBinding != null) {
@@ -202,7 +259,7 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
         Log.i("PlayCameraError", "Error: $error")
     }
 
-    // Word management methods (from PracticeCameraActivity)
+    // Word management methods
     private fun changePracticeWord(word: String) {
         this.currentWord = word
         this.checkWord = word.uppercase()
@@ -256,22 +313,35 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
             override fun onFailure(call: Call<List<WordsData>?>, t: Throwable) {
                 Log.e("PlayCamera", "Failed to fetch words: ${t.message}")
                 // Fallback words
-                wordsList = listOf(WordsData("hello", 100), WordsData("world", 100))
+                wordsList = listOf(
+                    WordsData("hello", 100),
+                    WordsData("world", 100),
+                    WordsData("android", 100),
+                    WordsData("camera", 100)
+                )
                 loadNewWord()
             }
         })
     }
 
+    private fun getDatamuseWordsForContinue() {
+        // For continuing games, we fetch fresh words but keep the progress
+        getDatamuseWords()
+    }
+
     // Game Saving Logic
-    private fun saveGameProgress(categoryName: String, isCompleted: Boolean = false) {
+    private fun saveGameProgress(isCompleted: Boolean = false) {
+        val categoryName = viewBinding.tvCategoryPlay.text.toString()
         val gameRecord = PreviousGame(
-            imageResId = R.drawable.ic_hand_a, // Default image
+            imageResId = R.drawable.ic_hand_a,
             category = categoryName,
-            rounds = if (isCompleted) totalRounds else currentRound - 1,
+            currentRound = currentRound,
+            totalRounds = totalRounds,
             date = Date().toString(),
             score = score,
             isCompleted = isCompleted,
-            gameId = gameId
+            gameId = gameId,
+            endpoint = endpoint
         )
 
         GameSaveManager.saveGame(this, gameRecord)
@@ -287,8 +357,7 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
         super.onPause()
         camera.stopCamera()
         // Auto-save on pause
-        val categoryName = viewBinding.tvCategoryPlay.text.toString()
-        saveGameProgress(categoryName)
+        saveGameProgress()
     }
 
     override fun onResume() {

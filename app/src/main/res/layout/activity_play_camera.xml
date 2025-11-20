@@ -80,6 +80,19 @@
         </LinearLayout>
     </LinearLayout>
 
+    <!-- Skip Button - Moved above the word display -->
+    <Button
+        android:id="@+id/btnSkipPlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/black_outline"
+        android:text="SKIP"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/hLytTextBackgroundPlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <LinearLayout
         android:id="@+id/hLytTextBackgroundPlay"
         android:layout_width="0dp"
@@ -132,8 +145,6 @@
         app:srcCompat="@drawable/switch_camera"
         app:tint="#4C4DDC" />
 
-
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabHomePlay"
         android:layout_width="wrap_content"
@@ -147,18 +158,4 @@
         app:srcCompat="@drawable/home"
         app:tint="#4C4DDC" />
 
-    <Button
-        android:id="@+id/btnSkipPlay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/black_outline"
-        android:text="SKIP"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/hLytTextBackgroundPlay"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
-

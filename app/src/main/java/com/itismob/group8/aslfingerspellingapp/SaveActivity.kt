@@ -1,8 +1,8 @@
 package com.itismob.group8.aslfingerspellingapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +14,9 @@ class SaveActivity : AppCompatActivity() {
 
         val playButton: Button = findViewById(R.id.btnPlayMain)
         playButton.setOnClickListener {
-            Toast.makeText(this, "Main game play clicked!", Toast.LENGTH_SHORT).show()
+            // Redirect to category selection for new game
+            val intent = Intent(this, PlayCategoryActivity::class.java)
+            startActivity(intent)
         }
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerPreviousGames)
@@ -23,17 +25,9 @@ class SaveActivity : AppCompatActivity() {
         // Load actual saved games
         val savedGames = GameSaveManager.loadAllGames(this)
 
-        // If no saved games, show sample data
-        val gameList = if (savedGames.isNotEmpty()) {
-            savedGames
-        } else {
-            listOf(
-                PreviousGame(R.drawable.ic_hand_a, "Animals", 5, "Oct 20, 2025", 45, true),
-                PreviousGame(R.drawable.ic_hand_a, "Fruits", 7, "Oct 21, 2025", 68, true),
-                PreviousGame(R.drawable.ic_hand_a, "Colors", 4, "Oct 22, 2025", 32, false)
-            )
-        }
+        // Sort by date (newest first)
+        val sortedGames = savedGames.sortedByDescending { it.date }
 
-        recyclerView.adapter = PreviousGameAdapter(this, gameList)
+        recyclerView.adapter = PreviousGameAdapter(this, sortedGames)
     }
 }

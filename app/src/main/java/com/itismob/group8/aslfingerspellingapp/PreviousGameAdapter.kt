@@ -1,13 +1,13 @@
 package com.itismob.group8.aslfingerspellingapp
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 class PreviousGameAdapter(
@@ -20,6 +20,7 @@ class PreviousGameAdapter(
         val txtCategory: TextView = view.findViewById(R.id.txtCategory)
         val txtRounds: TextView = view.findViewById(R.id.txtRounds)
         val txtDate: TextView = view.findViewById(R.id.txtDate)
+        val txtScore: TextView = view.findViewById(R.id.txtScore)
         val btnPlay: Button = view.findViewById(R.id.btnPlay)
     }
 
@@ -33,11 +34,27 @@ class PreviousGameAdapter(
         val game = gameList[position]
         holder.imgGame.setImageResource(game.imageResId)
         holder.txtCategory.text = "Category: ${game.category}"
-        holder.txtRounds.text = "Rounds: ${game.rounds}"
+        holder.txtRounds.text = "Round: ${game.currentRound}/${game.totalRounds}"
         holder.txtDate.text = "Date: ${game.date}"
+        holder.txtScore.text = "Score: ${game.score}"
+
+        // Set button text based on game state
+        holder.btnPlay.text = if (game.isCompleted) "Play Again" else "Continue"
 
         holder.btnPlay.setOnClickListener {
-            Toast.makeText(context, "Playing ${game.category} game!", Toast.LENGTH_SHORT).show()
+            val intent = Intent(context, PlayCameraActivity::class.java)
+
+            if (game.isCompleted) {
+                // Restart completed game - pass category info for fresh start
+                intent.putExtra(PlayCameraActivity.CATEGORY_KEY, game.category)
+                intent.putExtra(PlayCameraActivity.CATEGORY_ENDPOINT, game.endpoint)
+                // Don't pass game ID, so it creates a new game
+            } else {
+                // Continue unfinished game - pass game ID to load existing state
+                intent.putExtra(PlayCameraActivity.GAME_ID, game.gameId)
+            }
+
+            context.startActivity(intent)
         }
     }
 
