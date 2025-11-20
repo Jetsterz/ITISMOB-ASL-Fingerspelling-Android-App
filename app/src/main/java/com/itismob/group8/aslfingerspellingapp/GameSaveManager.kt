@@ -22,25 +22,6 @@ object GameSaveManager {
         saveGamesToFile(context, games)
     }
 
-    fun markGameAsCompleted(context: Context, gameId: String, finalScore: Int, startTime: String) {
-        val games = loadAllGames(context).toMutableList()
-        val gameIndex = games.indexOfFirst { it.gameId == gameId }
-
-        if (gameIndex != -1) {
-            val game = games[gameIndex]
-            val completionTime = PreviousGame.calculateCompletionTime(startTime, PreviousGame.getCurrentDateTime())
-            val completedGame = game.copy(
-                isCompleted = true,
-                completionDate = PreviousGame.getCurrentDateTime(),
-                completionTime = completionTime,
-                score = finalScore,
-                currentRound = game.totalRounds // Set to final round
-            )
-            games[gameIndex] = completedGame
-            saveGamesToFile(context, games)
-        }
-    }
-
     fun loadAllGames(context: Context): List<PreviousGame> {
         return try {
             val inputStream: FileInputStream = context.openFileInput(FILENAME)

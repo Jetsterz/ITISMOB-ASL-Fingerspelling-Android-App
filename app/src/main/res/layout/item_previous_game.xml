@@ -65,7 +65,7 @@
                 android:id="@+id/txtCompletionInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="In Progress"
+                android:text="In Progress - Score: 45"
                 android:textColor="#666666"
                 android:textSize="12sp"
                 android:textStyle="italic" />

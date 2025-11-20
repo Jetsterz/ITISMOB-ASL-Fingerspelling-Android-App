@@ -19,15 +19,27 @@ class SaveActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        loadGames()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Refresh the list when returning to this activity
+        loadGames()
+    }
+
+    private fun loadGames() {
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerPreviousGames)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         // Load actual saved games
         val savedGames = GameSaveManager.loadAllGames(this)
 
-        // Sort by date (newest first)
-        val sortedGames = savedGames.sortedByDescending { it.date }
+        // Filter to only show incomplete games (currentRound < totalRounds)
+        val incompleteGames = savedGames.filter { it.currentRound < it.totalRounds }
+            .sortedByDescending { it.date }
 
-        recyclerView.adapter = PreviousGameAdapter(this, sortedGames)
+        recyclerView.adapter = PreviousGameAdapter(this, incompleteGames)
+
     }
 }

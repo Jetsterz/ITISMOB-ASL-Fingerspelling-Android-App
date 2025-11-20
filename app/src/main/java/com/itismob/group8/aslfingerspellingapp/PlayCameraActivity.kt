@@ -130,8 +130,12 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
         if (loadedGame != null) {
             isContinuingGame = true
 
-            if (loadedGame!!.isCompleted) {
-                // Should not happen since completed games shouldn't be playable
+            // Check if game is completed by round count
+            val isGameCompleted = loadedGame!!.currentRound >= loadedGame!!.totalRounds
+
+            if (isGameCompleted) {
+                // Game is already completed - should not happen since button is hidden
+                // But if it does, finish the activity
                 finish()
                 return
             } else {
@@ -205,13 +209,13 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
     }
 
     private fun endGame() {
-        // Mark game as completed with completion time
-        GameSaveManager.markGameAsCompleted(this, gameId, score, gameStartTime)
+        // Save the final state (currentRound will be 9/9)
+        saveGameProgress()
 
         // Show completion message
         lifecycleScope.launch {
             viewBinding.tvPlayWord.text = "Game Complete! Score: $score"
-            delay(3.seconds)
+            delay(2.seconds)
             finish()
         }
     }
@@ -329,7 +333,7 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
     }
 
     // Game Saving Logic
-    private fun saveGameProgress(isCompleted: Boolean = false) {
+    private fun saveGameProgress() {
         val categoryName = viewBinding.tvCategoryPlay.text.toString()
         val gameRecord = PreviousGame(
             imageResId = R.drawable.ic_hand_a,
@@ -337,10 +341,7 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
             currentRound = currentRound,
             totalRounds = totalRounds,
             date = if (isContinuingGame && loadedGame != null) loadedGame!!.date else gameStartTime,
-            completionDate = if (isCompleted) PreviousGame.getCurrentDateTime() else null,
-            completionTime = null, // Only set when marking as completed
             score = score,
-            isCompleted = isCompleted,
             gameId = gameId,
             endpoint = endpoint
         )

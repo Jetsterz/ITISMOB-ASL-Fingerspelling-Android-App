@@ -37,40 +37,34 @@ class PreviousGameAdapter(
         holder.imgGame.setImageResource(game.imageResId)
         holder.txtCategory.text = "Category: ${game.category}"
 
-        // Show rounds based on completion status
-        if (game.isCompleted) {
-            holder.txtRounds.text = "Completed: ${game.currentRound}/${game.totalRounds} rounds"
+        // Check if game is completed (reached final round)
+        val isGameCompleted = game.currentRound >= game.totalRounds
+
+        if (isGameCompleted) {
+            // Game is completed - hide button and show completion status
+            holder.txtRounds.text = "Completed!"
+            holder.txtCompletionInfo.text = "Final Score: ${game.score}"
+            holder.btnPlay.visibility = View.GONE
         } else {
+            // Game is still in progress - show continue button
             holder.txtRounds.text = "Round: ${game.currentRound}/${game.totalRounds}"
-        }
-
-        // Show completion date or start date
-        holder.txtDate.text = game.getFormattedDate()
-        holder.txtScore.text = "Score: ${game.score}"
-        holder.txtCompletionInfo.text = game.getCompletionInfo()
-
-        if (game.isCompleted) {
-            // Completed game - show disabled "Complete" button in light green
-            holder.btnPlay.text = "Complete"
-            holder.btnPlay.isEnabled = false
-            holder.btnPlay.isClickable = false
-            holder.btnPlay.backgroundTintList = ContextCompat.getColorStateList(context, R.color.light_green)
-            holder.btnPlay.setTextColor(ContextCompat.getColor(context, R.color.dark_green))
-        } else {
-            // Incomplete game - show active "Continue" button
+            holder.txtCompletionInfo.text = "In Progress - Score: ${game.score}"
+            holder.btnPlay.visibility = View.VISIBLE
             holder.btnPlay.text = "Continue"
             holder.btnPlay.isEnabled = true
             holder.btnPlay.isClickable = true
-            holder.btnPlay.backgroundTintList = ContextCompat.getColorStateList(context, R.color.dark_green)
+            holder.btnPlay.backgroundTintList = ContextCompat.getColorStateList(context, android.R.color.holo_blue_dark)
             holder.btnPlay.setTextColor(ContextCompat.getColor(context, android.R.color.white))
 
             holder.btnPlay.setOnClickListener {
                 val intent = Intent(context, PlayCameraActivity::class.java)
-                // Continue unfinished game - pass game ID to load existing state
                 intent.putExtra(PlayCameraActivity.GAME_ID, game.gameId)
                 context.startActivity(intent)
             }
         }
+
+        holder.txtDate.text = game.getFormattedDate()
+        holder.txtScore.text = "Score: ${game.score}"
     }
 
     override fun getItemCount(): Int = gameList.size
