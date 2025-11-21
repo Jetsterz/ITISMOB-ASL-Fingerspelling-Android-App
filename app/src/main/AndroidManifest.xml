@@ -45,13 +45,13 @@
             android:name=".SaveActivity"
             android:exported="false" />
         <activity
-            android:name=".DisplayWordActivity"
+            android:name=".wordlists.DisplayWordActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateWordActivity"
+            android:name=".wordlists.CreateWordActivity"
             android:exported="false" />
         <activity
-            android:name=".EditWordActivity"
+            android:name=".wordlists.EditWordActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

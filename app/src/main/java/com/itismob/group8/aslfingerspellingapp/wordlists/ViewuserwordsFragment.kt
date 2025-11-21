@@ -1,4 +1,4 @@
-package com.itismob.group8.aslfingerspellingapp
+package com.itismob.group8.aslfingerspellingapp.wordlists
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.itismob.group8.aslfingerspellingapp.R
+import com.itismob.group8.aslfingerspellingapp.wordlists.database.UserWordDatabase
+import com.itismob.group8.aslfingerspellingapp.wordlists.Word
 import com.itismob.group8.aslfingerspellingapp.databinding.FragmentViewuserwordsBinding
 
 class ViewuserwordsFragment : Fragment(R.layout.fragment_viewuserwords) {

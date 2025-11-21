@@ -1,6 +1,5 @@
 package com.itismob.group8.aslfingerspellingapp
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,7 +9,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.itismob.group8.aslfingerspellingapp.databinding.FragmentDictionaryBinding
-import com.itismob.group8.aslfingerspellingapp.databinding.FragmentViewvideosBinding
+import com.itismob.group8.aslfingerspellingapp.wordlists.DictionaryPagerAdapter
 
 /**
  * A simple [Fragment] subclass.

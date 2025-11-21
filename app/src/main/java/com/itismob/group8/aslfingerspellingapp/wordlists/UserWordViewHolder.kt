@@ -1,14 +1,9 @@
-package com.itismob.group8.aslfingerspellingapp
+package com.itismob.group8.aslfingerspellingapp.wordlists
 
 import android.content.Intent
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TextView
-import androidx.media3.common.Player
-import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.ui.PlayerView
 import androidx.recyclerview.widget.RecyclerView
+import com.itismob.group8.aslfingerspellingapp.R
+import com.itismob.group8.aslfingerspellingapp.wordlists.Word
 import com.itismob.group8.aslfingerspellingapp.databinding.ItemLayoutUserwordBinding
 
 //This and DictionaryWord holders are similar, but only one of them has the extra Edit and Delete buttons.
