@@ -18,6 +18,7 @@ class UserWordViewHolder (private val viewBinding: ItemLayoutUserwordBinding): R
         viewBinding.wordName.text = w.wordName
         viewBinding.uWordDef.text = w.wordDef
         viewBinding.btnShowhide.tag = w.showInPlay
+        viewBinding.uCatView.text = w.category
 
         if (viewBinding.btnShowhide.tag == true){
             viewBinding.btnShowhide.setImageResource(R.drawable.hide)
@@ -35,6 +36,7 @@ class UserWordViewHolder (private val viewBinding: ItemLayoutUserwordBinding): R
             i.putExtra("wordName", w.wordName)
             i.putExtra("wordDef", w.wordDef)
             i.putExtra("videoLink", w.videoLink)
+            i.putExtra("category", w.category)
             if (w.videoLink != null) {
                 i.putExtra("video?", true)
                 c.startActivity(i)

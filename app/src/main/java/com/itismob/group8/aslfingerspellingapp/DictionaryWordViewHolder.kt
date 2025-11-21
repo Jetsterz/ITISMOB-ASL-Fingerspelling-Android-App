@@ -17,25 +17,11 @@ class DictionaryWordViewHolder (private val viewBinding: ItemLayoutDictionarywor
         viewBinding.wordName.text = w.wordName
         viewBinding.dWordDef.text = w.wordDef
         viewBinding.btnShowhide.tag = w.showInPlay
+        viewBinding.dCatView.text = w.category
         if (viewBinding.btnShowhide.tag == true){
             viewBinding.btnShowhide.setImageResource(R.drawable.hide)
         } else {
             viewBinding.btnShowhide.setImageResource(R.drawable.show)
-        }
-        if (w.videoLink == null) {
-            viewBinding.btnView.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(itemView.context, R.color.UnavailableGrey)))
-            viewBinding.btnView.isEnabled = false
-        } else {
-            viewBinding.btnView.isEnabled = true
-        }
-
-        viewBinding.btnView.setOnClickListener {
-            val vLink = w.videoLink
-            val i = Intent(c, DisplayWordActivity::class.java)
-            i.putExtra("wordName", w.wordName)
-            i.putExtra("wordDef", w.wordDef)
-            i.putExtra("videoLink", w.videoLink)
-            c.startActivity(i)
         }
 
         viewBinding.btnPractice.setOnClickListener {
