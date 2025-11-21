@@ -28,20 +28,26 @@ class UserWordViewHolder (private val viewBinding: ItemLayoutUserwordBinding): R
         if (w.videoLink != null) {
             viewBinding.btnViewedit.setImageResource(R.drawable.watchoreditvid)
         } else {
-            viewBinding.btnViewedit.setImageResource(R.drawable.createvid)
+            viewBinding.btnViewedit.setImageResource(R.drawable.edit)
         }
 
         viewBinding.btnViewedit.setOnClickListener {
-            val i = Intent(c, DisplayWordActivity::class.java)
-            i.putExtra("wordName", w.wordName)
-            i.putExtra("wordDef", w.wordDef)
-            i.putExtra("videoLink", w.videoLink)
-            i.putExtra("category", w.category)
+
             if (w.videoLink != null) {
+                val i = Intent(c, DisplayWordActivity::class.java)
                 i.putExtra("video?", true)
+                i.putExtra("wordName", w.wordName)
+                i.putExtra("wordDef", w.wordDef)
+                i.putExtra("videoLink", w.videoLink)
+                i.putExtra("category", w.category)
                 c.startActivity(i)
             } else {
+                val i = Intent(c, EditWordActivity::class.java)
                 i.putExtra("video?", false)
+                i.putExtra("wordName", w.wordName)
+                i.putExtra("wordDef", w.wordDef)
+                i.putExtra("videoLink", w.videoLink)
+                i.putExtra("category", w.category)
                 c.startActivity(i)
             }
         }
