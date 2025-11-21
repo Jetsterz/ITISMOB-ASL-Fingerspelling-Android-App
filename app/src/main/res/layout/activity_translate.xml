@@ -2,13 +2,47 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraint"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.camera.view.PreviewView
         android:id="@+id/pvCameraPreviewTranslate"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+    </androidx.camera.view.PreviewView>
+
+    <LinearLayout
+        android:id="@+id/vllResultsWrapper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/camera_text_background"
+        android:gravity="center|center_horizontal"
+        android:orientation="vertical"
+        android:padding="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fabHomeTranslate">
+
+        <TextView
+            android:id="@+id/tvTranslateResultPrompt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
+            android:text="Gesture"
+            android:textColor="#E6E6E6"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvTranslateResult"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/vLytTextBackgroundTranslate"
@@ -26,13 +60,13 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/tvTranslationOutput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Translation"
             android:letterSpacing="0.075"
             android:textColor="#E6E6E6"
-            android:textColorHint="#E6E6E6"
+            android:textColorHint="#C0C0C0"
             android:textSize="20sp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -45,6 +79,8 @@
         android:layout_marginEnd="32dp"
         android:backgroundTint="#C8C8F4"
         android:clickable="true"
+        app:fabCustomSize="69dp"
+        app:fabSize="auto"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/switch_camera"
@@ -57,6 +93,7 @@
         android:layout_marginBottom="16dp"
         android:backgroundTint="#C8C8F4"
         android:clickable="true"
+        app:fabCustomSize="69dp"
         app:layout_constraintBottom_toTopOf="@+id/vLytTextBackgroundTranslate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,6 +108,7 @@
         android:layout_marginTop="32dp"
         android:backgroundTint="#C8C8F4"
         android:clickable="true"
+        app:fabCustomSize="69dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/home"
@@ -84,10 +122,26 @@
         android:layout_marginBottom="32dp"
         android:backgroundTint="#C8C8F4"
         android:clickable="true"
+        app:fabCustomSize="69dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/vLytTextBackgroundTranslate"
         app:srcCompat="@drawable/backspace"
         app:tint="#4C4DDC" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddLetter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        app:fabCustomSize="69dp"
+        app:layout_constraintBottom_toTopOf="@+id/vLytTextBackgroundTranslate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/add_text"
+        app:tint="#4C4DDC"
+        android:backgroundTint="#C8C8F4"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

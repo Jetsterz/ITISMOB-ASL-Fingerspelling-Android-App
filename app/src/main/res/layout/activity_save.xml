@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EDEDFC">
+
+    <LinearLayout
+        android:id="@+id/mainLayout"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Header -->
+        <TextView
+            android:id="@+id/tvHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_family"
+            android:gravity="center"
+            android:text="Game 🎮 Saves"
+            android:textColor="#4C4DDC"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:background="@drawable/black_outline"
+            android:elevation="3dp"/>
+
+        <!-- Main Game Card -->
+        <LinearLayout
+            android:id="@+id/mainGameCard"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/black_outline"
+            android:elevation="3dp">
+
+            <ImageView
+                android:id="@+id/imgMainGame"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/ic_hand_a"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="Main Game Icon" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txtMainTitle"
+                    android:text="ASL Fingerspelling Game"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#101010"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/inter_family"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/txtMainCategory"
+                    android:text="Category: Random"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_family"
+                    android:textColor="#101010" />
+
+                <TextView
+                    android:id="@+id/txtMainRounds"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rounds: 9"
+                    android:fontFamily="@font/inter_family"
+                    android:textColor="#101010" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnPlayMain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:backgroundTint="#6565BD"
+                android:fontFamily="@font/inter_family"
+                android:text="PLAY"
+                android:textColor="#EDEDFC"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Previous Games Header -->
+        <TextView
+            android:id="@+id/txtPrevHeader"
+            android:text="\nPrevious Games:"
+            android:textStyle="italic"
+            android:fontFamily="@font/inter_family"
+            android:textSize="16sp"
+            android:textColor="#101010"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
+
+        <!-- RecyclerView for Saved Games -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerPreviousGames"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:nestedScrollingEnabled="false" />
+    </LinearLayout>
+</ScrollView>

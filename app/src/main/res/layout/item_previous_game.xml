@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:layout_marginTop="8dp"
+    android:background="@drawable/black_outline"
+    android:gravity="center_vertical"
+    android:elevation="3dp">
+
+    <ImageView
+        android:id="@+id/imgGame"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/ic_hand_a"
+        android:contentDescription="Game Icon" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txtCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Category: Animals"
+            android:textColor="#101010"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/txtRounds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rounds: 5"
+            android:textColor="#101010" />
+
+        <TextView
+            android:id="@+id/txtDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date: Oct 20, 2025"
+            android:textColor="#808080" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnPlay"
+        android:text="PLAY"
+        android:textStyle="bold"
+        android:textColor="#EDEDFC"
+        android:backgroundTint="#4C4DDC"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>
