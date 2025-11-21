@@ -28,11 +28,16 @@ class DictionaryFragment : Fragment() {
     ): View? {
          _viewBinding = FragmentDictionaryBinding.inflate(inflater, container, false)
         val view = viewBinding.root
+        return view
+    }
 
-        tabLay = view.findViewById(R.id.viewShifter)
-        pager = view.findViewById(R.id.fragFill)
-
-        pager.adapter = DictionaryPagerAdapter(this)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        tabLay = viewBinding.viewShifter
+        pager = viewBinding.fragFill
+        if (pager.adapter == null){
+            pager.adapter = DictionaryPagerAdapter(this)
+        }
 
         TabLayoutMediator(tabLay, pager) {tab, pos ->
             tab.text = when (pos) {
@@ -41,8 +46,6 @@ class DictionaryFragment : Fragment() {
                 else -> null
             }
         }.attach()
-
-        return view
     }
 
     override fun onDestroyView() {
