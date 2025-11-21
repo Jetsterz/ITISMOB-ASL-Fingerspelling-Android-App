@@ -79,6 +79,38 @@ class UserWordDatabase(c: Context) {
         return r
     }
 
+    fun getShowingWords() : ArrayList<Word> {
+        val r = ArrayList<Word>()
+        val db = dbHelp.readableDatabase
+        val c : Cursor = db.query(
+            WordDBHandler.Companion.USER_WORD_TABLE,
+            null,
+            "${WordDBHandler.IS_HIDDEN} = ?",
+            arrayOf("0"),
+            null,
+            null,
+            null,
+            null
+        )
+        while (c.moveToNext()) {
+            val toBool = when (c.getInt(c.getColumnIndexOrThrow(WordDBHandler.Companion.IS_HIDDEN))) {
+                0 -> false else -> true
+            }
+            r.add(
+                Word(
+                    c.getInt(c.getColumnIndexOrThrow(WordDBHandler.Companion.WORD_ID)),
+                    c.getString(c.getColumnIndexOrThrow(WordDBHandler.Companion.WORD_NAME)),
+                    c.getString(c.getColumnIndexOrThrow(WordDBHandler.Companion.WORD_DEF)),
+                    c.getString(c.getColumnIndexOrThrow(WordDBHandler.Companion.WORD_LINK)),
+                    toBool,
+                    c.getString(c.getColumnIndexOrThrow(WordDBHandler.Companion.CATEGORY)),
+                )
+            )
+        }
+        c.close()
+        return r
+    }
+
     fun getCategories() : ArrayList<String> {
         val r = ArrayList<String>()
         val db = dbHelp.readableDatabase
@@ -101,14 +133,14 @@ class UserWordDatabase(c: Context) {
         return r
     }
 
-    fun getWordsOfCategory(cat: String) : ArrayList<Word> {
+    fun getShowingWordsOfCategory(cat: String) : ArrayList<Word> {
         val r = ArrayList<Word>()
         val db = dbHelp.readableDatabase
         val c : Cursor = db.query(
             WordDBHandler.Companion.USER_WORD_TABLE,
             null,
-            "${arrayOf(WordDBHandler.Companion.CATEGORY)} = ?",
-            arrayOf(cat),
+            "${WordDBHandler.CATEGORY} = ? AND ${WordDBHandler.IS_HIDDEN} = ?",
+            arrayOf(cat, "0"),
             null,
             null,
             null,
