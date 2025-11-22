@@ -39,7 +39,8 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
     private var practiceWord = "Fetching words..."
     private var currLetter = 0
     private var checkWord = "JJ"
-    private var nameCategories: MutableList<Category?> = mutableListOf()
+    //private var nameCategories: MutableList<Category?> = mutableListOf()
+    private var detectedLetter = ""
     private var wordsList: List<WordsData> = emptyList()
     private lateinit var endpoint: String
     private var api: Int = 0
@@ -184,43 +185,34 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
     //Displays gesture recognizer results
     override fun onResults(resultBundle: GestureRecognizerHelper.ResultBundle) {
         runOnUiThread {
+            // Get the result of the recognized gesture
+            val gestureCategories = resultBundle.results.first().gestures()
+            if (gestureCategories.isNotEmpty()) {
+                updateResults(gestureCategories.first())
 
-            if (viewBinding != null) {
-                // Get the result of the recognized gesture
-                val gestureCategories = resultBundle.results.first().gestures()
-                if (gestureCategories.isNotEmpty()) {
-                    sortResults(gestureCategories.first())
-
-                    //logic for checking the letter
+                //logic for checking the letter
+                if (currLetter < practiceWord.length && detectedLetter.isNotEmpty() && detectedLetter == this.checkWord[currLetter].toString()) {
+                    currLetter++
+                    updateStringSpan(currLetter)
+                    //check if the next character is a space. Skip until the end of the practice word or next letter
                     if (currLetter < practiceWord.length) {
-                        val catString = this.nameCategories.firstOrNull()?.categoryName()
-                        if (!catString.isNullOrEmpty()) {
-                            val letter = catString[0]
-                            if (letter == checkWord[currLetter]) {
-                                currLetter++
-                                updateStringSpan(currLetter)
-                                //check if the next character is a space
-                                if (currLetter < practiceWord.length) {
-                                    while (currLetter < practiceWord.length &&
-                                        !practiceWord[currLetter].isLetter() ) {
-                                        currLetter++
-                                    }
-                                } else {
-                                    /* Get the next word */
-                                    viewBinding.prompt.isVisible = false
-                                    viewBinding.tvPracticeWord.text = "Correct! Fetching the next word..."
-                                    lifecycleScope.launch {
-                                        delay(2.seconds)
-                                        viewBinding.prompt.isVisible = true
-                                        setRandomPracticeWord()
-                                    }
-                                }
-                            }
+                        while (currLetter < practiceWord.length &&
+                            !practiceWord[currLetter].isLetter() ) {
+                            currLetter++
+                        }
+                    } else {
+                        /* Get the next word */
+                        viewBinding.prompt.isVisible = false
+                        viewBinding.tvPracticeWord.text = "Correct! Fetching the next word..."
+                        lifecycleScope.launch {
+                            delay(2.seconds)
+                            viewBinding.prompt.isVisible = true
+                            setRandomPracticeWord()
                         }
                     }
-                } else {
-                    sortResults(emptyList())
                 }
+            } else {
+                updateResults(emptyList())
             }
         }
     }
@@ -243,20 +235,14 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
         this.checkWord = this.practiceWord.uppercase()
     }
 
-    private fun sortResults(categories: List<Category>?) {
-        this.nameCategories = MutableList(1) { null }
-        if (categories != null) {
-            val sortedCategories = categories.sortedByDescending { it.score() }
-            val min = min(sortedCategories.size, nameCategories.size )
-            for (i in 0 until min) {
-                nameCategories[i] = sortedCategories[i]
-            }
-            nameCategories.sortedBy { it?.index() }
-        }
+    private fun updateResults(categories: List<Category>?) {
+        if (categories != null && categories.isNotEmpty()) {
+            detectedLetter = categories[0].categoryName()
+        } else detectedLetter = ""
     }
 
     private fun getRandomWordListIndex() {
-        var index = 0
+        var index: Int
         do {
             index = Random.nextInt(0, wordsList.size)
         } while (wordsList[index].word.uppercase().contains('J') ||
