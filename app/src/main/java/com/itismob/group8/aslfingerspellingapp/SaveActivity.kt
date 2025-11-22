@@ -1,8 +1,8 @@
 package com.itismob.group8.aslfingerspellingapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,18 +14,32 @@ class SaveActivity : AppCompatActivity() {
 
         val playButton: Button = findViewById(R.id.btnPlayMain)
         playButton.setOnClickListener {
-            Toast.makeText(this, "Main game play clicked!", Toast.LENGTH_SHORT).show()
+            // Redirect to category selection for new game
+            val intent = Intent(this, PlayCategoryActivity::class.java)
+            startActivity(intent)
         }
 
+        loadGames()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Refresh the list when returning to this activity
+        loadGames()
+    }
+
+    private fun loadGames() {
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerPreviousGames)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val gameList = listOf(
-            PreviousGame(R.drawable.ic_hand_a, "Animals", 5, "Oct 20, 2025"),
-            PreviousGame(R.drawable.ic_hand_a, "Fruits", 7, "Oct 21, 2025"),
-            PreviousGame(R.drawable.ic_hand_a, "Colors", 4, "Oct 22, 2025")
-        )
+        // Load actual saved games
+        val savedGames = GameSaveManager.loadAllGames(this)
 
-        recyclerView.adapter = PreviousGameAdapter(this, gameList)
+        // Filter to only show incomplete games (currentRound < totalRounds)
+        val incompleteGames = savedGames.filter { it.currentRound < it.totalRounds }
+            .sortedByDescending { it.date }
+
+        recyclerView.adapter = PreviousGameAdapter(this, incompleteGames)
+
     }
 }
