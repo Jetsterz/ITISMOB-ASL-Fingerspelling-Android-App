@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.mediapipe.tasks.components.containers.Category
 import com.itismob.group8.aslfingerspellingapp.libraries.Camera
 import com.itismob.group8.aslfingerspellingapp.common.Common
 import com.itismob.group8.aslfingerspellingapp.libraries.GestureRecognizerHelper
@@ -19,14 +20,15 @@ class TranslateActivity : AppCompatActivity(), GestureRecognizerHelper.GestureRe
     private lateinit var camera: Camera
     private lateinit var backgroundExecutor: ExecutorService
     private lateinit var gestureRecognizerHelper: GestureRecognizerHelper
-    private lateinit var recyclerView: RecyclerView
-    private val defaultNumResults = 1
+    //private lateinit var recyclerView: RecyclerView
+    //private val defaultNumResults = 1
     private var currentWord = ""
-    private val gestureRecognizerResultAdapter: TranslateGestureRecognizerResultsAdapter by lazy {
+    /*private val gestureRecognizerResultAdapter: TranslateGestureRecognizerResultsAdapter by lazy {
         TranslateGestureRecognizerResultsAdapter().apply {
             updateAdapterSize(defaultNumResults)
         }
-    }
+    } */
+    private var currLetter: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +40,10 @@ class TranslateActivity : AppCompatActivity(), GestureRecognizerHelper.GestureRe
         viewBinding.tvTranslationOutput.text = currentWord
 
         //recycler view for displaying gesture recognizer results
+        /*
         this.recyclerView = viewBinding.rvTranslateResult
         this.recyclerView.adapter = gestureRecognizerResultAdapter
-        this.recyclerView.layoutManager = LinearLayoutManager(this)
+        this.recyclerView.layoutManager = LinearLayoutManager(this) */
 
         Common.Companion.hideSystemBars(window)
 
@@ -95,7 +98,7 @@ class TranslateActivity : AppCompatActivity(), GestureRecognizerHelper.GestureRe
 
         viewBinding.fabAddLetter.setOnClickListener {
             //get the current letter
-            val letter = gestureRecognizerResultAdapter.getTopCategoryName()
+            val letter = currLetter
             if (!letter.isNullOrBlank()) {
                 currentWord += letter
                 viewBinding.tvTranslationOutput.text = currentWord
@@ -139,13 +142,23 @@ class TranslateActivity : AppCompatActivity(), GestureRecognizerHelper.GestureRe
                 // Show result of recognized gesture
                 val gestureCategories = resultBundle.results.first().gestures()
                 if (gestureCategories.isNotEmpty()) {
-                    gestureRecognizerResultAdapter.updateResults(
+                    updateResults(
                         gestureCategories.first()
                     )
                 } else {
-                    gestureRecognizerResultAdapter.updateResults(emptyList())
+                    updateResults(emptyList())
                 }
             }
+        }
+    }
+
+    fun updateResults(categories: List<Category>?) {
+        if (categories != null && categories.isNotEmpty()) {
+            viewBinding.tvGROutput.text = categories[0].categoryName()
+            currLetter = categories[0].categoryName()
+        } else {
+            currLetter = ""
+            viewBinding.tvGROutput.text = ""
         }
     }
 }

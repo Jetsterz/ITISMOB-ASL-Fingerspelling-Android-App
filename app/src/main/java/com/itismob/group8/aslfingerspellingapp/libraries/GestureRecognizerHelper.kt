@@ -10,6 +10,7 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageProxy
 import com.google.mediapipe.framework.image.BitmapImageBuilder
 import com.google.mediapipe.framework.image.MPImage
+import com.google.mediapipe.tasks.components.processors.ClassifierOptions
 import com.google.mediapipe.tasks.core.BaseOptions
 import com.google.mediapipe.tasks.core.Delegate
 import com.google.mediapipe.tasks.vision.core.RunningMode
@@ -59,6 +60,12 @@ class GestureRecognizerHelper (
         baseOptionBuilder.setModelAssetPath(MP_RECOGNIZER_TASK)
 
         try {
+            val customOptions =
+                ClassifierOptions.builder()
+                    .setMaxResults(1)
+                    .setScoreThreshold(0.8F)
+                    .build()
+
             val baseOptions = baseOptionBuilder.build()
             val optionsBuilder =
                 GestureRecognizer.GestureRecognizerOptions.builder()
@@ -67,6 +74,7 @@ class GestureRecognizerHelper (
                     .setMinTrackingConfidence(minHandTrackingConfidence)
                     .setMinHandPresenceConfidence(minHandPresenceConfidence)
                     .setRunningMode(runningMode)
+                    .setCustomGesturesClassifierOptions(customOptions)
 
             if (runningMode == RunningMode.LIVE_STREAM) {
                 optionsBuilder
