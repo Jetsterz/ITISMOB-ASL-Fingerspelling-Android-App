@@ -1,4 +1,4 @@
-package com.itismob.group8.aslfingerspellingapp
+package com.itismob.group8.aslfingerspellingapp.wordlists
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,6 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.itismob.group8.aslfingerspellingapp.wordlists.database.DictioWordDatabase
+import com.itismob.group8.aslfingerspellingapp.R
+import com.itismob.group8.aslfingerspellingapp.wordlists.Word
 import com.itismob.group8.aslfingerspellingapp.databinding.FragmentViewdictionarywordsBinding
 
 class ViewdictionarywordsFragment : Fragment(R.layout.fragment_viewdictionarywords) {

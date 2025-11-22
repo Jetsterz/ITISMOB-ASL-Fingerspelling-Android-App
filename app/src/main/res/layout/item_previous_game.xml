@@ -1,58 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="12dp"
-    android:layout_marginTop="8dp"
-    android:background="@drawable/black_outline"
-    android:gravity="center_vertical"
-    android:elevation="3dp">
-
-    <ImageView
-        android:id="@+id/imgGame"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/ic_hand_a"
-        android:contentDescription="Game Icon" />
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
 
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_marginStart="12dp"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="@drawable/rounded_card">
 
-        <TextView
-            android:id="@+id/txtCategory"
+        <ImageView
+            android:id="@+id/imgGame"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_hand_a" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Category: Animals"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtRounds"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Round: 1/9"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/txtDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Started: Oct 20, 2025 14:30"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/txtScore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Score: 45"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtCompletionInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="In Progress - Score: 45"
+                android:textColor="#666666"
+                android:textSize="12sp"
+                android:textStyle="italic" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnPlay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Category: Animals"
-            android:textColor="#101010"
-            android:textStyle="bold"
-            android:textSize="16sp" />
+            android:layout_gravity="center_vertical"
+            android:text="Continue"
+            android:textColor="#FFFFFF"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp" />
 
-        <TextView
-            android:id="@+id/txtRounds"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Rounds: 5"
-            android:textColor="#101010" />
-
-        <TextView
-            android:id="@+id/txtDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Date: Oct 20, 2025"
-            android:textColor="#808080" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnPlay"
-        android:text="PLAY"
-        android:textStyle="bold"
-        android:textColor="#EDEDFC"
-        android:backgroundTint="#4C4DDC"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+</androidx.cardview.widget.CardView>
