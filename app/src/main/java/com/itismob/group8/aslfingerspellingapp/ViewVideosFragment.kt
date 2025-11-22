@@ -14,9 +14,15 @@ class ViewVideosFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var adapter: VideoAdapter
-    private val videoList = mutableListOf<VideoItem>()
 
-    private var isDataLoaded = false // ✅ Prevents repopulation
+    // YouTube video data
+    private val youtubeVideos = listOf(
+        VideoItem("Learn ASL Alphabet Video", "6_gXiBe9y9A"),
+        VideoItem("Learn the ASL Alphabet Fast", "DBQINq0SsAw"),
+        VideoItem("Alphabet Filipino Sign Language Tutorial", "iYpTJ5cEl9Y"),
+        VideoItem("American Sign Language Alphabet", "cGavOVNDj1s"),
+        VideoItem("The ASL Alphabet | American Sign Language - ABCs", "tkMg8g8vVUo")
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,30 +35,13 @@ class ViewVideosFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Setup RecyclerView and adapter once
-        adapter = VideoAdapter(videoList)
+        // Setup RecyclerView
+        adapter = VideoAdapter(youtubeVideos)
         binding.recyclerViewVideos.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.recyclerViewVideos.adapter = adapter
 
-        // ✅ Only populate videos the first time
-        if (!isDataLoaded) {
-            videoList.addAll(
-                listOf(
-                    VideoItem("ASL Alphabet Tutorial"),
-                    VideoItem("Basic Greetings in ASL"),
-                    VideoItem("Common Phrases - Part 1"),
-                    VideoItem("Fingerspelling Numbers 1-10"),
-                    VideoItem("Fingerspelling Practice")
-                )
-            )
-            adapter.notifyDataSetChanged()
-            isDataLoaded = true
-        }
-
-        // Delete button (placeholder for now)
-        binding.buttonDelete.setOnClickListener {
-            // TODO: Delete logic later
-        }
+        // Hide delete button since we're showing YouTube videos
+        binding.buttonDelete.visibility = View.GONE
     }
 
     override fun onDestroyView() {

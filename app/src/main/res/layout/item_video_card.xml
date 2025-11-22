@@ -49,14 +49,5 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Checkbox in top-right corner -->
-    <CheckBox
-        android:id="@+id/checkboxSelect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:buttonTint="@android:color/holo_blue_light"
-        app:layout_constraintTop_toTopOf="@id/containerVideo"
-        app:layout_constraintEnd_toEndOf="@id/containerVideo"
-        android:layout_margin="4dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

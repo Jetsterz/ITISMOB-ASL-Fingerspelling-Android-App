@@ -3,9 +3,8 @@ package com.itismob.group8.aslfingerspellingapp
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.itismob.group8.aslfingerspellingapp.databinding.ItemVideoCardBinding
-
-data class VideoItem(val title: String)
 
 class VideoAdapter(private val videos: List<VideoItem>) :
     RecyclerView.Adapter<VideoAdapter.VideoViewHolder>() {
@@ -22,14 +21,17 @@ class VideoAdapter(private val videos: List<VideoItem>) :
         val video = videos[position]
         holder.binding.textVideoTitle.text = video.title
 
-        // Placeholder click for "view video"
-        holder.itemView.setOnClickListener {
-            // TODO: Handle view action (open video)
-        }
+        // Load YouTube thumbnail using Glide
+        Glide.with(holder.itemView.context)
+            .load(video.thumbnailUrl)
+            .placeholder(R.drawable.asl_placeholder) // Your existing placeholder
+            .into(holder.binding.imageThumbnail)
 
-        holder.binding.checkboxSelect.setOnCheckedChangeListener { _, _ ->
-            // TODO: Handle selection logic later
+        // Click to play video
+        holder.itemView.setOnClickListener {
+            VideoPlayerHelper.playYouTubeVideo(holder.itemView.context, video.youtubeId)
         }
+        
     }
 
     override fun getItemCount() = videos.size
