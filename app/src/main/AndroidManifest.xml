@@ -48,6 +48,36 @@
             android:name=".wordlists.EditWordActivity"
             android:exported="false" />
         <activity
+            android:name=".PlayCameraActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PlayCategoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SaveActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DisplayWordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CreateWordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PlayCameraActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PlayCategoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SaveActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DisplayWordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CreateWordActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
