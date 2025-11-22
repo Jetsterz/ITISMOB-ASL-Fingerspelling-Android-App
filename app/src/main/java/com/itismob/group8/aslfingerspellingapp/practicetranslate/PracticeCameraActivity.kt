@@ -1,5 +1,7 @@
 package com.itismob.group8.aslfingerspellingapp.practicetranslate
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
@@ -7,7 +9,12 @@ import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.util.Log
+import android.view.LayoutInflater
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -15,8 +22,10 @@ import com.itismob.group8.aslfingerspellingapp.databinding.ActivityPracticeCamer
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import com.google.mediapipe.tasks.components.containers.Category
+import com.itismob.group8.aslfingerspellingapp.R
 import com.itismob.group8.aslfingerspellingapp.libraries.Camera
 import com.itismob.group8.aslfingerspellingapp.common.Common
+import com.itismob.group8.aslfingerspellingapp.dataclasses.ImageURILetterMapping
 import com.itismob.group8.aslfingerspellingapp.libraries.GestureRecognizerHelper
 import com.itismob.group8.aslfingerspellingapp.dataclasses.NamesData
 import com.itismob.group8.aslfingerspellingapp.dataclasses.WordsData
@@ -43,6 +52,32 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
     private var wordsList: List<WordsData> = emptyList()
     private lateinit var endpoint: String
     private var api: Int = 0
+
+    private val letterImageMapping: ArrayList<ImageURILetterMapping> = arrayListOf(
+        ImageURILetterMapping('A', R.drawable.a_sign),
+        ImageURILetterMapping('B', R.drawable.b_sign),
+        ImageURILetterMapping('C', R.drawable.c_sign),
+        ImageURILetterMapping('D', R.drawable.d_sign),
+        ImageURILetterMapping('E', R.drawable.e_sign),
+        ImageURILetterMapping('F', R.drawable.f_sign),
+        ImageURILetterMapping('G', R.drawable.g_sign),
+        ImageURILetterMapping('H', R.drawable.h_sign),
+        ImageURILetterMapping('I', R.drawable.i_sign),
+        ImageURILetterMapping('K', R.drawable.k_sign),
+        ImageURILetterMapping('L', R.drawable.l_sign),
+        ImageURILetterMapping('M', R.drawable.m_sign),
+        ImageURILetterMapping('N', R.drawable.n_sign),
+        ImageURILetterMapping('O', R.drawable.o_sign),
+        ImageURILetterMapping('P', R.drawable.p_sign),
+        ImageURILetterMapping('Q', R.drawable.q_sign),
+        ImageURILetterMapping('R', R.drawable.r_sign),
+        ImageURILetterMapping('S', R.drawable.s_sign),
+        ImageURILetterMapping('T', R.drawable.t_sign),
+        ImageURILetterMapping('U', R.drawable.u_sign),
+        ImageURILetterMapping('V', R.drawable.v_sign),
+        ImageURILetterMapping('W', R.drawable.w_sign),
+        ImageURILetterMapping('X', R.drawable.x_sign),
+        ImageURILetterMapping('Y', R.drawable.y_sign))
 
     companion object {
         const val CATEGORY_KEY = "CATEGORY_KEY"
@@ -134,7 +169,51 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
             }
         }
 
+        viewBinding.ibHint.setOnClickListener {
+            showDialogwithIcon(this)
+        }
+
         viewBinding.tvCategory.text = this.intent.getStringExtra(CATEGORY_KEY)
+
+
+    }
+
+    @SuppressLint("MissingInflatedId")
+    // Open the Dialog With an Alert Icon
+    fun showDialogwithIcon(context: Context) {
+        val builder = AlertDialog.Builder(context, R.style.AlertDialogTheme)
+        val inflater = LayoutInflater.from(context)
+        val dialogView = inflater.inflate(R.layout.dialog_layout, null)
+
+        val letter = practiceWord[currLetter].uppercaseChar()
+        // Find the ImageView and set the icon
+        val iconImage: ImageView = dialogView.findViewById(R.id.dialog_icon)
+        val imageURI = getImageURIOfLetter(letter)
+        when (imageURI) {
+            null -> iconImage.setImageResource(R.drawable.hand)
+            else -> iconImage.setImageResource(imageURI)
+        }
+
+        // Find the TextView and set the message
+        val message: TextView = dialogView.findViewById(R.id.tv_message)
+        message.text = "How to sign $letter"
+
+        // Set the custom layout to the dialog
+        builder.setView(dialogView)
+               .setTitle("Hint")
+
+        // Add a negative button to cancel the dialog
+        builder.setNegativeButton("CLOSE") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        // Show the dialog
+        val dialog: AlertDialog = builder.create()
+        dialog.window?.setBackgroundDrawableResource(R.color.alertdialog_background)
+        dialog.show()
+
+        val negativeButton: Button = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+        negativeButton.setTextColor(resources.getColor(R.color.alertdialog_buttoncolor)) // Set negative button text to red
     }
 
     private fun setRandomPracticeWord() {
@@ -181,6 +260,8 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
         Log.i("Error", "Error: $error")
     }
 
+
+
     //Displays gesture recognizer results
     override fun onResults(resultBundle: GestureRecognizerHelper.ResultBundle) {
         runOnUiThread {
@@ -223,6 +304,14 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
                 }
             }
         }
+    }
+
+    private fun getImageURIOfLetter(currentChar: Char): Int? {
+        val imageResId = letterImageMapping
+            .find { it.letter == currentChar }
+            ?.imageURI
+
+        return imageResId
     }
 
     private fun changePracticeWord(word: String) {

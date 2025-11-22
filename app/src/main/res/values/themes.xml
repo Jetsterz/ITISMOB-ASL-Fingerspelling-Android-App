@@ -5,4 +5,7 @@
     </style>
 
     <style name="Theme.ITISMOBGroup8ASLApplication" parent="Base.Theme.ITISMOBGroup8ASLApplication" />
+    <style name="AlertDialogTheme" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:textColorPrimary">#4C4DDC</item>
+    </style>
 </resources>

@@ -4,4 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="UnavailableGrey">#A8BDBDBD</color>
     <color name="mp_color_primary">#007F8B</color>
+    <color name="alertdialog_background">#EDEDFC</color>
+    <color name="alertdialog_buttoncolor">#4C4DDC</color>
 </resources>
