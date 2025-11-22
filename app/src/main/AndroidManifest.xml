@@ -36,15 +36,6 @@
             android:name=".SaveActivity"
             android:exported="false" />
         <activity
-            android:name=".PlayCameraActivity"
-            android:exported="false" />
-        <activity
-            android:name=".PlayCategoryActivity"
-            android:exported="false" />
-        <activity
-            android:name=".SaveActivity"
-            android:exported="false" />
-        <activity
             android:name=".wordlists.DisplayWordActivity"
             android:exported="false" />
         <activity

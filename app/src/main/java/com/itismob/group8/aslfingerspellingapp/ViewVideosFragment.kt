@@ -35,12 +35,11 @@ class ViewVideosFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Setup RecyclerView
+
         adapter = VideoAdapter(youtubeVideos)
         binding.recyclerViewVideos.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.recyclerViewVideos.adapter = adapter
 
-        // Hide delete button since we're showing YouTube videos
         binding.buttonDelete.visibility = View.GONE
     }
 

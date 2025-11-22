@@ -24,7 +24,7 @@ class VideoAdapter(private val videos: List<VideoItem>) :
         // Load YouTube thumbnail using Glide
         Glide.with(holder.itemView.context)
             .load(video.thumbnailUrl)
-            .placeholder(R.drawable.asl_placeholder) // Your existing placeholder
+            .placeholder(R.drawable.asl_placeholder)
             .into(holder.binding.imageThumbnail)
 
         // Click to play video

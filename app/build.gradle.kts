@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("com.android.application")
     id("com.google.gms.google-services")
+    id("com.google.firebase.appdistribution")
 }
 
 android {
@@ -26,7 +27,21 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            firebaseAppDistribution {
+                appId = "1:959956162486:android:7f744dc911406c365b1317"
+                groups = "testers"
+                releaseNotes = "Initial release with ASL fingerspelling features"
+            }
         }
+
+        debug {
+            firebaseAppDistribution {
+                appId = "1:959956162486:android:7f744dc911406c365b1317"
+                groups = "internal-testers"
+                releaseNotes = "Initial release with ASL fingerspelling features"
+
+            }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -71,4 +86,6 @@ dependencies {
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.google.firebase:firebase-appdistribution:16.0.0-beta10")
+}
 }
