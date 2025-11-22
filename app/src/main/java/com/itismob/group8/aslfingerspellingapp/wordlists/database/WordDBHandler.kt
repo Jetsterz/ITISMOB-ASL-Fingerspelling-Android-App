@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import com.itismob.group8.aslfingerspellingapp.R
 
 class WordDBHandler (c: Context)
 : SQLiteOpenHelper(c, DATABASE_NAME, null, DATABASE_VERSION){
@@ -45,8 +46,9 @@ override fun onCreate(db: SQLiteDatabase?) {
         )
 """.trimIndent()
     db?.execSQL(createUserDB)
+    val placeholderVid = R.raw.for_placeholder_only.toString()
     val uv1 = cvMake("UserPlace", "A placeholder for the User Word list.", null, true, "PLACEHOLDER")
-    val uv2 = cvMake("UserPlace2", "Another placeholder for the User Word List.", "SampleLink", false, "PLACEHOLDER")
+    val uv2 = cvMake("UserPlace2", "Another placeholder for the User Word List.", placeholderVid, false, "PLACEHOLDER")
     db?.insert(USER_WORD_TABLE, null, uv1)
     db?.insert(USER_WORD_TABLE, null, uv2)
 
@@ -62,7 +64,7 @@ override fun onCreate(db: SQLiteDatabase?) {
 """.trimIndent()
     db?.execSQL(createDictioDB)
     val cv1 = cvMake("DictioPlace", "A placeholder for the Dictionary Word list.", null, true, "PLACEHOLDER")
-    val cv2 = cvMake("DictioPlace2", "Another placeholder for the Dictionary Word List.", "SampleLink", false, "PLACEHOLDER")
+    val cv2 = cvMake("DictioPlace2", "Another placeholder for the Dictionary Word List.", null, false, "PLACEHOLDER")
     db?.insert(DICTIO_WORDS_TABLE, null, cv1)
     db?.insert(DICTIO_WORDS_TABLE, null, cv2)
 }

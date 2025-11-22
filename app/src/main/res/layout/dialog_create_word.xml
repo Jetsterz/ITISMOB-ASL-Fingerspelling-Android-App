@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/nameView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Word Name" />
+
+    <EditText
+        android:id="@+id/nameIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Type..."
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/defView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Definition" />
+
+    <EditText
+        android:id="@+id/defIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Type..."
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/catView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Category" />
+
+    <AutoCompleteTextView
+        android:id="@+id/catIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:completionThreshold="1"
+        android:hint="Select an existing category, or type a new one." />
+</LinearLayout>

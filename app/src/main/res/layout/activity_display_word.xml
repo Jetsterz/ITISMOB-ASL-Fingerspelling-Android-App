@@ -15,31 +15,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.media3.ui.PlayerView
+        <VideoView
             android:id="@+id/wordVideo"
             android:layout_width="267dp"
             android:layout_height="422dp" />
+
+        <TextView
+            android:id="@+id/viewVidStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_24pt_italic"
+            android:gravity="center"
+            android:text="No Video Playing"
+            android:textSize="12sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/editWordInfo"
-                android:layout_width="82dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#00FFFFFF"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/edit" />
-
             <TextView
                 android:id="@+id/viewWord"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="left"
+                android:gravity="center"
                 android:text="TextView"
                 android:textSize="24sp" />
         </LinearLayout>
@@ -51,6 +51,15 @@
             android:gravity="center"
             android:text="TextView" />
 
+        <TextView
+            android:id="@+id/viewCat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_24pt_italic"
+            android:gravity="center"
+            android:text="TextView"
+            android:textSize="12sp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -61,7 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Edit Video" />
+                android:text="Edit" />
 
             <ImageButton
                 android:id="@+id/delCurrWord"
