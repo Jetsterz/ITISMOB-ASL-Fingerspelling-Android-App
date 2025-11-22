@@ -1,6 +1,5 @@
 package com.itismob.group8.aslfingerspellingapp
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,7 +9,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.itismob.group8.aslfingerspellingapp.databinding.FragmentDictionaryBinding
-import com.itismob.group8.aslfingerspellingapp.databinding.FragmentViewvideosBinding
+import com.itismob.group8.aslfingerspellingapp.wordlists.DictionaryPagerAdapter
 
 /**
  * A simple [Fragment] subclass.
@@ -29,11 +28,16 @@ class DictionaryFragment : Fragment() {
     ): View? {
          _viewBinding = FragmentDictionaryBinding.inflate(inflater, container, false)
         val view = viewBinding.root
+        return view
+    }
 
-        tabLay = view.findViewById(R.id.viewShifter)
-        pager = view.findViewById(R.id.fragFill)
-
-        pager.adapter = DictionaryPagerAdapter(this)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        tabLay = viewBinding.viewShifter
+        pager = viewBinding.fragFill
+        if (pager.adapter == null){
+            pager.adapter = DictionaryPagerAdapter(this)
+        }
 
         TabLayoutMediator(tabLay, pager) {tab, pos ->
             tab.text = when (pos) {
@@ -42,8 +46,6 @@ class DictionaryFragment : Fragment() {
                 else -> null
             }
         }.attach()
-
-        return view
     }
 
     override fun onDestroyView() {

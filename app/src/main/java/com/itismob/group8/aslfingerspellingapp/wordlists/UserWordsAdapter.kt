@@ -1,11 +1,16 @@
-package com.itismob.group8.aslfingerspellingapp
+package com.itismob.group8.aslfingerspellingapp.wordlists
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.itismob.group8.aslfingerspellingapp.wordlists.Word
 import com.itismob.group8.aslfingerspellingapp.databinding.ItemLayoutUserwordBinding
 
-class UserWordsAdapter(d: ArrayList<Word>, private val onShowHideClick: (position: Int) -> Unit, private val onDeleteClick: (position: Int) -> Unit) : RecyclerView.Adapter<UserWordViewHolder>() {
+class UserWordsAdapter(
+    d: ArrayList<Word>,
+    private val onShowHideClick: (position: Int) -> Unit,
+    private val onDeleteClick: (position: Int) -> Unit
+) : RecyclerView.Adapter<UserWordViewHolder>() {
     private val dat: ArrayList<Word> = d
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserWordViewHolder {

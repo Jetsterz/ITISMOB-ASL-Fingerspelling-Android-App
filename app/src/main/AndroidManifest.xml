@@ -36,10 +36,22 @@
             android:name=".SaveActivity"
             android:exported="false" />
         <activity
-            android:name=".DisplayWordActivity"
+            android:name=".PlayCameraActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateWordActivity"
+            android:name=".PlayCategoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SaveActivity"
+            android:exported="false" />
+        <activity
+            android:name=".wordlists.DisplayWordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".wordlists.CreateWordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".wordlists.EditWordActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

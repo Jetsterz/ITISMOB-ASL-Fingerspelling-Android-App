@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "35505074504",
+    "project_id": "itismob---group-8-asl-app",
+    "storage_bucket": "itismob---group-8-asl-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:35505074504:android:84688eb186f89094a1437d",
+        "android_client_info": {
+          "package_name": "com.itismob.group8.aslfingerspellingapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAh0nN23Jfn1OIwY09i9FTwl-Lz_2C2bLY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
