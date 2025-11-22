@@ -27,29 +27,26 @@ class UserWordViewHolder (private val viewBinding: ItemLayoutUserwordBinding): R
         }
 
         viewBinding.btnViewedit.setOnClickListener {
-
+            val i = Intent(c, DisplayWordActivity::class.java)
+            i.putExtra("list", "UserWordDatabase")
+            i.putExtra("id", w.id)
+            // tells DisplayWordActivity that a video link exists if true
             if (w.videoLink != null) {
-                val i = Intent(c, DisplayWordActivity::class.java)
                 i.putExtra("video?", true)
-                i.putExtra("wordName", w.wordName)
-                i.putExtra("wordDef", w.wordDef)
-                i.putExtra("videoLink", w.videoLink)
-                i.putExtra("category", w.category)
                 c.startActivity(i)
-            } else {
-                val i = Intent(c, EditWordActivity::class.java)
+            }
+            // or... you know... the opposite of doing that
+            else {
                 i.putExtra("video?", false)
-                i.putExtra("wordName", w.wordName)
-                i.putExtra("wordDef", w.wordDef)
-                i.putExtra("videoLink", w.videoLink)
-                i.putExtra("category", w.category)
                 c.startActivity(i)
             }
         }
 
         viewBinding.btnPractice.setOnClickListener {
-            val vLink = w.videoLink
-            // TODO("No existing Practice Word Activity yet.")
+            val i = Intent(c, PracticeOneWordActivity::class.java)
+            i.putExtra("id", w.id)
+            i.putExtra("list", "UserWordDatabase")
+            c.startActivity(i)
         }
 
         viewBinding.btnShowhide.setOnClickListener {

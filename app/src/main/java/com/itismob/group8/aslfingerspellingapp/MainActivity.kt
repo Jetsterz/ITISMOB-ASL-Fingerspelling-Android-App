@@ -12,6 +12,7 @@ class MainActivity : AppCompatActivity() {
     private var activeFragment : Fragment = TranslatePracticeFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        FragmentManager.enableDebugLogging(true)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         viewBinding = ActivityMainBinding.inflate(layoutInflater)

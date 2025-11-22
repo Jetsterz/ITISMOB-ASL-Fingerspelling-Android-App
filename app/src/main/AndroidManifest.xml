@@ -42,6 +42,9 @@
             android:name=".wordlists.CreateWordActivity"
             android:exported="false" />
         <activity
+            android:name=".wordlists.PracticeOneWordActivity"
+            android:exported="false" />
+        <activity
             android:name=".wordlists.EditWordActivity"
             android:exported="false" />
         <activity

@@ -1,5 +1,6 @@
 package com.itismob.group8.aslfingerspellingapp.wordlists
 
+import android.content.Intent
 import androidx.recyclerview.widget.RecyclerView
 import com.itismob.group8.aslfingerspellingapp.R
 import com.itismob.group8.aslfingerspellingapp.wordlists.Word
@@ -21,8 +22,10 @@ class DictionaryWordViewHolder (private val viewBinding: ItemLayoutDictionarywor
         }
 
         viewBinding.btnPractice.setOnClickListener {
-            val vLink = w.videoLink
-            // TODO("No existing Practice Word Activity yet.")
+            val i = Intent(c, PracticeOneWordActivity::class.java)
+            i.putExtra("id", w.id)
+            i.putExtra("list", "DictioWordDatabase")
+            c.startActivity(i)
         }
         viewBinding.btnShowhide.setOnClickListener {
             if (viewBinding.btnShowhide.tag == true){

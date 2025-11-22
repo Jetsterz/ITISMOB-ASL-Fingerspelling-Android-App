@@ -1,10 +1,16 @@
 package com.itismob.group8.aslfingerspellingapp.wordlists
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AutoCompleteTextView
+import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -25,16 +31,50 @@ class ViewuserwordsFragment : Fragment(R.layout.fragment_viewuserwords) {
         b = FragmentViewuserwordsBinding.inflate(inflater, container, false)
         return binding.root
     }
+    private lateinit var a : UserWordsAdapter
+    private lateinit var db : UserWordDatabase
+    private lateinit var dat : ArrayList<Word>
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val db = UserWordDatabase(requireContext())
-        val dat : ArrayList<Word> = db.getAllWords()
-        lateinit var a : UserWordsAdapter
+        db = UserWordDatabase(requireContext())
+        dat = db.getAllWords()
+
+        val createDiaView = layoutInflater.inflate(R.layout.dialog_create_word, null)
+        val nameIn = createDiaView.findViewById<EditText>(R.id.nameIn)
+        val defIn = createDiaView.findViewById<EditText>(R.id.defIn)
+        val catIn = createDiaView.findViewById<AutoCompleteTextView>(R.id.catIn)
 
         binding.addButton.setOnClickListener {
-            Toast.makeText(requireContext(), "I would show Create Word UI... IF I HAD ANY!", Toast.LENGTH_SHORT).show()
-            //TODO("Actually give the guy a Create Word activity.")
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Create New Word")
+                .setView(createDiaView)
+                .setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .setPositiveButton("Proceed") { _, _ ->
+                    val name = nameIn.text.toString()
+                    val def = defIn.text.toString()
+                    val cat = catIn.text.toString()
+                    val id = db.addWord(Word(-1, name, def, null, true, cat))
+                    dat.add(db.findWordByID(id)!!)
+                    val pos = dat.size - 1
+                    a.notifyItemInserted(pos)
+                    MaterialAlertDialogBuilder(requireContext())
+                        .setTitle("Create Video?")
+                        .setMessage("Would you like to create an associated ASL video?")
+                        .setNegativeButton("Cancel") { vDialog, _ ->
+                            vDialog.dismiss()
+                        }
+                        .setPositiveButton("Proceed to Video Creator") { _, _ ->
+                            val i = Intent(requireContext(), CreateWordActivity::class.java)
+                            i.putExtra("wordID", id)
+                            startActivity(i)
+                        }
+                        .show()
+                }
+                    .show()
         }
 
         val showHideOnClickHandler = { pos: Int ->
@@ -44,7 +84,6 @@ class ViewuserwordsFragment : Fragment(R.layout.fragment_viewuserwords) {
                 val stateChange = !thisWord.showInPlay
                 thisWord.showInPlay = stateChange
                 a.notifyItemChanged(pos)
-
             }
         }
         val deleteOnClickHandler = { pos: Int ->
@@ -57,14 +96,13 @@ class ViewuserwordsFragment : Fragment(R.layout.fragment_viewuserwords) {
                     .setNegativeButton("Cancel") { dialog, _ ->
                         dialog.dismiss()
                     }
-                    .setPositiveButton("Delete") { dialog, _ ->
+                    .setPositiveButton("Delete") { _, _ ->
                         db.deleteWord(dat[pos])
                         dat.removeAt(pos)
                         a.notifyItemRemoved(pos)
                         Toast.makeText(requireContext(), "'${thisWordName}' was deleted.", Toast.LENGTH_SHORT).show()
                     }
                     .show()
-
             }
         }
 
@@ -73,5 +111,11 @@ class ViewuserwordsFragment : Fragment(R.layout.fragment_viewuserwords) {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = a
         }
+    }
+    override fun onResume() {
+        super.onResume()
+        dat.clear()
+        dat.addAll(db.getAllWords())
+        a.notifyDataSetChanged()
     }
 }
