@@ -63,7 +63,7 @@ class GestureRecognizerHelper (
             val customOptions =
                 ClassifierOptions.builder()
                     .setMaxResults(1)
-                    .setScoreThreshold(0.8F)
+                    .setScoreThreshold(0.6F)
                     .build()
 
             val baseOptions = baseOptionBuilder.build()

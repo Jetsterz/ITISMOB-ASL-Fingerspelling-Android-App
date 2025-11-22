@@ -1,19 +1,28 @@
 package com.itismob.group8.aslfingerspellingapp.practicetranslate
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.mediapipe.tasks.components.containers.Category
+import com.itismob.group8.aslfingerspellingapp.R
 import com.itismob.group8.aslfingerspellingapp.libraries.Camera
 import com.itismob.group8.aslfingerspellingapp.common.Common
 import com.itismob.group8.aslfingerspellingapp.libraries.GestureRecognizerHelper
 import com.itismob.group8.aslfingerspellingapp.databinding.ActivityTranslateBinding
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import kotlin.text.uppercaseChar
 
 class TranslateActivity : AppCompatActivity(), GestureRecognizerHelper.GestureRecognizerListener {
     private lateinit var viewBinding: ActivityTranslateBinding
@@ -38,12 +47,6 @@ class TranslateActivity : AppCompatActivity(), GestureRecognizerHelper.GestureRe
         setContentView(viewBinding.root)
 
         viewBinding.tvTranslationOutput.text = currentWord
-
-        //recycler view for displaying gesture recognizer results
-        /*
-        this.recyclerView = viewBinding.rvTranslateResult
-        this.recyclerView.adapter = gestureRecognizerResultAdapter
-        this.recyclerView.layoutManager = LinearLayoutManager(this) */
 
         Common.Companion.hideSystemBars(window)
 
@@ -104,6 +107,39 @@ class TranslateActivity : AppCompatActivity(), GestureRecognizerHelper.GestureRe
                 viewBinding.tvTranslationOutput.text = currentWord
             }
         }
+
+        viewBinding.ibSignLanguageAlphabet.setOnClickListener {
+            showDialogwithIcon(this)
+        }
+    }
+
+    @SuppressLint("MissingInflatedId")
+    // Open the Dialog With an Alert Icon
+    fun showDialogwithIcon(context: Context) {
+        val builder = AlertDialog.Builder(context, R.style.AlertDialogTheme)
+        val inflater = LayoutInflater.from(context)
+        val dialogView = inflater.inflate(R.layout.dialog_layout_translate, null)
+
+        // Find the ImageView and set the icon
+        val iconImage: ImageView = dialogView.findViewById(R.id.dialog_icon)
+        iconImage.setImageResource(R.drawable.asl_alphabet)
+
+        // Set the custom layout to the dialog
+        builder.setView(dialogView)
+            .setTitle("Alphabet in Sign Language")
+
+        // Add a negative button to cancel the dialog
+        builder.setNegativeButton("CLOSE") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        // Show the dialog
+        val dialog: AlertDialog = builder.create()
+        dialog.window?.setBackgroundDrawableResource(R.color.alertdialog_background)
+        dialog.show()
+
+        val negativeButton: Button = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+        negativeButton.setTextColor(resources.getColor(R.color.alertdialog_buttoncolor)) // Set negative button text to red
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

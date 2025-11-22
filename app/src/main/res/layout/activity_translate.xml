@@ -10,7 +10,9 @@
     <androidx.camera.view.PreviewView
         android:id="@+id/pvCameraPreviewTranslate"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="-44dp"
+        tools:layout_editor_absoluteY="229dp">
 
     </androidx.camera.view.PreviewView>
 
@@ -93,6 +95,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/switch_camera"
         app:tint="#4C4DDC" />
+
+    <ImageButton
+        android:id="@+id/ibSignLanguageAlphabet"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/custom_btn_background"
+        android:padding="15dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="@+id/fabSwitchCamTranslate"
+        app:layout_constraintStart_toStartOf="@+id/fabSwitchCamTranslate"
+        app:layout_constraintTop_toBottomOf="@+id/fabSwitchCamTranslate"
+        app:srcCompat="@drawable/question"
+        app:tint="#C8C8F4" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabRecordTranslate"
