@@ -14,7 +14,6 @@ abstract class WordDatabase(c: Context){
         val cv = ContentValues()
         cv.put(WordDBHandler.Companion.WORD_NAME, w.wordName)
         cv.put(WordDBHandler.Companion.WORD_DEF, w.wordDef)
-        cv.put(WordDBHandler.Companion.WORD_LINK, w.videoLink)
         cv.put(WordDBHandler.Companion.IS_HIDDEN, w.showInPlay)
         cv.put(WordDBHandler.Companion.CATEGORY, w.category)
 
@@ -30,7 +29,6 @@ abstract class WordDatabase(c: Context){
         val cv = ContentValues()
         cv.put(WordDBHandler.Companion.WORD_NAME, w.wordName)
         cv.put(WordDBHandler.Companion.WORD_DEF, w.wordDef)
-        cv.put(WordDBHandler.Companion.WORD_LINK, w.videoLink)
         cv.put(WordDBHandler.Companion.IS_HIDDEN, w.showInPlay)
         cv.put(WordDBHandler.Companion.CATEGORY, w.category)
 
@@ -67,9 +65,8 @@ abstract class WordDatabase(c: Context){
                     c.getInt(c.getColumnIndexOrThrow(WordDBHandler.Companion.WORD_ID)),
                     c.getString(c.getColumnIndexOrThrow(WordDBHandler.Companion.WORD_NAME)),
                     c.getString(c.getColumnIndexOrThrow(WordDBHandler.Companion.WORD_DEF)),
-                    c.getString(c.getColumnIndexOrThrow(WordDBHandler.Companion.WORD_LINK)),
                     toBool,
-                    c.getString(c.getColumnIndexOrThrow(WordDBHandler.Companion.CATEGORY)),
+                    c.getString(c.getColumnIndexOrThrow(WordDBHandler.Companion.CATEGORY))
                 )
             )
         }
@@ -99,9 +96,8 @@ abstract class WordDatabase(c: Context){
                     c.getInt(c.getColumnIndexOrThrow(WordDBHandler.Companion.WORD_ID)),
                     c.getString(c.getColumnIndexOrThrow(WordDBHandler.Companion.WORD_NAME)),
                     c.getString(c.getColumnIndexOrThrow(WordDBHandler.Companion.WORD_DEF)),
-                    c.getString(c.getColumnIndexOrThrow(WordDBHandler.Companion.WORD_LINK)),
                     toBool,
-                    c.getString(c.getColumnIndexOrThrow(WordDBHandler.Companion.CATEGORY)),
+                    c.getString(c.getColumnIndexOrThrow(WordDBHandler.Companion.CATEGORY))
                 )
             )
         }
@@ -113,6 +109,7 @@ abstract class WordDatabase(c: Context){
         val r = ArrayList<String>()
         val db = dbHelp.readableDatabase
         val c : Cursor = db.query(
+            true,
             thisTab,
             null,
             null,
@@ -152,9 +149,8 @@ abstract class WordDatabase(c: Context){
                     c.getInt(c.getColumnIndexOrThrow(WordDBHandler.Companion.WORD_ID)),
                     c.getString(c.getColumnIndexOrThrow(WordDBHandler.Companion.WORD_NAME)),
                     c.getString(c.getColumnIndexOrThrow(WordDBHandler.Companion.WORD_DEF)),
-                    c.getString(c.getColumnIndexOrThrow(WordDBHandler.Companion.WORD_LINK)),
                     toBool,
-                    c.getString(c.getColumnIndexOrThrow(WordDBHandler.Companion.CATEGORY)),
+                    c.getString(c.getColumnIndexOrThrow(WordDBHandler.Companion.CATEGORY))
                 )
             )
         }
@@ -196,12 +192,11 @@ abstract class WordDatabase(c: Context){
                     0 -> false else -> true
                 }
                 w = Word(
-                    c.getInt(c.getColumnIndexOrThrow(WordDBHandler.WORD_ID)),
-                    c.getString(c.getColumnIndexOrThrow(WordDBHandler.WORD_NAME)),
-                    c.getString(c.getColumnIndexOrThrow(WordDBHandler.WORD_DEF)),
-                    c.getString(c.getColumnIndexOrThrow(WordDBHandler.WORD_LINK)),
+                    c.getInt(c.getColumnIndexOrThrow(WordDBHandler.Companion.WORD_ID)),
+                    c.getString(c.getColumnIndexOrThrow(WordDBHandler.Companion.WORD_NAME)),
+                    c.getString(c.getColumnIndexOrThrow(WordDBHandler.Companion.WORD_DEF)),
                     toBool,
-                    c.getString(c.getColumnIndexOrThrow(WordDBHandler.CATEGORY))
+                    c.getString(c.getColumnIndexOrThrow(WordDBHandler.Companion.CATEGORY))
                 )
             }
         }

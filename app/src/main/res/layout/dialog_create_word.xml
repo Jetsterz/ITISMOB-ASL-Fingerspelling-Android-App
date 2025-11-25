@@ -18,7 +18,9 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Type..."
-        android:inputType="text" />
+        android:inputType="text"
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        />
 
     <TextView
         android:id="@+id/defView"

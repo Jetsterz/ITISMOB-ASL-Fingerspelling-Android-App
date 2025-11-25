@@ -21,6 +21,13 @@ class DictionaryWordViewHolder (private val viewBinding: ItemLayoutDictionarywor
             viewBinding.btnShowhide.setImageResource(R.drawable.show)
         }
 
+        viewBinding.btnView.setOnClickListener {
+            val i = Intent(c, DisplayWordActivity::class.java)
+            i.putExtra("list", "DictioWordDatabase")
+            i.putExtra("id", w.id)
+            c.startActivity(i)
+        }
+
         viewBinding.btnPractice.setOnClickListener {
             val i = Intent(c, PracticeOneWordActivity::class.java)
             i.putExtra("id", w.id)

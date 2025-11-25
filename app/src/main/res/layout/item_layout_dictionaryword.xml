@@ -58,6 +58,15 @@
             android:orientation="horizontal">
 
             <ImageButton
+                android:id="@+id/btn_view"
+                android:layout_width="65dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#00FFFFFF"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/watchoreditvid" />
+
+            <ImageButton
                 android:id="@+id/btn_practice"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"

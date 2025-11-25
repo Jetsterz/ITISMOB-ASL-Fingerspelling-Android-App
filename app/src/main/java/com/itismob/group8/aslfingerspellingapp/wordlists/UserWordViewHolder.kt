@@ -20,26 +20,12 @@ class UserWordViewHolder (private val viewBinding: ItemLayoutUserwordBinding): R
         } else {
             viewBinding.btnShowhide.setImageResource(R.drawable.show)
         }
-        if (w.videoLink != null) {
-            viewBinding.btnViewedit.setImageResource(R.drawable.watchoreditvid)
-        } else {
-            viewBinding.btnViewedit.setImageResource(R.drawable.edit)
-        }
 
         viewBinding.btnViewedit.setOnClickListener {
             val i = Intent(c, DisplayWordActivity::class.java)
             i.putExtra("list", "UserWordDatabase")
             i.putExtra("id", w.id)
-            // tells DisplayWordActivity that a video link exists if true
-            if (w.videoLink != null) {
-                i.putExtra("video?", true)
-                c.startActivity(i)
-            }
-            // or... you know... the opposite of doing that
-            else {
-                i.putExtra("video?", false)
-                c.startActivity(i)
-            }
+            c.startActivity(i)
         }
 
         viewBinding.btnPractice.setOnClickListener {

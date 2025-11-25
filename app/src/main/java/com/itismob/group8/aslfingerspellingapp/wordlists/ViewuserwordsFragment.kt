@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.Toast
@@ -40,11 +41,18 @@ class ViewuserwordsFragment : Fragment(R.layout.fragment_viewuserwords) {
         super.onViewCreated(view, savedInstanceState)
         db = UserWordDatabase(requireContext())
         dat = db.getAllWords()
+        val cats = db.getCategories()
+        val dialogA = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            cats
+        )
 
         val createDiaView = layoutInflater.inflate(R.layout.dialog_create_word, null)
         val nameIn = createDiaView.findViewById<EditText>(R.id.nameIn)
         val defIn = createDiaView.findViewById<EditText>(R.id.defIn)
         val catIn = createDiaView.findViewById<AutoCompleteTextView>(R.id.catIn)
+        catIn.setAdapter(dialogA)
 
         binding.addButton.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext())
@@ -57,22 +65,10 @@ class ViewuserwordsFragment : Fragment(R.layout.fragment_viewuserwords) {
                     val name = nameIn.text.toString()
                     val def = defIn.text.toString()
                     val cat = catIn.text.toString()
-                    val id = db.addWord(Word(-1, name, def, null, true, cat))
+                    val id = db.addWord(Word(-1, name, def, true, cat))
                     dat.add(db.findWordByID(id)!!)
                     val pos = dat.size - 1
                     a.notifyItemInserted(pos)
-                    MaterialAlertDialogBuilder(requireContext())
-                        .setTitle("Create Video?")
-                        .setMessage("Would you like to create an associated ASL video?")
-                        .setNegativeButton("Cancel") { vDialog, _ ->
-                            vDialog.dismiss()
-                        }
-                        .setPositiveButton("Proceed to Video Creator") { _, _ ->
-                            val i = Intent(requireContext(), CreateWordActivity::class.java)
-                            i.putExtra("wordID", id)
-                            startActivity(i)
-                        }
-                        .show()
                 }
                     .show()
         }

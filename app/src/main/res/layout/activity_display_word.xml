@@ -15,34 +15,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <VideoView
-            android:id="@+id/wordVideo"
-            android:layout_width="267dp"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/wordDemo"
+            android:layout_width="wrap_content"
             android:layout_height="422dp" />
 
         <TextView
-            android:id="@+id/viewVidStatus"
-            android:layout_width="match_parent"
+            android:id="@+id/instruction"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_24pt_italic"
             android:gravity="center"
-            android:text="No Video Playing"
-            android:textSize="12sp" />
+            android:text="Tip: Scroll to reveal each letter! (works below too!)" />
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/minidemo"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:foregroundGravity="center"
+            android:orientation="horizontal" />
+
+        <TextView
+            android:id="@+id/viewWord"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/viewWord"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="TextView"
-                android:textSize="24sp" />
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="TextView"
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/viewDef"
