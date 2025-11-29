@@ -15,7 +15,9 @@ import com.itismob.group8.aslfingerspellingapp.databinding.ActivityPlayCameraBin
 import com.itismob.group8.aslfingerspellingapp.libraries.Camera
 import com.itismob.group8.aslfingerspellingapp.libraries.GestureRecognizerHelper
 import com.itismob.group8.aslfingerspellingapp.dataclasses.WordsData
+import com.itismob.group8.aslfingerspellingapp.dataclasses.NamesData
 import com.itismob.group8.aslfingerspellingapp.retrofit.DatamuseRetrofitHelper
+import com.itismob.group8.aslfingerspellingapp.retrofit.NameRetrofitHelper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.min
@@ -101,6 +103,33 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
         setupClickListeners()
     }
 
+    private fun generateName() {
+        NameRetrofitHelper.nameInterface.getName().enqueue(object : Callback<NamesData> {
+            override fun onResponse(
+                call: Call<NamesData?>,
+                response: Response<NamesData?>
+            ) {
+                val responseData = response.body()
+                if (responseData != null) {
+                    changePracticeWord(responseData.name)
+                } else {
+                    // Fallback if name API fails
+                    changePracticeWord("Alex")
+                }
+            }
+
+            override fun onFailure(
+                call: Call<NamesData?>,
+                t: Throwable
+            ) {
+                Log.e("PlayCamera", "Failed to fetch name: ${t.message}")
+                // Fallback names if API fails
+                val fallbackNames = listOf("Alex", "Taylor", "Jordan", "Casey", "Riley")
+                changePracticeWord(fallbackNames.random())
+            }
+        })
+    }
+
     private fun startNewGame() {
         // Get category data from intent
         val categoryName = this.intent.getStringExtra(CATEGORY_KEY) ?: "General"
@@ -116,8 +145,13 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
         totalRounds = 9
         gameStartTime = PreviousGame.getCurrentDateTime()
 
-        // Load words for the game
-        getDatamuseWords()
+        if (endpoint == "na") {
+            // Use names API
+            generateName()
+        } else {
+            // Use Datamuse API
+            getDatamuseWords()
+        }
 
         viewBinding.tvCategoryPlay.text = categoryName
         updateGameDisplay()
@@ -191,11 +225,21 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
     }
 
     private fun loadNewWord() {
-        if (wordsList.isNotEmpty()) {
-            getRandomWordListIndex()
-            updateGameDisplay()
-            saveGameProgress() // Auto-save after loading new word
+        when {
+            endpoint == "na" -> {
+                // Use names API
+                generateName()
+            }
+            wordsList.isNotEmpty() -> {
+                // Use Datamuse API with existing words list
+                getRandomWordListIndex()
+            }
+            else -> {
+                // Fetch new words from Datamuse
+                getDatamuseWords()
+            }
         }
+        updateGameDisplay()
     }
 
     private fun completeWord() {
@@ -328,8 +372,13 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
     }
 
     private fun getDatamuseWordsForContinue() {
-        // For continuing games, we fetch fresh words but keep the progress
-        getDatamuseWords()
+        if (endpoint == "na") {
+            // For names, just generate a new name
+            generateName()
+        } else {
+            // For Datamuse, fetch new words
+            getDatamuseWords()
+        }
     }
 
     // Game Saving Logic
