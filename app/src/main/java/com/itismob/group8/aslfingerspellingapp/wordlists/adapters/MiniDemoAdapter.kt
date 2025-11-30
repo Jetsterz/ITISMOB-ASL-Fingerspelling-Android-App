@@ -1,16 +1,14 @@
-package com.itismob.group8.aslfingerspellingapp.wordlists
+package com.itismob.group8.aslfingerspellingapp.wordlists.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.itismob.group8.aslfingerspellingapp.databinding.ItemLayoutOneminiletterBinding
 
 class MiniDemoAdapter(private val wordNameArray: CharArray) :
     RecyclerView.Adapter<MiniDemoAdapter.MiniDemoViewHolder>() {
-    inner class MiniDemoViewHolder(private val b: ItemLayoutOneminiletterBinding) : RecyclerView.ViewHolder(b.root){
-        val arrayOfSigns = ViewWordDemoViewHolder.arrayOfSigns
+    class MiniDemoViewHolder(private val b: ItemLayoutOneminiletterBinding) : RecyclerView.ViewHolder(b.root){
+        val arrayOfSigns = ViewWordDemoAdapter.ViewWordDemoViewHolder.mapOfSigns
         fun bind(l: Char){
             val thisImg = arrayOfSigns[l.uppercaseChar()]
             thisImg?.let { imgimg ->

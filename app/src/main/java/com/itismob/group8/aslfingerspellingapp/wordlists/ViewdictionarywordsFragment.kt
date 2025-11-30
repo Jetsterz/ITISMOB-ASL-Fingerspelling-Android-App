@@ -10,6 +10,7 @@ import com.itismob.group8.aslfingerspellingapp.wordlists.database.DictioWordData
 import com.itismob.group8.aslfingerspellingapp.R
 import com.itismob.group8.aslfingerspellingapp.wordlists.Word
 import com.itismob.group8.aslfingerspellingapp.databinding.FragmentViewdictionarywordsBinding
+import com.itismob.group8.aslfingerspellingapp.wordlists.adapters.DictionaryWordsAdapter
 
 class ViewdictionarywordsFragment : Fragment(R.layout.fragment_viewdictionarywords) {
     private var b: FragmentViewdictionarywordsBinding? = null

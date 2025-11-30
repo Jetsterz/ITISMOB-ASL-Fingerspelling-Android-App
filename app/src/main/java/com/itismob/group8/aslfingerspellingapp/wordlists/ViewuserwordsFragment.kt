@@ -19,6 +19,7 @@ import com.itismob.group8.aslfingerspellingapp.R
 import com.itismob.group8.aslfingerspellingapp.wordlists.database.UserWordDatabase
 import com.itismob.group8.aslfingerspellingapp.wordlists.Word
 import com.itismob.group8.aslfingerspellingapp.databinding.FragmentViewuserwordsBinding
+import com.itismob.group8.aslfingerspellingapp.wordlists.adapters.UserWordsAdapter
 
 class ViewuserwordsFragment : Fragment(R.layout.fragment_viewuserwords) {
     private var b: FragmentViewuserwordsBinding? = null

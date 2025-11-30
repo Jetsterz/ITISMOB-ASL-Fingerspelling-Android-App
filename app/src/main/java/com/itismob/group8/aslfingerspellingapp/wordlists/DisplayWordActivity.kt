@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.itismob.group8.aslfingerspellingapp.R
 import com.itismob.group8.aslfingerspellingapp.databinding.ActivityDisplayWordBinding
+import com.itismob.group8.aslfingerspellingapp.wordlists.adapters.MiniDemoAdapter
+import com.itismob.group8.aslfingerspellingapp.wordlists.adapters.ViewWordDemoAdapter
 import com.itismob.group8.aslfingerspellingapp.wordlists.database.DictioWordDatabase
 import com.itismob.group8.aslfingerspellingapp.wordlists.database.UserWordDatabase
 import com.itismob.group8.aslfingerspellingapp.wordlists.database.WordDatabase

@@ -1,6 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.camera.view.PreviewView
+        android:id="@+id/pvCameraPreviewPractice"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+    </androidx.camera.view.PreviewView>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/camera_text_background"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/prompt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textColor="#E6E6E6"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvPracticeOneWord"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Fetching words..."
+            android:textAlignment="center"
+            android:textColor="#E6E6E6"
+            android:textSize="34sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/hLytTextBackgroundPractice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/camera_text_background"
+        android:gravity="center|center_horizontal"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/fabSwitchCam"
+        app:layout_constraintStart_toEndOf="@+id/fabHome"
+        app:layout_constraintTop_toTopOf="@+id/pvCameraPreviewPractice">
+
+        <TextView
+            android:id="@+id/tvCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="category"
+            android:textAlignment="center"
+            android:textColor="#E2E2E2"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/ibHint2"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/custom_btn_background"
+        android:padding="15dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="@+id/fabSwitchCam"
+        app:layout_constraintStart_toStartOf="@+id/fabSwitchCam"
+        app:layout_constraintTop_toBottomOf="@+id/fabSwitchCam"
+        app:srcCompat="@drawable/question"
+        app:tint="#C8C8F4" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabRecordPracticeWord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#C8C8F4"
+        android:clickable="true"
+        app:fabCustomSize="69dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout"
+        app:srcCompat="@drawable/record_button"
+        app:tint="#4C4DDC" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#C8C8F4"
+        android:clickable="true"
+        app:fabCustomSize="69dp"
+        app:layout_constraintBottom_toBottomOf="@+id/hLytTextBackgroundPractice"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/home"
+        app:tint="#4C4DDC" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabSwitchCam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:clickable="true"
+        app:backgroundTint="#C8C8F4"
+        app:fabCustomSize="69dp"
+        app:layout_constraintBottom_toBottomOf="@+id/hLytTextBackgroundPractice"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/switch_camera"
+        app:tint="#4C4DDC" />
 </androidx.constraintlayout.widget.ConstraintLayout>

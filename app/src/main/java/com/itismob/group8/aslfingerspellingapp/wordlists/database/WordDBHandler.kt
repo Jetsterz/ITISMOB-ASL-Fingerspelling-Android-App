@@ -59,10 +59,6 @@ override fun onCreate(db: SQLiteDatabase?) {
         )
 """.trimIndent()
     db?.execSQL(createDictioDB)
-    val cv1 = cvMake("DictioPlace", "A placeholder for the Dictionary Word list.", true, "PLACEHOLDER")
-    val cv2 = cvMake("DictioPlaceB", "Another placeholder for the Dictionary Word List.", false, "PLACEHOLDER")
-    db?.insert(DICTIO_WORDS_TABLE, null, cv1)
-    db?.insert(DICTIO_WORDS_TABLE, null, cv2)
 }
 
 private fun cvMake(name: String, definition: String, showInPlay: Boolean, category: String) : ContentValues {

@@ -26,7 +26,9 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_24pt_italic"
             android:gravity="center"
-            android:text="Tip: Scroll to reveal each letter! (works below too!)" />
+            android:text="Tip: Scroll to reveal each letter! (works below too!)"
+            android:textColor="@color/black"
+            android:textColorLink="#3F51B5" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/minidemo"
@@ -43,6 +45,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="TextView"
+            android:textColor="#000000"
             android:textSize="24sp" />
 
         <TextView
@@ -50,7 +53,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="TextView" />
+            android:text="TextView"
+            android:textColor="#000000" />
 
         <TextView
             android:id="@+id/viewCat"
@@ -59,6 +63,7 @@
             android:fontFamily="@font/inter_24pt_italic"
             android:gravity="center"
             android:text="TextView"
+            android:textColor="#000000"
             android:textSize="12sp" />
 
         <LinearLayout
@@ -71,7 +76,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Edit" />
+                android:backgroundTint="@color/alertdialog_buttoncolor"
+                android:text="Edit"
+                android:textColor="#FFFFFF" />
 
             <ImageButton
                 android:id="@+id/delCurrWord"

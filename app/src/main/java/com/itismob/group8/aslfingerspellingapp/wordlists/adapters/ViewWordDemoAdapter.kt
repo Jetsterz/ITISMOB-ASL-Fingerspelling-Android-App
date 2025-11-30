@@ -1,15 +1,17 @@
-package com.itismob.group8.aslfingerspellingapp.wordlists
+package com.itismob.group8.aslfingerspellingapp.wordlists.adapters
 
-import android.widget.ImageView
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.itismob.group8.aslfingerspellingapp.R
 import com.itismob.group8.aslfingerspellingapp.databinding.ItemLayoutOneletterBinding
-import kotlin.collections.get
 
-class ViewWordDemoViewHolder(private val b: ItemLayoutOneletterBinding) :
-    RecyclerView.ViewHolder(b.root) {
+class ViewWordDemoAdapter(private val wordNameArray: CharArray) :
+RecyclerView.Adapter<ViewWordDemoAdapter.ViewWordDemoViewHolder>(){
+    class ViewWordDemoViewHolder(private val b: ItemLayoutOneletterBinding) :
+        RecyclerView.ViewHolder(b.root) {
         companion object {
-            val arrayOfSigns = mapOf(
+            val mapOfSigns = mapOf(
                 'A' to R.drawable.a_sign,
                 'B' to R.drawable.b_sign,
                 'C' to R.drawable.c_sign,
@@ -38,13 +40,30 @@ class ViewWordDemoViewHolder(private val b: ItemLayoutOneletterBinding) :
                 'Z' to R.drawable.z_sign
             )
         }
-    fun bind(letter: Char) {
-        val img = arrayOfSigns[letter.uppercaseChar()]
-        img?.let { imgID ->
-            b.letterSign.setImageResource(imgID)
+        fun bind(letter: Char) {
+            val img = mapOfSigns[letter.uppercaseChar()]
+            img?.let { imgID ->
+                b.letterSign.setImageResource(imgID)
+            }
+            "Letter: ${letter.uppercaseChar()}".also { b.letterName.text = it }
         }
-        "Letter: ${letter.uppercaseChar()}".also { b.letterName.text = it }
+
+
+    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewWordDemoViewHolder {
+        val i: LayoutInflater = LayoutInflater.from(parent.context)
+        val vb = ItemLayoutOneletterBinding.inflate(i, parent, false)
+
+        val vh: ViewWordDemoViewHolder = ViewWordDemoViewHolder(vb)
+        return vh
     }
 
+    override fun onBindViewHolder(holder: ViewWordDemoViewHolder, position: Int) {
+        val p = wordNameArray[position]
+        holder.bind(p)
+    }
 
+    override fun getItemCount(): Int {
+        return wordNameArray.size
+    }
 }
