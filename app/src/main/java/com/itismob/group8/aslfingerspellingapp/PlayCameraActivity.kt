@@ -18,6 +18,7 @@ import com.itismob.group8.aslfingerspellingapp.dataclasses.WordsData
 import com.itismob.group8.aslfingerspellingapp.dataclasses.NamesData
 import com.itismob.group8.aslfingerspellingapp.retrofit.DatamuseRetrofitHelper
 import com.itismob.group8.aslfingerspellingapp.retrofit.NameRetrofitHelper
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.min
@@ -51,13 +52,19 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
     private var gameId: String = ""
     private var isContinuingGame = false
     private var loadedGame: PreviousGame? = null
-
     private var gameStartTime: String = ""
+
+    // Timer variables
+    private var timeRemaining = 30 // 30 seconds per word
+    private var timerJob: Job? = null
+    private var isTimerRunning = false
+
 
     companion object {
         const val CATEGORY_KEY = "CATEGORY_KEY"
         const val CATEGORY_ENDPOINT = "CATEGORY_ENDPOINT"
-        const val GAME_ID = "GAME_ID" // For continuing games
+        const val GAME_ID = "GAME_ID"
+        const val TIMER_DURATION = 30 // 30 seconds per word
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,33 +110,6 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
         setupClickListeners()
     }
 
-    private fun generateName() {
-        NameRetrofitHelper.nameInterface.getName().enqueue(object : Callback<NamesData> {
-            override fun onResponse(
-                call: Call<NamesData?>,
-                response: Response<NamesData?>
-            ) {
-                val responseData = response.body()
-                if (responseData != null) {
-                    changePracticeWord(responseData.name)
-                } else {
-                    // Fallback if name API fails
-                    changePracticeWord("Alex")
-                }
-            }
-
-            override fun onFailure(
-                call: Call<NamesData?>,
-                t: Throwable
-            ) {
-                Log.e("PlayCamera", "Failed to fetch name: ${t.message}")
-                // Fallback names if API fails
-                val fallbackNames = listOf("Alex", "Taylor", "Jordan", "Casey", "Riley")
-                changePracticeWord(fallbackNames.random())
-            }
-        })
-    }
-
     private fun startNewGame() {
         // Get category data from intent
         val categoryName = this.intent.getStringExtra(CATEGORY_KEY) ?: "General"
@@ -144,12 +124,12 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
         score = 0
         totalRounds = 9
         gameStartTime = PreviousGame.getCurrentDateTime()
+        timeRemaining = TIMER_DURATION // Reset timer for new game
 
+        // Load words for the game
         if (endpoint == "na") {
-            // Use names API
             generateName()
         } else {
-            // Use Datamuse API
             getDatamuseWords()
         }
 
@@ -168,8 +148,6 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
             val isGameCompleted = loadedGame!!.currentRound >= loadedGame!!.totalRounds
 
             if (isGameCompleted) {
-                // Game is already completed - should not happen since button is hidden
-                // But if it does, finish the activity
                 finish()
                 return
             } else {
@@ -178,14 +156,19 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
                 score = loadedGame!!.score
                 totalRounds = loadedGame!!.totalRounds
                 endpoint = loadedGame!!.endpoint
-                gameStartTime = loadedGame!!.date // Use the original start time
+                gameStartTime = loadedGame!!.date
                 viewBinding.tvCategoryPlay.text = loadedGame!!.category
 
-                // Load words and continue from where we left off
-                getDatamuseWordsForContinue()
+                // Timer continues from where it was (not reset)
+                timeRemaining = TIMER_DURATION // Or you could save/load timer state if needed
+
+                if (endpoint == "na") {
+                    generateName()
+                } else {
+                    getDatamuseWordsForContinue()
+                }
             }
         } else {
-            // Fallback to new game if saved game not found
             startNewGame()
         }
 
@@ -212,10 +195,68 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
         viewBinding.tvScore.text = "$score"
         viewBinding.tvPlayWord.text = currentWord
         updateStringSpan(currLetter)
+        updateTimerDisplay()
+    }
+
+    private fun updateTimerDisplay() {
+        viewBinding.tvTimer.text = "$timeRemaining"
+
+        // Change color based on time remaining
+        when {
+            timeRemaining <= 10 -> viewBinding.tvTimer.setTextColor(Color.RED)
+            timeRemaining <= 20 -> viewBinding.tvTimer.setTextColor(Color.YELLOW)
+            else -> viewBinding.tvTimer.setTextColor(Color.parseColor("#15C815")) //Green
+        }
+    }
+
+    private fun startTimer() {
+        stopTimer() // Stop any existing timer
+
+        isTimerRunning = true
+        timerJob = lifecycleScope.launch {
+            while (timeRemaining > 0 && isTimerRunning) {
+                delay(1000) // 1 second
+                timeRemaining--
+                runOnUiThread {
+                    updateTimerDisplay()
+                }
+            }
+
+            if (timeRemaining <= 0 && isTimerRunning) {
+                // Timer ran out
+                runOnUiThread {
+                    onTimerExpired()
+                }
+            }
+        }
+    }
+
+    private fun stopTimer() {
+        isTimerRunning = false
+        timerJob?.cancel()
+        timerJob = null
+    }
+
+    private fun onTimerExpired() {
+        stopTimer()
+
+        // Auto-skip to next word when timer expires
+        if (currentRound < totalRounds) {
+            currentRound++
+            loadNewWord()
+        } else {
+            // Timer expired on last word - end game
+            endGame()
+        }
+    }
+
+    private fun resetTimer() {
+        timeRemaining = TIMER_DURATION
+        updateTimerDisplay()
     }
 
     private fun skipWord() {
-        // No penalty for skipping
+        stopTimer()
         if (currentRound < totalRounds) {
             currentRound++
             loadNewWord()
@@ -225,25 +266,28 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
     }
 
     private fun loadNewWord() {
-        when {
-            endpoint == "na" -> {
-                // Use names API
-                generateName()
-            }
-            wordsList.isNotEmpty() -> {
-                // Use Datamuse API with existing words list
-                getRandomWordListIndex()
-            }
-            else -> {
-                // Fetch new words from Datamuse
-                getDatamuseWords()
-            }
+        stopTimer() // Stop current timer
+
+        if (endpoint == "na") {
+            generateName()
+        } else if (wordsList.isNotEmpty()) {
+            getRandomWordListIndex()
+        } else {
+            getDatamuseWords()
         }
+
+        // Reset progress for new word
+        currLetter = 0
+        resetTimer()
+        startTimer()
         updateGameDisplay()
+        saveGameProgress()
     }
 
     private fun completeWord() {
+        stopTimer()
         score += 10 // Points for completing a word
+
         if (currentRound < totalRounds) {
             currentRound++
             loadNewWord()
@@ -253,10 +297,9 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
     }
 
     private fun endGame() {
-        // Save the final state (currentRound will be 9/9)
+        stopTimer()
         saveGameProgress()
 
-        // Show completion message
         lifecycleScope.launch {
             viewBinding.tvPlayWord.text = "Game Complete! Score: $score"
             delay(2.seconds)
@@ -264,16 +307,14 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
         }
     }
 
-
     // Gesture Recognition Logic
     override fun onResults(resultBundle: GestureRecognizerHelper.ResultBundle) {
         runOnUiThread {
-            if (viewBinding != null) {
+            if (viewBinding != null && isTimerRunning) {
                 val gestureCategories = resultBundle.results.first().gestures()
                 if (gestureCategories.isNotEmpty()) {
                     sortResults(gestureCategories.first())
 
-                    // Check letter recognition
                     if (currLetter < currentWord.length) {
                         val catString = this.nameCategories.firstOrNull()?.categoryName()
                         if (!catString.isNullOrEmpty()) {
@@ -282,14 +323,12 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
                                 currLetter++
                                 updateStringSpan(currLetter)
 
-                                // Skip non-letter characters
                                 if (currLetter < currentWord.length) {
                                     while (currLetter < currentWord.length &&
                                         !currentWord[currLetter].isLetter()) {
                                         currLetter++
                                     }
                                 } else {
-                                    // Word completed
                                     completeWord()
                                 }
                             }
@@ -346,10 +385,7 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
 
     private fun getDatamuseWords() {
         DatamuseRetrofitHelper.datamuseInterface.getWords(endpoint).enqueue(object : Callback<List<WordsData>> {
-            override fun onResponse(
-                call: Call<List<WordsData>?>,
-                response: Response<List<WordsData>?>
-            ) {
+            override fun onResponse(call: Call<List<WordsData>?>, response: Response<List<WordsData>?>) {
                 val responseData = response.body()
                 if (!responseData.isNullOrEmpty()) {
                     wordsList = responseData
@@ -359,26 +395,33 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
 
             override fun onFailure(call: Call<List<WordsData>?>, t: Throwable) {
                 Log.e("PlayCamera", "Failed to fetch words: ${t.message}")
-                // Fallback words
-                wordsList = listOf(
-                    WordsData("hello", 100),
-                    WordsData("world", 100),
-                    WordsData("android", 100),
-                    WordsData("camera", 100)
-                )
+                wordsList = listOf(WordsData("hello", 100), WordsData("world", 100))
                 loadNewWord()
             }
         })
     }
 
+    private fun generateName() {
+        NameRetrofitHelper.nameInterface.getName().enqueue(object : Callback<NamesData> {
+            override fun onResponse(call: Call<NamesData?>, response: Response<NamesData?>) {
+                val responseData = response.body()
+                if (responseData != null) {
+                    changePracticeWord(responseData.name)
+                } else {
+                    changePracticeWord("Alex")
+                }
+            }
+
+            override fun onFailure(call: Call<NamesData?>, t: Throwable) {
+                Log.e("PlayCamera", "Failed to fetch name: ${t.message}")
+                val fallbackNames = listOf("Alex", "Taylor", "Jordan", "Casey", "Riley")
+                changePracticeWord(fallbackNames.random())
+            }
+        })
+    }
+
     private fun getDatamuseWordsForContinue() {
-        if (endpoint == "na") {
-            // For names, just generate a new name
-            generateName()
-        } else {
-            // For Datamuse, fetch new words
-            getDatamuseWords()
-        }
+        getDatamuseWords()
     }
 
     // Game Saving Logic
@@ -400,14 +443,15 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
 
     override fun onDestroy() {
         super.onDestroy()
+        stopTimer()
         camera.closeCamera()
         backgroundExecutor.shutdown()
     }
 
     override fun onPause() {
         super.onPause()
+        stopTimer()
         camera.stopCamera()
-        // Auto-save on pause
         saveGameProgress()
     }
 
@@ -418,6 +462,7 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
         } else {
             camera.requestPermissions()
         }
+        // Timer will be started when word loads
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

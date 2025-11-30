@@ -1,6 +1,7 @@
 package com.itismob.group8.aslfingerspellingapp
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
@@ -10,8 +11,10 @@ import com.itismob.group8.aslfingerspellingapp.databinding.ItemLayoutCategoryBin
 
 class PlayCategoryAdapter(
     private val playCameraActivityLauncher: ActivityResultLauncher<Intent>,
-    private val categoryActivity: PlayCategoryActivity
+    private val categoryActivity: PlayCategoryActivity,
+    private val sharedPreferences: SharedPreferences
 ) : RecyclerView.Adapter<PlayCategoryViewHolder>() {
+
 
     private var categoryList: ArrayList<Category> = arrayListOf(
         Category("Animals", R.drawable.ctgry_animals,
@@ -34,9 +37,11 @@ class PlayCategoryAdapter(
         holder.bindData(categoryList[position])
 
         holder.btnCategoryPlay.setOnClickListener {
+
             val categoryIntent = Intent(holder.itemView.context, PlayCameraActivity::class.java)
             categoryIntent.putExtra(PlayCameraActivity.CATEGORY_KEY, categoryList[position].name)
             categoryIntent.putExtra(PlayCameraActivity.CATEGORY_ENDPOINT, categoryList[position].endpoint)
+
             this.playCameraActivityLauncher.launch(categoryIntent)
         }
     }
