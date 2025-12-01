@@ -37,10 +37,8 @@
             android:exported="false" />
         <activity
             android:name=".wordlists.DisplayWordActivity"
-            android:exported="false" />
-        <activity
-            android:name=".wordlists.CreateWordActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.DisplayActivityOnly"/>
         <activity
             android:name=".wordlists.PracticeOneWordActivity"
             android:exported="false" />

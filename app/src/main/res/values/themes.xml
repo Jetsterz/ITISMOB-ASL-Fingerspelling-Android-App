@@ -8,4 +8,8 @@
     <style name="AlertDialogTheme" parent="ThemeOverlay.AppCompat.Dialog.Alert">
         <item name="android:textColorPrimary">#4C4DDC</item>
     </style>
+
+    <style name="Theme.DisplayActivityOnly" parent="Theme.Material3.Light.NoActionBar">
+
+    </style>
 </resources>

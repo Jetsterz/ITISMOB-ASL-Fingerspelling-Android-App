@@ -9,7 +9,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.itismob.group8.aslfingerspellingapp.databinding.FragmentDictionaryBinding
-import com.itismob.group8.aslfingerspellingapp.wordlists.DictionaryPagerAdapter
+import com.itismob.group8.aslfingerspellingapp.wordlists.adapters.DictionaryPagerAdapter
 
 /**
  * A simple [Fragment] subclass.

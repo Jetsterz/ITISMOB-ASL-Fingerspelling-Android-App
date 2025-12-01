@@ -5,6 +5,12 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.itismob.group8.aslfingerspellingapp.R
+import com.itismob.group8.aslfingerspellingapp.dataclasses.WordsData
+import com.itismob.group8.aslfingerspellingapp.retrofit.DatamuseRetrofitHelper
+import com.itismob.group8.aslfingerspellingapp.wordlists.Word
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class WordDBHandler (c: Context)
 : SQLiteOpenHelper(c, DATABASE_NAME, null, DATABASE_VERSION){
@@ -18,7 +24,6 @@ companion object {
     const val WORD_ID = "_id"
     const val WORD_NAME = "word_name"
     const val WORD_DEF = "word_def"
-    const val WORD_LINK = "word_link"
     const val IS_HIDDEN = "is_hidden"
     const val CATEGORY = "category"
 
@@ -38,42 +43,34 @@ override fun onCreate(db: SQLiteDatabase?) {
     val createUserDB = """
         CREATE TABLE IF NOT EXISTS $USER_WORD_TABLE (
             $WORD_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-            $WORD_NAME TEXT,
+            $WORD_NAME TEXT UNIQUE,
             $WORD_DEF TEXT,
-            $WORD_LINK TEXT,
             $IS_HIDDEN BOOLEAN, 
             $CATEGORY TEXT
         )
 """.trimIndent()
     db?.execSQL(createUserDB)
-    val placeholderVid = R.raw.for_placeholder_only.toString()
-    val uv1 = cvMake("UserPlace", "A placeholder for the User Word list.", null, true, "PLACEHOLDER")
-    val uv2 = cvMake("UserPlace2", "Another placeholder for the User Word List.", placeholderVid, false, "PLACEHOLDER")
+    val uv1 = cvMake("UserPlace", "A placeholder for the User Word list.", true, "PLACEHOLDER")
+    val uv2 = cvMake("UserPlaceB", "Another placeholder for the User Word List.", false, "PLACEHOLDER")
     db?.insert(USER_WORD_TABLE, null, uv1)
     db?.insert(USER_WORD_TABLE, null, uv2)
 
     val createDictioDB = """
         CREATE TABLE IF NOT EXISTS $DICTIO_WORDS_TABLE (
             $WORD_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-            $WORD_NAME TEXT,
+            $WORD_NAME TEXT UNIQUE,
             $WORD_DEF TEXT,
-            $WORD_LINK TEXT,
             $IS_HIDDEN BOOLEAN, 
             $CATEGORY TEXT
         )
 """.trimIndent()
     db?.execSQL(createDictioDB)
-    val cv1 = cvMake("DictioPlace", "A placeholder for the Dictionary Word list.", null, true, "PLACEHOLDER")
-    val cv2 = cvMake("DictioPlace2", "Another placeholder for the Dictionary Word List.", null, false, "PLACEHOLDER")
-    db?.insert(DICTIO_WORDS_TABLE, null, cv1)
-    db?.insert(DICTIO_WORDS_TABLE, null, cv2)
 }
 
-private fun cvMake(name: String, definition: String, link: String?, showInPlay: Boolean, category: String) : ContentValues {
+private fun cvMake(name: String, definition: String, showInPlay: Boolean, category: String) : ContentValues {
     val cv = ContentValues()
     cv.put(WORD_NAME, name)
     cv.put(WORD_DEF, definition)
-    cv.put(WORD_LINK, link)
     cv.put(IS_HIDDEN, showInPlay)
     cv.put(CATEGORY, category)
     return cv
