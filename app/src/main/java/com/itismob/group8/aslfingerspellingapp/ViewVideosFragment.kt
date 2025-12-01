@@ -40,7 +40,6 @@ class ViewVideosFragment : Fragment() {
         binding.recyclerViewVideos.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.recyclerViewVideos.adapter = adapter
 
-        binding.buttonDelete.visibility = View.GONE
     }
 
     override fun onDestroyView() {

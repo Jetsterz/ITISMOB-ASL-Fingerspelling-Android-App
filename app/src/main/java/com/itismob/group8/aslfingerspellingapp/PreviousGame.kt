@@ -11,7 +11,8 @@ data class PreviousGame(
     val date: String,
     val score: Int = 0,
     val gameId: String = "",
-    val endpoint: String = ""
+    val endpoint: String = "",
+    val isTimerEnabled: Boolean = true
 ) {
     fun getFormattedDate(): String {
         return "Started: $date"

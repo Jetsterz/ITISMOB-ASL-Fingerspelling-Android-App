@@ -10,6 +10,7 @@ import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -33,7 +34,6 @@ import com.itismob.group8.aslfingerspellingapp.retrofit.DatamuseRetrofitHelper
 import com.itismob.group8.aslfingerspellingapp.retrofit.NameRetrofitHelper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.math.min
 import kotlin.time.Duration.Companion.seconds
 import retrofit2.Call
 import retrofit2.Callback
@@ -64,6 +64,7 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
         ImageURILetterMapping('G', R.drawable.g_sign),
         ImageURILetterMapping('H', R.drawable.h_sign),
         ImageURILetterMapping('I', R.drawable.i_sign),
+        ImageURILetterMapping('J', R.drawable.j_sign),
         ImageURILetterMapping('K', R.drawable.k_sign),
         ImageURILetterMapping('L', R.drawable.l_sign),
         ImageURILetterMapping('M', R.drawable.m_sign),
@@ -78,7 +79,8 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
         ImageURILetterMapping('V', R.drawable.v_sign),
         ImageURILetterMapping('W', R.drawable.w_sign),
         ImageURILetterMapping('X', R.drawable.x_sign),
-        ImageURILetterMapping('Y', R.drawable.y_sign))
+        ImageURILetterMapping('Y', R.drawable.y_sign),
+        ImageURILetterMapping('Z', R.drawable.z_sign))
 
     companion object {
         const val CATEGORY_KEY = "CATEGORY_KEY"
@@ -91,6 +93,7 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         viewBinding = ActivityPracticeCameraBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
@@ -133,16 +136,12 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
 
         //setting the first practice word
         when (api) {
-            //fetch the list of words
             DATAMUSE_API -> {
                 getDatamuseWords()
             }
 
             LIST_OF_NAMES_API -> {
-                //do {
-                    generateName()
-               // } while (this.checkWord.contains('J') ||
-                  //  this.checkWord.contains('Z'))
+                generateName()
             }
         }
 
@@ -171,12 +170,12 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
         }
 
         viewBinding.ibHint.setOnClickListener {
-            showDialogwithIcon(this)
+            if (currLetter < practiceWord.length) {
+                showDialogwithIcon(this)
+            }
         }
 
         viewBinding.tvCategory.text = this.intent.getStringExtra(CATEGORY_KEY)
-
-
     }
 
     @SuppressLint("MissingInflatedId")
@@ -214,7 +213,7 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
         dialog.show()
 
         val negativeButton: Button = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-        negativeButton.setTextColor(resources.getColor(R.color.alertdialog_buttoncolor)) // Set negative button text to red
+        negativeButton.setTextColor(resources.getColor(R.color.alertdialog_buttoncolor))
     }
 
     private fun setRandomPracticeWord() {
@@ -223,10 +222,7 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
                 getRandomWordListIndex()
             }
             LIST_OF_NAMES_API -> {
-                //do {
                 generateName()
-               // } while (this.checkWord.contains('J') ||
-                  //  this.checkWord.contains('Z'))
             }
             else -> changePracticeWord("Hello")
         }
@@ -355,10 +351,51 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
                 call: Call<List<WordsData>?>,
                 t: Throwable
             ) {
-
+                showNoInternetAlertDialog(this@PracticeCameraActivity)
             }
         })
     }
+
+    private fun showNoInternetAlertDialog(context: Context) {
+        val builder = AlertDialog.Builder(context, R.style.AlertDialogTheme)
+        val inflater = LayoutInflater.from(context)
+        val dialogView = inflater.inflate(R.layout.dialog_layout_no_icon, null)
+
+        // Find the TextView and set the message
+        val message: TextView = dialogView.findViewById(R.id.tv_message_no_icon)
+        message.text = "Error fetching words. Please make sure you are connected to the internet or try again later."
+
+        // Set the custom layout to the dialog
+        builder.setView(dialogView)
+            .setTitle("Error")
+
+        // Add a negative button to cancel the dialog
+        builder.setPositiveButton("BACK") { dialog, _ ->
+            finish()
+        }
+
+        builder.setNeutralButton("TRY AGAIN") { dialog, _ ->
+            when (api) {
+                DATAMUSE_API -> {
+                    getDatamuseWords()
+                }
+
+                LIST_OF_NAMES_API -> {
+                    generateName()
+                }
+            }
+            dialog.dismiss()
+        }
+
+        // Show the dialog
+        val dialog: AlertDialog = builder.create()
+        dialog.window?.setBackgroundDrawableResource(R.color.alertdialog_background)
+        dialog.show()
+
+        val negativeButton: Button = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+        negativeButton.setTextColor(resources.getColor(R.color.alertdialog_buttoncolor))
+    }
+
     private fun generateName() {
         NameRetrofitHelper.nameInterface.getName().enqueue(object : Callback<NamesData> {
             override fun onResponse(
@@ -375,6 +412,7 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
                 call: Call<NamesData?>,
                 t: Throwable
             ) {
+                showNoInternetAlertDialog(this@PracticeCameraActivity)
             }
         })
     }

@@ -6,14 +6,12 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.mediapipe.tasks.components.containers.Category
 import com.itismob.group8.aslfingerspellingapp.R
 import com.itismob.group8.aslfingerspellingapp.libraries.Camera
@@ -22,26 +20,20 @@ import com.itismob.group8.aslfingerspellingapp.libraries.GestureRecognizerHelper
 import com.itismob.group8.aslfingerspellingapp.databinding.ActivityTranslateBinding
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import kotlin.text.uppercaseChar
 
 class TranslateActivity : AppCompatActivity(), GestureRecognizerHelper.GestureRecognizerListener {
     private lateinit var viewBinding: ActivityTranslateBinding
     private lateinit var camera: Camera
     private lateinit var backgroundExecutor: ExecutorService
     private lateinit var gestureRecognizerHelper: GestureRecognizerHelper
-    //private lateinit var recyclerView: RecyclerView
-    //private val defaultNumResults = 1
     private var currentWord = ""
-    /*private val gestureRecognizerResultAdapter: TranslateGestureRecognizerResultsAdapter by lazy {
-        TranslateGestureRecognizerResultsAdapter().apply {
-            updateAdapterSize(defaultNumResults)
-        }
-    } */
+
     private var currLetter: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         viewBinding = ActivityTranslateBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)

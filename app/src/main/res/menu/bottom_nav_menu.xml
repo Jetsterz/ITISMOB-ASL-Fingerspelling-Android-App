@@ -13,7 +13,7 @@
         />
     <item
         android:id="@+id/viewSavedVideos"
-        android:title="Saved Videos"
+        android:title="Tutorial Vids"
         android:icon="@drawable/icon_video"
         />
     <item
