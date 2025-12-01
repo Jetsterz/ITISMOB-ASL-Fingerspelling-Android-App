@@ -49,13 +49,14 @@ class ViewuserwordsFragment : Fragment(R.layout.fragment_viewuserwords) {
             cats
         )
 
-        val createDiaView = layoutInflater.inflate(R.layout.dialog_create_word, null)
-        val nameIn = createDiaView.findViewById<EditText>(R.id.nameIn)
-        val defIn = createDiaView.findViewById<EditText>(R.id.defIn)
-        val catIn = createDiaView.findViewById<AutoCompleteTextView>(R.id.catIn)
-        catIn.setAdapter(dialogA)
+
 
         binding.addButton.setOnClickListener {
+            val createDiaView = layoutInflater.inflate(R.layout.dialog_create_word, null)
+            val nameIn = createDiaView.findViewById<EditText>(R.id.nameIn)
+            val defIn = createDiaView.findViewById<EditText>(R.id.defIn)
+            val catIn = createDiaView.findViewById<AutoCompleteTextView>(R.id.catIn)
+            catIn.setAdapter(dialogA)
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Create New Word")
                 .setView(createDiaView)

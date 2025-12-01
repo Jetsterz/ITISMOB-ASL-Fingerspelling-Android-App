@@ -99,6 +99,20 @@
         app:srcCompat="@drawable/question"
         app:tint="#C8C8F4" />
 
+    <Button
+        android:id="@+id/btnRestart"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#4c4ddc"
+        android:text="RESTART?"
+        android:textColor="#C8C8F4"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/fabRecordPractice" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabRecordPracticeWord"
         android:layout_width="wrap_content"

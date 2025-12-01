@@ -1,6 +1,5 @@
 package com.itismob.group8.aslfingerspellingapp.wordlists
 
-import android.R
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -17,10 +16,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.lifecycleScope
 import com.google.mediapipe.tasks.components.containers.Category
 import com.itismob.group8.aslfingerspellingapp.databinding.ActivityPracticeOneWordBinding
-import com.itismob.group8.aslfingerspellingapp.wordlists.adapters.ViewWordDemoAdapter
 import com.itismob.group8.aslfingerspellingapp.libraries.Camera
 import com.itismob.group8.aslfingerspellingapp.libraries.GestureRecognizerHelper
 import com.itismob.group8.aslfingerspellingapp.wordlists.adapters.ViewWordDemoAdapter.ViewWordDemoViewHolder.Companion.mapOfSigns
@@ -37,8 +34,8 @@ class PracticeOneWordActivity : AppCompatActivity(), GestureRecognizerHelper.Ges
     private lateinit var exec : ExecutorService
     private lateinit var wordToFill : Word
     private lateinit var gest : GestureRecognizerHelper
-    private var currLetter = 0
-    private var detectedLetter = ""
+    private var letterPos = 0
+    private var thisLetter = ""
     private lateinit var checkWord: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,6 +77,9 @@ class PracticeOneWordActivity : AppCompatActivity(), GestureRecognizerHelper.Ges
         b.ibHint2.setOnClickListener {
             showDialogwithIcon(this)
         }
+        b.btnRestart.setOnClickListener {
+            restartWordPractice()
+        }
         val i = intent
         val db = when(i.getStringExtra("list") ) {
             "UserWordDatabase" -> UserWordDatabase(this)
@@ -109,14 +109,19 @@ class PracticeOneWordActivity : AppCompatActivity(), GestureRecognizerHelper.Ges
         changePracticeWord(wordToFill)
     }
 
-
-    //TODO: Fix ts
+    fun restartWordPractice() {
+        letterPos = 0
+        val spanString = SpannableString(wordToFill.wordName)
+        val noText = ForegroundColorSpan(Color.WHITE)
+        spanString.setSpan(noText, 0, spanString.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        b.tvPracticeOneWord.text = spanString
+    }
     fun showDialogwithIcon(context: Context) {
         val builder = AlertDialog.Builder(context, com.itismob.group8.aslfingerspellingapp.R.style.AlertDialogTheme)
         val inflater = LayoutInflater.from(context)
         val dialogView = inflater.inflate(com.itismob.group8.aslfingerspellingapp.R.layout.dialog_layout, null)
 
-        val letter = wordToFill.wordName[currLetter].uppercaseChar()
+        val letter = wordToFill.wordName[letterPos].uppercaseChar()
         // Find the ImageView and set the icon
         val iconImage: ImageView = dialogView.findViewById(com.itismob.group8.aslfingerspellingapp.R.id.dialog_icon)
         val imageURI = mapOfSigns[letter]
@@ -147,7 +152,7 @@ class PracticeOneWordActivity : AppCompatActivity(), GestureRecognizerHelper.Ges
         b.tvPracticeOneWord.text = word.wordName
         b.tvCategory.text = word.category
         updateCheckWord()
-        currLetter = 0
+        letterPos = 0
     }
     private fun updateCheckWord() {
         this.checkWord = this.wordToFill.wordName.uppercase()
@@ -160,8 +165,8 @@ class PracticeOneWordActivity : AppCompatActivity(), GestureRecognizerHelper.Ges
 
     private fun updateResults(categories: List<Category>?) {
         if (categories != null && categories.isNotEmpty()) {
-            detectedLetter = categories[0].categoryName()
-        } else detectedLetter = ""
+            thisLetter = categories[0].categoryName()
+        } else thisLetter = ""
     }
     private fun updateStringSpan(currentLetterIndex: Int) {
         val spanString = SpannableString(wordToFill.wordName)
@@ -176,13 +181,13 @@ class PracticeOneWordActivity : AppCompatActivity(), GestureRecognizerHelper.Ges
             if (gestureCategories.isNotEmpty()) {
                 updateResults(gestureCategories.first())
 
-                if (currLetter < wordToFill.wordName.length && detectedLetter.isNotEmpty() && detectedLetter == this.checkWord[currLetter].toString()) {
-                    currLetter++
-                    updateStringSpan(currLetter)
-                    if (currLetter < wordToFill.wordName.length) {
-                        while (currLetter < wordToFill.wordName.length &&
-                            !wordToFill.wordName[currLetter].isLetter() ) {
-                            currLetter++
+                if (letterPos < wordToFill.wordName.length && thisLetter.isNotEmpty() && thisLetter == this.checkWord[letterPos].toString()) {
+                    letterPos++
+                    updateStringSpan(letterPos)
+                    if (letterPos < wordToFill.wordName.length) {
+                        while (letterPos < wordToFill.wordName.length &&
+                            !wordToFill.wordName[letterPos].isLetter() ) {
+                            letterPos++
                         }
                     } else {
                         b.prompt.isVisible = false

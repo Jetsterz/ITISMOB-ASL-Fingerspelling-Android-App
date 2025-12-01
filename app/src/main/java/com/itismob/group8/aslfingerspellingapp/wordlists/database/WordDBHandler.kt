@@ -5,6 +5,12 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.itismob.group8.aslfingerspellingapp.R
+import com.itismob.group8.aslfingerspellingapp.dataclasses.WordsData
+import com.itismob.group8.aslfingerspellingapp.retrofit.DatamuseRetrofitHelper
+import com.itismob.group8.aslfingerspellingapp.wordlists.Word
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class WordDBHandler (c: Context)
 : SQLiteOpenHelper(c, DATABASE_NAME, null, DATABASE_VERSION){
@@ -37,7 +43,7 @@ override fun onCreate(db: SQLiteDatabase?) {
     val createUserDB = """
         CREATE TABLE IF NOT EXISTS $USER_WORD_TABLE (
             $WORD_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-            $WORD_NAME TEXT,
+            $WORD_NAME TEXT UNIQUE,
             $WORD_DEF TEXT,
             $IS_HIDDEN BOOLEAN, 
             $CATEGORY TEXT
@@ -52,7 +58,7 @@ override fun onCreate(db: SQLiteDatabase?) {
     val createDictioDB = """
         CREATE TABLE IF NOT EXISTS $DICTIO_WORDS_TABLE (
             $WORD_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-            $WORD_NAME TEXT,
+            $WORD_NAME TEXT UNIQUE,
             $WORD_DEF TEXT,
             $IS_HIDDEN BOOLEAN, 
             $CATEGORY TEXT

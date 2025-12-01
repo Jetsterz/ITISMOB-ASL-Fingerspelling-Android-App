@@ -3,6 +3,7 @@ package com.itismob.group8.aslfingerspellingapp.wordlists.database
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import com.itismob.group8.aslfingerspellingapp.wordlists.Word
 
 /**
@@ -21,7 +22,7 @@ abstract class WordDatabase(c: Context){
         cv.put(WordDBHandler.IS_HIDDEN, w.showInPlay)
         cv.put(WordDBHandler.CATEGORY, w.category)
 
-        val _id = db.insert(thisTab, null, cv)
+        val _id = db.insertWithOnConflict(thisTab, null, cv, SQLiteDatabase.CONFLICT_IGNORE)
         return _id.toInt()
     }
 
@@ -50,6 +51,7 @@ abstract class WordDatabase(c: Context){
     fun getAllWords() : ArrayList<Word> {
         val r = ArrayList<Word>()
         val db = dbHelp.readableDatabase
+        val sort = "${WordDBHandler.WORD_NAME} ASC"
         val c : Cursor = db.query(
             thisTab,
             null,
@@ -57,7 +59,7 @@ abstract class WordDatabase(c: Context){
             null,
             null,
             null,
-            null,
+            sort,
             null
         )
         while (c.moveToNext()) {
@@ -110,7 +112,7 @@ abstract class WordDatabase(c: Context){
     }
 
     fun getCategories() : ArrayList<String> {
-        val r = ArrayList<String>()
+        val r = HashSet<String>()
         val db = dbHelp.readableDatabase
         val c : Cursor = db.query(
             true,
@@ -128,7 +130,7 @@ abstract class WordDatabase(c: Context){
         }
 
         c.close()
-        return r
+        return ArrayList(r)
     }
 
     fun getShowingWordsOfCategory(cat: String) : ArrayList<Word> {
@@ -205,5 +207,53 @@ abstract class WordDatabase(c: Context){
             }
         }
         return w
+    }
+
+    fun findWordByNameAndCat(name: String?, cat: String?) : ArrayList<Word> {
+        if (name == null && cat == null) {
+            return getAllWords()
+        }
+        val db = dbHelp.readableDatabase
+        val selectionParts = mutableListOf<String>()
+        val args = mutableListOf<String>()
+
+        if (name != null) {
+            selectionParts.add("${WordDBHandler.WORD_NAME} = ?")
+            args.add(name)
+        }
+
+        if (cat != null) {
+            selectionParts.add("${WordDBHandler.CATEGORY} = ?")
+            args.add(cat)
+        }
+        var where = selectionParts.joinToString(" AND ")
+        var wList = ArrayList<Word>()
+        val sort = "${WordDBHandler.WORD_NAME} ASC"
+
+        val c : Cursor = db.query(
+            thisTab,
+            null,
+            where,
+            args.toTypedArray(),
+            null,
+            null,
+            sort,
+            null
+        )
+        while (c.moveToNext()) {
+            val toBool = when (c.getInt(c.getColumnIndexOrThrow(WordDBHandler.IS_HIDDEN))) {
+                0 -> false else -> true
+            }
+            wList.add(
+                Word(
+                    c.getInt(c.getColumnIndexOrThrow(WordDBHandler.WORD_ID)),
+                    c.getString(c.getColumnIndexOrThrow(WordDBHandler.WORD_NAME)),
+                    c.getString(c.getColumnIndexOrThrow(WordDBHandler.WORD_DEF)),
+                    toBool,
+                    c.getString(c.getColumnIndexOrThrow(WordDBHandler.CATEGORY))
+                )
+            )
+        }
+        return wList
     }
 }
