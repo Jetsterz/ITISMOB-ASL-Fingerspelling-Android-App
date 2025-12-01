@@ -170,12 +170,12 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
         }
 
         viewBinding.ibHint.setOnClickListener {
-            showDialogwithIcon(this)
+            if (currLetter < practiceWord.length) {
+                showDialogwithIcon(this)
+            }
         }
 
         viewBinding.tvCategory.text = this.intent.getStringExtra(CATEGORY_KEY)
-
-
     }
 
     @SuppressLint("MissingInflatedId")
@@ -363,7 +363,7 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
 
         // Find the TextView and set the message
         val message: TextView = dialogView.findViewById(R.id.tv_message_no_icon)
-        message.text = "Error fetching words. Please try again later."
+        message.text = "Error fetching words. Please make sure you are connected to the internet or try again later."
 
         // Set the custom layout to the dialog
         builder.setView(dialogView)
