@@ -6,6 +6,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -29,19 +30,14 @@ class TranslateActivity : AppCompatActivity(), GestureRecognizerHelper.GestureRe
     private lateinit var camera: Camera
     private lateinit var backgroundExecutor: ExecutorService
     private lateinit var gestureRecognizerHelper: GestureRecognizerHelper
-    //private lateinit var recyclerView: RecyclerView
-    //private val defaultNumResults = 1
     private var currentWord = ""
-    /*private val gestureRecognizerResultAdapter: TranslateGestureRecognizerResultsAdapter by lazy {
-        TranslateGestureRecognizerResultsAdapter().apply {
-            updateAdapterSize(defaultNumResults)
-        }
-    } */
+
     private var currLetter: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         viewBinding = ActivityTranslateBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)

@@ -10,6 +10,7 @@ import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -64,6 +65,7 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
         ImageURILetterMapping('G', R.drawable.g_sign),
         ImageURILetterMapping('H', R.drawable.h_sign),
         ImageURILetterMapping('I', R.drawable.i_sign),
+        ImageURILetterMapping('J', R.drawable.j_sign),
         ImageURILetterMapping('K', R.drawable.k_sign),
         ImageURILetterMapping('L', R.drawable.l_sign),
         ImageURILetterMapping('M', R.drawable.m_sign),
@@ -78,7 +80,8 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
         ImageURILetterMapping('V', R.drawable.v_sign),
         ImageURILetterMapping('W', R.drawable.w_sign),
         ImageURILetterMapping('X', R.drawable.x_sign),
-        ImageURILetterMapping('Y', R.drawable.y_sign))
+        ImageURILetterMapping('Y', R.drawable.y_sign),
+        ImageURILetterMapping('Z', R.drawable.z_sign))
 
     companion object {
         const val CATEGORY_KEY = "CATEGORY_KEY"
@@ -91,6 +94,7 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         viewBinding = ActivityPracticeCameraBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
@@ -133,16 +137,12 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
 
         //setting the first practice word
         when (api) {
-            //fetch the list of words
             DATAMUSE_API -> {
                 getDatamuseWords()
             }
 
             LIST_OF_NAMES_API -> {
-                //do {
                     generateName()
-               // } while (this.checkWord.contains('J') ||
-                  //  this.checkWord.contains('Z'))
             }
         }
 
@@ -223,10 +223,7 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
                 getRandomWordListIndex()
             }
             LIST_OF_NAMES_API -> {
-                //do {
                 generateName()
-               // } while (this.checkWord.contains('J') ||
-                  //  this.checkWord.contains('Z'))
             }
             else -> changePracticeWord("Hello")
         }
