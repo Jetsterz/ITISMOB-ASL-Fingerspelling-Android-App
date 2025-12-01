@@ -1,95 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/userWord"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:layout_margin="8dp"
+    app:cardBackgroundColor="#FAFAFF"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp">
 
     <LinearLayout
-        android:id="@+id/uWordInfoLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <TextView
-            android:id="@+id/wordName"
-            android:layout_width="wrap_content"
+        <!-- Word Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#C8C8F4"
-            android:fontFamily="@font/inter_24pt_semibold"
-            android:gravity="center"
-            android:text="User Word"
-            android:textColor="#000000"
-            android:textSize="24sp" />
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
 
+            <TextView
+                android:id="@+id/wordName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/user_word_name_bg"
+                android:fontFamily="@font/inter_family"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="User Word"
+                android:textColor="#4C4DDC"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <!-- Word Details -->
         <TextView
             android:id="@+id/uWordDef"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:maxLines="5"
-            android:text="TextView"
-            android:textColor="#000000" />
+            android:gravity="start"
+            android:maxLines="3"
+            android:text="User word definition goes here"
+            android:textColor="#666666"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
 
+        <!-- Category -->
         <TextView
             android:id="@+id/uCatView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_24pt_italic"
+            android:background="@drawable/user_category_bg"
+            android:fontFamily="@font/inter_family"
             android:gravity="center"
-            android:maxLines="5"
-            android:text="TextView"
-            android:textColor="#000000"
-            android:textSize="12sp" />
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:text="User Category"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:layout_marginBottom="12dp" />
 
+        <!-- Action Buttons -->
         <LinearLayout
             android:id="@+id/buttonLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="45dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/btn_viewedit"
-                android:layout_width="65dp"
-                android:layout_height="match_parent"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_weight="1"
-                android:background="#00FFFFFF"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="View/Edit word"
+                app:srcCompat="@drawable/watchoreditvid"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/watchoreditvid" />
+                app:tint="#4C4DDC" />
 
             <ImageButton
                 android:id="@+id/btn_practice"
-                android:layout_width="65dp"
-                android:layout_height="match_parent"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_weight="1"
-                android:background="#00FFFFFF"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Practice word"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/hand" />
+                app:srcCompat="@drawable/hand"
+                app:tint="#4C4DDC" />
 
             <ImageButton
                 android:id="@+id/btn_showhide"
-                android:layout_width="65dp"
-                android:layout_height="match_parent"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_weight="1"
-                android:background="#00FFFFFF"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Show/Hide word"
+                app:srcCompat="@drawable/hide"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/hide" />
+                app:tint="#4C4DDC" />
 
             <ImageButton
                 android:id="@+id/btn_delete"
-                android:layout_width="65dp"
-                android:layout_height="wrap_content"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_weight="1"
-                android:background="#00FFFFFF"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Delete word"
+                app:srcCompat="@drawable/trash"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/trash" />
+                app:tint="#FF6B6B" />
 
         </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</androidx.cardview.widget.CardView>

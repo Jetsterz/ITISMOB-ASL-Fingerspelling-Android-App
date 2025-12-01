@@ -160,7 +160,7 @@ class PlayCameraActivity : AppCompatActivity(), GestureRecognizerHelper.GestureR
                 viewBinding.tvCategoryPlay.text = loadedGame!!.category
 
                 // Timer continues from where it was (not reset)
-                timeRemaining = TIMER_DURATION // Or you could save/load timer state if needed
+                timeRemaining = TIMER_DURATION
 
                 if (endpoint == "na") {
                     generateName()
