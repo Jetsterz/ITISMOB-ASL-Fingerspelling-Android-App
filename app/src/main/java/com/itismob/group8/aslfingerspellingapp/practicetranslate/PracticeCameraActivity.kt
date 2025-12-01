@@ -363,11 +363,11 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
 
         // Find the TextView and set the message
         val message: TextView = dialogView.findViewById(R.id.tv_message_no_icon)
-        message.text = "No internet access at the moment. Please try again later."
+        message.text = "Error fetching words. Please try again later."
 
         // Set the custom layout to the dialog
         builder.setView(dialogView)
-            .setTitle("No Internet")
+            .setTitle("Error")
 
         // Add a negative button to cancel the dialog
         builder.setPositiveButton("BACK") { dialog, _ ->
