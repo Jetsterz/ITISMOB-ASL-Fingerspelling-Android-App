@@ -16,6 +16,7 @@ import com.google.mediapipe.tasks.core.Delegate
 import com.google.mediapipe.tasks.vision.core.RunningMode
 import com.google.mediapipe.tasks.vision.gesturerecognizer.GestureRecognizer
 import com.google.mediapipe.tasks.vision.gesturerecognizer.GestureRecognizerResult
+import androidx.core.graphics.createBitmap
 
 // code based on
 // https://github.com/google-ai-edge/mediapipe-samples/tree/main/examples/gesture_recognizer/android
@@ -112,12 +113,12 @@ class GestureRecognizerHelper (
         val height = imageProxy.height
         val rotation = imageProxy.imageInfo.rotationDegrees
 
-        val bitmapBuffer = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val bitmapBuffer = createBitmap(width, height)
         bitmapBuffer.copyPixelsFromBuffer(imageProxy.planes[0].buffer)
 
         imageProxy.close()
 
-        var sx: Float = when (selectedCamera) {
+        val sx: Float = when (selectedCamera) {
             CameraSelector.DEFAULT_FRONT_CAMERA -> {
                 -1f //mirror the image
             }

@@ -34,7 +34,6 @@ import com.itismob.group8.aslfingerspellingapp.retrofit.DatamuseRetrofitHelper
 import com.itismob.group8.aslfingerspellingapp.retrofit.NameRetrofitHelper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.math.min
 import kotlin.time.Duration.Companion.seconds
 import retrofit2.Call
 import retrofit2.Callback
@@ -142,7 +141,7 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
             }
 
             LIST_OF_NAMES_API -> {
-                    generateName()
+                generateName()
             }
         }
 
@@ -214,7 +213,7 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
         dialog.show()
 
         val negativeButton: Button = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-        negativeButton.setTextColor(resources.getColor(R.color.alertdialog_buttoncolor)) // Set negative button text to red
+        negativeButton.setTextColor(resources.getColor(R.color.alertdialog_buttoncolor))
     }
 
     private fun setRandomPracticeWord() {
@@ -352,10 +351,51 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
                 call: Call<List<WordsData>?>,
                 t: Throwable
             ) {
-
+                showNoInternetAlertDialog(this@PracticeCameraActivity)
             }
         })
     }
+
+    private fun showNoInternetAlertDialog(context: Context) {
+        val builder = AlertDialog.Builder(context, R.style.AlertDialogTheme)
+        val inflater = LayoutInflater.from(context)
+        val dialogView = inflater.inflate(R.layout.dialog_layout_no_icon, null)
+
+        // Find the TextView and set the message
+        val message: TextView = dialogView.findViewById(R.id.tv_message_no_icon)
+        message.text = "No internet access at the moment. Please try again later."
+
+        // Set the custom layout to the dialog
+        builder.setView(dialogView)
+            .setTitle("No Internet")
+
+        // Add a negative button to cancel the dialog
+        builder.setPositiveButton("BACK") { dialog, _ ->
+            finish()
+        }
+
+        builder.setNeutralButton("TRY AGAIN") { dialog, _ ->
+            when (api) {
+                DATAMUSE_API -> {
+                    getDatamuseWords()
+                }
+
+                LIST_OF_NAMES_API -> {
+                    generateName()
+                }
+            }
+            dialog.dismiss()
+        }
+
+        // Show the dialog
+        val dialog: AlertDialog = builder.create()
+        dialog.window?.setBackgroundDrawableResource(R.color.alertdialog_background)
+        dialog.show()
+
+        val negativeButton: Button = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+        negativeButton.setTextColor(resources.getColor(R.color.alertdialog_buttoncolor))
+    }
+
     private fun generateName() {
         NameRetrofitHelper.nameInterface.getName().enqueue(object : Callback<NamesData> {
             override fun onResponse(
@@ -372,6 +412,7 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
                 call: Call<NamesData?>,
                 t: Throwable
             ) {
+                showNoInternetAlertDialog(this@PracticeCameraActivity)
             }
         })
     }
