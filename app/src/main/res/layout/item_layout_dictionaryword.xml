@@ -96,17 +96,6 @@
                 app:srcCompat="@drawable/hand"
                 app:tint="#4C4DDC" />
 
-            <ImageButton
-                android:id="@+id/btn_showhide"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_weight="1"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Show/Hide word"
-                app:srcCompat="@drawable/hide"
-                android:scaleType="fitCenter"
-                app:tint="#4C4DDC" />
-
         </LinearLayout>
 
     </LinearLayout>

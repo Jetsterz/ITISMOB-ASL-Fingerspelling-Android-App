@@ -3,6 +3,7 @@ package com.itismob.group8.aslfingerspellingapp.wordlists.adapters
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
 import com.itismob.group8.aslfingerspellingapp.R
 import com.itismob.group8.aslfingerspellingapp.databinding.ItemLayoutDictionarywordBinding
@@ -20,13 +21,7 @@ class DictionaryWordsAdapter(
             val c = viewBinding.root.context
             viewBinding.wordName.text = w.wordName
             viewBinding.dWordDef.text = w.wordDef
-            viewBinding.btnShowhide.tag = w.showInPlay
             viewBinding.dCatView.text = w.category
-            if (viewBinding.btnShowhide.tag == true){
-                viewBinding.btnShowhide.setImageResource(R.drawable.hide)
-            } else {
-                viewBinding.btnShowhide.setImageResource(R.drawable.show)
-            }
 
             viewBinding.btnView.setOnClickListener {
                 val i = Intent(c, DisplayWordActivity::class.java)
@@ -41,15 +36,8 @@ class DictionaryWordsAdapter(
                 i.putExtra("list", "DictioWordDatabase")
                 c.startActivity(i)
             }
-            viewBinding.btnShowhide.setOnClickListener {
-                if (viewBinding.btnShowhide.tag == true){
-                    viewBinding.btnShowhide.setImageResource(R.drawable.show)
-                    viewBinding.btnShowhide.tag = false
-                } else {
-                    viewBinding.btnShowhide.setImageResource(R.drawable.hide)
-                    viewBinding.btnShowhide.tag = true
-                }
-                onShowHideClick()
+            if (w.wordDef.isNullOrEmpty()) {
+                viewBinding.dWordDef.isGone = true
             }
         }
     }
