@@ -17,19 +17,19 @@ class PracticeCategoryAdapter(private val practiceCameraActivityLauncher:
         Category(
             "Animals",
             R.drawable.ctgry_animals,
-            "words?rel_gen=animal&topics=living,organism,domestic,life,earth",
+            "words?rel_trg=Animal",
             Category.Companion.DATAMUSE_API
         ),
         Category(
             "Food",
             R.drawable.ctgry_food,
-            "words?rel_gen=food",
+            "words?rel_trg=Food",
             Category.Companion.DATAMUSE_API
         ),
         Category(
             "Objects",
             R.drawable.ctgry_objects,
-            "words?rel_gen=object&topics=clothing,furniture,materials,nonliving,concrete",
+            "words?rel_trg=Items",
             Category.Companion.DATAMUSE_API
         ),
         /*Category(

@@ -27,6 +27,7 @@ class UserWordsAdapter(
                 val i = Intent(c, DisplayWordActivity::class.java)
                 i.putExtra("list", "UserWordDatabase")
                 i.putExtra("id", w.id)
+                i.putExtra(DisplayWordActivity.WORD_TYPE_KEY, "u")
                 c.startActivity(i)
             }
 

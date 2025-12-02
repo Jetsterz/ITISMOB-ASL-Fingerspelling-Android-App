@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
@@ -175,7 +176,12 @@ class PracticeCameraActivity : AppCompatActivity(), GestureRecognizerHelper.Gest
             }
         }
 
-        viewBinding.tvCategory.text = this.intent.getStringExtra(CATEGORY_KEY)
+        val category = this.intent.getStringExtra(CATEGORY_KEY)
+        viewBinding.tvCategory.text = category
+        if (category == "Long Words") {
+            val tSize = 27f
+            viewBinding.tvPracticeWord.textSize = tSize
+        }
     }
 
     @SuppressLint("MissingInflatedId")

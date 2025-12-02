@@ -27,6 +27,7 @@ class DictionaryWordsAdapter(
                 val i = Intent(c, DisplayWordActivity::class.java)
                 i.putExtra("list", "DictioWordDatabase")
                 i.putExtra("id", w.id)
+                i.putExtra(DisplayWordActivity.WORD_TYPE_KEY, "d")
                 c.startActivity(i)
             }
 

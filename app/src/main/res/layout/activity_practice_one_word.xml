@@ -41,8 +41,7 @@
             android:layout_weight="1"
             android:textAlignment="center"
             android:textColor="#E6E6E6"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/tvPracticeOneWord"
@@ -99,19 +98,23 @@
         app:srcCompat="@drawable/question"
         app:tint="#C8C8F4" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btnRestart"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
+        android:background="@drawable/custom_btn_background"
         android:backgroundTint="#4c4ddc"
-        android:text="RESTART?"
-        android:textColor="#C8C8F4"
-        android:textStyle="bold"
+        android:padding="15dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/reset"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/fabRecordPractice" />
+        app:layout_constraintStart_toEndOf="@+id/fabRecordPracticeWord"
+        app:layout_constraintTop_toTopOf="@+id/fabRecordPracticeWord"
+        app:tint="#C8C8F4" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabRecordPracticeWord"

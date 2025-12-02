@@ -50,10 +50,6 @@ override fun onCreate(db: SQLiteDatabase?) {
         )
 """.trimIndent()
     db?.execSQL(createUserDB)
-    val uv1 = cvMake("UserPlace", "A placeholder for the User Word list.", true, "PLACEHOLDER")
-    val uv2 = cvMake("UserPlaceB", "Another placeholder for the User Word List.", false, "PLACEHOLDER")
-    db?.insert(USER_WORD_TABLE, null, uv1)
-    db?.insert(USER_WORD_TABLE, null, uv2)
 
     val createDictioDB = """
         CREATE TABLE IF NOT EXISTS $DICTIO_WORDS_TABLE (

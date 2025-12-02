@@ -54,7 +54,7 @@ class ViewuserwordsFragment : Fragment(R.layout.fragment_viewuserwords) {
         binding.addButton.setOnClickListener {
             val createDiaView = layoutInflater.inflate(R.layout.dialog_create_word, null)
             val nameIn = createDiaView.findViewById<EditText>(R.id.nameIn)
-            val defIn = createDiaView.findViewById<EditText>(R.id.defIn)
+            val defIn = ""
             val catIn = createDiaView.findViewById<AutoCompleteTextView>(R.id.catIn)
             catIn.setAdapter(dialogA)
             MaterialAlertDialogBuilder(requireContext())
@@ -65,7 +65,7 @@ class ViewuserwordsFragment : Fragment(R.layout.fragment_viewuserwords) {
                 }
                 .setPositiveButton("Proceed") { _, _ ->
                     val name = nameIn.text.toString()
-                    val def = defIn.text.toString()
+                    val def = ""
                     val cat = catIn.text.toString()
                     val id = db.addWord(Word(-1, name, def, true, cat))
                     dat.add(db.findWordByID(id)!!)

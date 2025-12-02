@@ -26,13 +26,15 @@ class DatamuseDictioHandler(c: Context){
     suspend fun grepWords(cat: String) {
         withContext(Dispatchers.IO) {
             try {
-                val wordListOnly = DatamuseRetrofitHelper.datamuseInterface.getWordsOnly(cat)
-                for (w in wordListOnly) {
-                    val wordName = w.word.trim()
-                    if (wordName.isBlank()) continue
-                    val newWord = Word(-1, wordName, null, false, cat)
-                    db.addWord(newWord)
-                    delay(800L)
+                val res = db.getShowingWordsOfCategory(cat)
+                if (res.count() == 0) {
+                    val wordListOnly = DatamuseRetrofitHelper.datamuseInterface.getWordsOnly(cat)
+                    for (w in wordListOnly) {
+                        val wordName = w.word.trim()
+                        if (wordName.isBlank()) continue
+                        val newWord = Word(-1, wordName, null, false, cat)
+                        db.addWord(newWord)
+                    }
                 }
             } catch (e: Exception) {
                 Log.e("HANDLER", "Error in grepWords for '$cat'", e)

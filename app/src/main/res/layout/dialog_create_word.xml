@@ -19,22 +19,8 @@
         android:ems="10"
         android:hint="Type..."
         android:inputType="text"
-        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
         />
-
-    <TextView
-        android:id="@+id/defView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Definition" />
-
-    <EditText
-        android:id="@+id/defIn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Type..."
-        android:inputType="text" />
 
     <TextView
         android:id="@+id/catView"
@@ -48,4 +34,5 @@
         android:layout_height="wrap_content"
         android:completionThreshold="1"
         android:hint="Select an existing category, or type a new one." />
+
 </LinearLayout>

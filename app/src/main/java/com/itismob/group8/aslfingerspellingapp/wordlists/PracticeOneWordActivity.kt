@@ -115,6 +115,7 @@ class PracticeOneWordActivity : AppCompatActivity(), GestureRecognizerHelper.Ges
         val noText = ForegroundColorSpan(Color.WHITE)
         spanString.setSpan(noText, 0, spanString.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         b.tvPracticeOneWord.text = spanString
+        b.prompt.isVisible = true
     }
     fun showDialogwithIcon(context: Context) {
         val builder = AlertDialog.Builder(context, com.itismob.group8.aslfingerspellingapp.R.style.AlertDialogTheme)

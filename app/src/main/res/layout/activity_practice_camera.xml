@@ -42,8 +42,7 @@
             android:layout_weight="1"
             android:textAlignment="center"
             android:textColor="#E6E6E6"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/tvPracticeWord"

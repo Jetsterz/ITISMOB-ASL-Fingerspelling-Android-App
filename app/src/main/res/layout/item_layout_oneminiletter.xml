@@ -10,6 +10,5 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         app:srcCompat="@drawable/add"
-        tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="16dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

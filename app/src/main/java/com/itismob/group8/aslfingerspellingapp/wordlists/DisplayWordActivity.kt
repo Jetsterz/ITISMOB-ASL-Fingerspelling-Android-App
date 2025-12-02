@@ -15,6 +15,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.itismob.group8.aslfingerspellingapp.R
@@ -54,10 +55,18 @@ class DisplayWordActivity : AppCompatActivity() {
         val name = w.wordName
         val def = w.wordDef
         val cat = w.category
-        val letters = name.toCharArray()
+        val letters = name.replace("\\s".toRegex(), "").toCharArray()
         b.viewWord.text = name
         b.viewDef.text = def
         b.viewCat.text = cat
+
+        if (def.isNullOrBlank()) {
+            b.viewDef.isVisible = false
+        }
+
+        if (cat.isNullOrBlank()) {
+            b.viewCat.isVisible = false
+        }
 
         innerA = ViewWordDemoAdapter(letters)
         miniA = MiniDemoAdapter(letters)
@@ -77,10 +86,8 @@ class DisplayWordActivity : AppCompatActivity() {
 
             val createDiaView = layoutInflater.inflate(R.layout.dialog_create_word, null)
             val nameIn = createDiaView.findViewById<EditText>(R.id.nameIn)
-            val defIn = createDiaView.findViewById<EditText>(R.id.defIn)
             val catIn = createDiaView.findViewById<AutoCompleteTextView>(R.id.catIn)
             nameIn.setText(name)
-            defIn.setText(def)
             catIn.setText(cat)
 
             catIn.setAdapter(dialogA)
@@ -92,7 +99,7 @@ class DisplayWordActivity : AppCompatActivity() {
                     }
                     .setPositiveButton("Proceed") { _, _ ->
                         val newName = nameIn.text.toString()
-                        val newDef = defIn.text.toString()
+                        val newDef = ""
                         val newCat = catIn.text.toString()
                         db.updateWord(Word(w.id, newName, newDef, w.showInPlay, newCat))
                         finish()
@@ -116,9 +123,21 @@ class DisplayWordActivity : AppCompatActivity() {
                     }
                     .show()
             }
+
+            val wordType = intent.getStringExtra(DisplayWordActivity.WORD_TYPE_KEY)
+
+            if (wordType == "d") {
+                b.delCurrWord.isVisible = false
+                b.editCurrWord.isVisible = false
+            }
         }
     fun Int.toPx(): Int {
         return (this * resources.displayMetrics.density).toInt()
     }
 
+
+
+    companion object {
+        const val WORD_TYPE_KEY = "WORD_TYPE_KEY"
+    }
 }
